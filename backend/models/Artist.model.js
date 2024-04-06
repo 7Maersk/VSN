@@ -1,9 +1,9 @@
 var { Model, DataTypes } = require('sequelize')
 const { sequelize } = require('../db.config')
 
-class Record extends Model {}
+class Artist extends Model {}
 
-Record.init({
+Artist.init({
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -11,41 +11,40 @@ Record.init({
         autoIncrement: true
     },
 
-    name: {
+    nickname: {
         type: DataTypes.STRING,
         allowNull: false
     },
 
-    katalog_number: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-
-    release_date: {
-        type: DataTypes.DATEONLY,
-        allowNull: true
-    },
-
-    country_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-    },
-
-    cover: {
+    first_name: {
         type: DataTypes.STRING,
         allowNull: false
     },
 
-    rating: {
-        type: DataTypes.FLOAT,
+    last_name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+
+    surname: {
+        type: DataTypes.STRING,
         allowNull: true
     },
+
+    bio: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+
+    avatar: {
+        type: DataTypes.STRING,
+        allowNull: true
+    }
 }, {
-    modelName: 'record',
-    tableName: 'record',
+    modelName: 'artists',
     timestamps: false,
     underscored: true,
     sequelize: sequelize
 })
 
-module.exports = Record 
+module.exports = Artist

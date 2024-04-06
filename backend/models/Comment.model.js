@@ -1,9 +1,9 @@
 var { Model, DataTypes } = require('sequelize')
 const { sequelize } = require('../db.config')
 
-class Record extends Model {}
+class Comment extends Model {}
 
-Record.init({
+Comment.init({
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -11,41 +11,35 @@ Record.init({
         autoIncrement: true
     },
 
-    name: {
+    datetime: {
+        type: DataTypes.DATE,
+        allowNull: false
+    },
+
+    text: {
         type: DataTypes.STRING,
         allowNull: false
     },
 
-    katalog_number: {
-        type: DataTypes.STRING,
-        allowNull: true
-    },
-
-    release_date: {
-        type: DataTypes.DATEONLY,
-        allowNull: true
-    },
-
-    country_id: {
+    user_id: {
         type: DataTypes.INTEGER,
         allowNull: false
     },
 
-    cover: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-
-    rating: {
-        type: DataTypes.FLOAT,
+    post_id: {
+        type: DataTypes.INTEGER,
         allowNull: true
     },
+
+    record_id: {
+        type: DataTypes.STRING,
+        allowNull: true
+    }
 }, {
-    modelName: 'record',
-    tableName: 'record',
+    modelName: 'comments',
     timestamps: false,
     underscored: true,
     sequelize: sequelize
 })
 
-module.exports = Record 
+module.exports = Comment 

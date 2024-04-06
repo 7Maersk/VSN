@@ -1,10 +1,9 @@
 var { Model, DataTypes } = require('sequelize')
 const { sequelize } = require('../db.config')
-const Role = require('./Role.model')
 
-class User extends Model { }
+class UserCollection extends Model {}
 
-User.init({
+UserCollection.init({
     id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -12,25 +11,26 @@ User.init({
         autoIncrement: true
     },
 
-    login: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-
-    password: {
-        type: DataTypes.STRING,
-        allowNull: false
-    },
-
-    role_id: {
+    user_id: {
         type: DataTypes.INTEGER,
         allowNull: false
+    },
+    
+    record_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+    },
+
+    is_fav: {
+        type: DataTypes.BOOLEAN,
+        allowNull: true
     }
 }, {
-    tableName: 'user',
+    modelName: 'user_collection',
+    tableName: 'user_collection',
     timestamps: false,
     underscored: true,
     sequelize: sequelize
 })
 
-module.exports = User 
+module.exports = UserCollection
