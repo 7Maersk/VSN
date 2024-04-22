@@ -5,52 +5,17 @@ import {
 	NavigationMenuList,
 } from '@/components/ui/navigation-menu'
 
-// import Carousel from 'react-multi-carousel';
-// import 'react-multi-carousel/lib/styles.css';
-
 import { Separator } from '@/components/ui/separator'
 import { Album, Disc3, Headphones, Library, ListMusic, Settings, Star, User } from 'lucide-react'
 
 import albumsData from './albums.json'
-import { useEffect, useState } from 'react'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
-import { Card, CardContent } from '@/components/ui/card'
-// import {  } from 'react-router-dom'
-
-const responsive = {
-	superLargeDesktop: {
-		breakpoint: { max: 4000, min: 1024 },
-		items: 5,
-	},
-	desktop: {
-		breakpoint: { max: 1024, min: 800 },
-		items: 5,
-	},
-	tablet: {
-		breakpoint: { max: 800, min: 464 },
-		items: 3,
-	},
-	mobile: {
-		breakpoint: { max: 464, min: 0 },
-		items: 2,
-	},
-}
+import { Card, CardContent, CardFooter } from '@/components/ui/card'
+import { Link } from 'react-router-dom'
 
 //TODO: Добавить react router dom
 
-// export interface AlbumData {
-// 	img: string;
-// 	name: string;
-// 	artist: string;
-// 	date: string;
-// }
-
 const MainPage = ({}) => {
-	// const [albums, setAlbums] = useState<AlbumData[]>([]);
-
-	// useEffect(() => {
-	// 	setAlbums(albumsData);
-	// }, []);
 	return (
 		<div className="h-full grid grid-cols-[20rem_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] grid-rows-4 gap-2">
 			<div className="col-span-1 row-span-4">
@@ -134,24 +99,24 @@ const MainPage = ({}) => {
 							>
 								<NavigationMenuList className="flex-col items-start space-x-0 w-full gap-2">
 									<NavigationMenuItem className="w-full">
-										<div className="cursor-pointer w-full">
+										<Link to={'/albums'} className="cursor-pointer w-full">
 											<NavigationMenuLink
 												className={`gap-4 w-full group inline-flex h-9 items-center justify-start rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50`}
 											>
 												<Library className="h-5 w-5" />
 												Albums
 											</NavigationMenuLink>
-										</div>
+										</Link>
 									</NavigationMenuItem>
 									<NavigationMenuItem className="w-full">
-										<div className="cursor-pointer w-full">
+										<Link to={'/artists'} className="cursor-pointer w-full">
 											<NavigationMenuLink
 												className={`gap-4 w-full group inline-flex h-9 items-center justify-start rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50`}
 											>
 												<Headphones className="h-5 w-5" />
 												Artists
 											</NavigationMenuLink>
-										</div>
+										</Link>
 									</NavigationMenuItem>
 								</NavigationMenuList>
 							</NavigationMenu>
@@ -163,9 +128,9 @@ const MainPage = ({}) => {
 			</div>
 
 			<div className="col-span-8 row-span-4">
-				<div className="h-full grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] grid-rows-8 gap-4">
+				<div className="h-full grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] grid-rows-12 gap-4">
 					{/* сверху слева новостей добавить надпись Последние новости */}
-					<div className="col-start-2 col-end-6 row-start-2 row-end-6 relative">
+					<div className="col-start-2 col-end-6 row-start-2 row-end-8 relative">
 						<img
 							src="https://cdnn21.img.ria.ru/images/07e5/08/12/1746226187_0:22:3071:1749_1920x0_80_0_0_8952d3e406e75032fec31f71cef5abee.jpg"
 							alt="Post preview"
@@ -177,7 +142,7 @@ const MainPage = ({}) => {
 							Nadezhda Babkina on world tour
 						</h3>
 					</div>
-					<div className="col-start-6 col-end-8 row-start-2 row-end-6">
+					<div className="col-start-6 col-end-8 row-start-2 row-end-8">
 						<div className="grid grid-cols-2 grid-rows-2 h-full w-full grid-flow-col gap-4">
 							<div className="col-span-2 relative">
 								<img
@@ -206,8 +171,8 @@ const MainPage = ({}) => {
 						</div>
 					</div>
 					{/* сверху слева релизов добавить надпись Последние релизы */}
-					<div className="col-start-2 col-end-8 row-start-6 row-end-8">
-						<div className="grid grid-cols-6 grid-rows-[min-content_1fr] gap-4 mt-4">
+					<div className="col-start-2 col-end-8 row-start-8 row-end-9">
+						<div className="grid grid-cols-6 grid-rows-[min-content_1fr] gap-y-2 mt-2">
 							<h3 className="col-span-6 scroll-m-20 text-2xl font-semibold tracking-tight">
 								New releases
 							</h3>
@@ -216,23 +181,35 @@ const MainPage = ({}) => {
 									opts={{
 										align: 'start',
 									}}
-									className="w-full"
+									className="w-full "
 								>
 									<CarouselContent>
 										{albumsData.map((album) => (
-											<CarouselItem key={album.name} className="md:basis-1/2 lg:basis-64">
-												<div className="p-1">
-													<Card>
-														<CardContent className="flex aspect-square items-end justify-start p-6 relative">
+											<CarouselItem key={album.name} className="md:basis-1/2 lg:basis-60 py-2">
+												<Card className="rounded-md border-none shadow-sm">
+													<CardContent className="flex aspect-square items-end justify-start p-6 relative">
+														<Link to={'/item'} className="contents">
 															<img
 																src={album.img}
 																alt={`Album ${album.name}`}
-																className="absolute w-full h-full object-cover object-center top-0 left-0 rounded-md"
+																className="absolute w-full h-full object-cover object-center top-0 left-0 rounded-t-md"
 															/>
-															<span className="text-3xl font-semibold z-10 text-white">{album.name} {album.artist}</span>
-														</CardContent>
-													</Card>
-												</div>
+														</Link>
+													</CardContent>
+													<CardFooter className="border border-t-0 rounded-bl-md rounded-br-md p-0">
+														<Link
+															to={'/item'}
+															className="flex w-full h-full flex-col items-start px-4 py-2"
+														>
+															<span className="text-base font-semibold">
+																{album.name}
+															</span>
+															<span className="text-sm font-semibold">
+																{album.artist}
+															</span>
+														</Link>
+													</CardFooter>
+												</Card>
 											</CarouselItem>
 										))}
 									</CarouselContent>
