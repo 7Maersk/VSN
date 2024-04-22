@@ -5,51 +5,52 @@ import {
 	NavigationMenuList,
 } from '@/components/ui/navigation-menu'
 
-import Carousel from 'react-multi-carousel';
-import 'react-multi-carousel/lib/styles.css';
+// import Carousel from 'react-multi-carousel';
+// import 'react-multi-carousel/lib/styles.css';
 
 import { Separator } from '@/components/ui/separator'
 import { Album, Disc3, Headphones, Library, ListMusic, Settings, Star, User } from 'lucide-react'
 
-import albumsData from "./albums.json";
-import { useEffect, useState } from 'react';
-import {  } from 'react-router-dom'
-
+import albumsData from './albums.json'
+import { useEffect, useState } from 'react'
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
+import { Card, CardContent } from '@/components/ui/card'
+// import {  } from 'react-router-dom'
 
 const responsive = {
 	superLargeDesktop: {
 		breakpoint: { max: 4000, min: 1024 },
-		items: 5
+		items: 5,
 	},
 	desktop: {
 		breakpoint: { max: 1024, min: 800 },
-		items: 5
+		items: 5,
 	},
 	tablet: {
 		breakpoint: { max: 800, min: 464 },
-		items: 3
+		items: 3,
 	},
 	mobile: {
 		breakpoint: { max: 464, min: 0 },
-		items: 2
-	}
-};
+		items: 2,
+	},
+}
 
 //TODO: Добавить react router dom
 
-export interface AlbumData {
-	img: string;
-	name: string;
-	artist: string;
-	date: string;
-}
+// export interface AlbumData {
+// 	img: string;
+// 	name: string;
+// 	artist: string;
+// 	date: string;
+// }
 
-const MainPage = ({ }) => {
-	const [albums, setAlbums] = useState<AlbumData[]>([]);
+const MainPage = ({}) => {
+	// const [albums, setAlbums] = useState<AlbumData[]>([]);
 
-	useEffect(() => {
-		setAlbums(albumsData);
-	}, []);
+	// useEffect(() => {
+	// 	setAlbums(albumsData);
+	// }, []);
 	return (
 		<div className="h-full grid grid-cols-[20rem_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] grid-rows-4 gap-2">
 			<div className="col-span-1 row-span-4">
@@ -162,7 +163,7 @@ const MainPage = ({ }) => {
 			</div>
 
 			<div className="col-span-8 row-span-4">
-				<div className="h-full grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] grid-rows-8 gap-2">
+				<div className="h-full grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] grid-rows-8 gap-4">
 					{/* сверху слева новостей добавить надпись Последние новости */}
 					<div className="col-start-2 col-end-6 row-start-2 row-end-6 relative">
 						<img
@@ -177,7 +178,7 @@ const MainPage = ({ }) => {
 						</h3>
 					</div>
 					<div className="col-start-6 col-end-8 row-start-2 row-end-6">
-						<div className="grid grid-cols-2 grid-rows-2 h-full w-full grid-flow-col gap-2">
+						<div className="grid grid-cols-2 grid-rows-2 h-full w-full grid-flow-col gap-4">
 							<div className="col-span-2 relative">
 								<img
 									src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3pKNHPLzPTyFUk0vbMcnqgK_hQ0P1PUEoAaV0PtjYRc4krv1F"
@@ -205,12 +206,48 @@ const MainPage = ({ }) => {
 						</div>
 					</div>
 					{/* сверху слева релизов добавить надпись Последние релизы */}
-					<div className="col-start-2 col-end-8 row-start-7 row-end-9 relative">
+					<div className="col-start-2 col-end-8 row-start-6 row-end-8">
+						<div className="grid grid-cols-6 grid-rows-[min-content_1fr] gap-4 mt-4">
+							<h3 className="col-span-6 scroll-m-20 text-2xl font-semibold tracking-tight">
+								New releases
+							</h3>
+							<div className="col-span-6">
+								<Carousel
+									opts={{
+										align: 'start',
+									}}
+									className="w-full"
+								>
+									<CarouselContent>
+										{albumsData.map((album) => (
+											<CarouselItem key={album.name} className="md:basis-1/2 lg:basis-64">
+												<div className="p-1">
+													<Card>
+														<CardContent className="flex aspect-square items-end justify-start p-6 relative">
+															<img
+																src={album.img}
+																alt={`Album ${album.name}`}
+																className="absolute w-full h-full object-cover object-center top-0 left-0 rounded-md"
+															/>
+															<span className="text-3xl font-semibold z-10 text-white">{album.name} {album.artist}</span>
+														</CardContent>
+													</Card>
+												</div>
+											</CarouselItem>
+										))}
+									</CarouselContent>
+									<CarouselPrevious />
+									<CarouselNext />
+								</Carousel>
+							</div>
+						</div>
+
+						{/* 						
 						<Carousel responsive={responsive} infinite={true}>
 							{albums.map((album, index) => (
 								<div className="card" style={{ padding: '10px', userSelect: 'none' }} key={index}>
 									<a href='https://www.npmjs.com/package/react-multi-carousel'>
-										{/* нужно сделать, чтобы картинка принимала размер изначального изображения в карте, чтобы не было разных размеров альбомов */}
+										{/* нужно сделать, чтобы картинка принимала размер изначального изображения в карте, чтобы не было разных размеров альбомов 
 										<img className='album--image rounded-md object-cover w-full h-full object-left-top' src={album.img} alt={album.name} 
 										style={{ width: '100%', height: 'auto', objectFit: 'cover' }} />
 									</a>
@@ -219,7 +256,7 @@ const MainPage = ({ }) => {
 									<p>{album.date}</p>
 								</div>
 							))}
-						</Carousel>
+						</Carousel> */}
 					</div>
 				</div>
 			</div>
