@@ -54,9 +54,16 @@
 @layer base {
   * {
     @apply border-border;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
   }
 
   body {
     @apply bg-background text-foreground;
+  }
+  
+  html, body, #root {
+    height: 100%;
   }
 }
