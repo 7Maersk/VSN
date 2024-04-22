@@ -5,12 +5,51 @@ import {
 	NavigationMenuList,
 } from '@/components/ui/navigation-menu'
 
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
+
 import { Separator } from '@/components/ui/separator'
 import { Album, Disc3, Headphones, Library, ListMusic, Settings, Star, User } from 'lucide-react'
 
+import albumsData from "./albums.json";
+import { useEffect, useState } from 'react';
+import {  } from 'react-router-dom'
+
+
+const responsive = {
+	superLargeDesktop: {
+		breakpoint: { max: 4000, min: 1024 },
+		items: 5
+	},
+	desktop: {
+		breakpoint: { max: 1024, min: 800 },
+		items: 5
+	},
+	tablet: {
+		breakpoint: { max: 800, min: 464 },
+		items: 3
+	},
+	mobile: {
+		breakpoint: { max: 464, min: 0 },
+		items: 2
+	}
+};
+
 //TODO: Добавить react router dom
 
-const MainPage = () => {
+export interface AlbumData {
+	img: string;
+	name: string;
+	artist: string;
+	date: string;
+}
+
+const MainPage = ({ }) => {
+	const [albums, setAlbums] = useState<AlbumData[]>([]);
+
+	useEffect(() => {
+		setAlbums(albumsData);
+	}, []);
 	return (
 		<div className="h-full grid grid-cols-[20rem_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] grid-rows-4 gap-2">
 			<div className="col-span-1 row-span-4">
@@ -124,6 +163,7 @@ const MainPage = () => {
 
 			<div className="col-span-8 row-span-4">
 				<div className="h-full grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] grid-rows-8 gap-2">
+					{/* сверху слева новостей добавить надпись Последние новости */}
 					<div className="col-start-2 col-end-6 row-start-2 row-end-6 relative">
 						<img
 							src="https://cdnn21.img.ria.ru/images/07e5/08/12/1746226187_0:22:3071:1749_1920x0_80_0_0_8952d3e406e75032fec31f71cef5abee.jpg"
@@ -163,6 +203,23 @@ const MainPage = () => {
 								</h4>
 							</div>
 						</div>
+					</div>
+					{/* сверху слева релизов добавить надпись Последние релизы */}
+					<div className="col-start-2 col-end-8 row-start-7 row-end-9 relative">
+						<Carousel responsive={responsive} infinite={true}>
+							{albums.map((album, index) => (
+								<div className="card" style={{ padding: '10px', userSelect: 'none' }} key={index}>
+									<a href='https://www.npmjs.com/package/react-multi-carousel'>
+										{/* нужно сделать, чтобы картинка принимала размер изначального изображения в карте, чтобы не было разных размеров альбомов */}
+										<img className='album--image rounded-md object-cover w-full h-full object-left-top' src={album.img} alt={album.name} 
+										style={{ width: '100%', height: 'auto', objectFit: 'cover' }} />
+									</a>
+									<h2>{album.name}</h2>
+									<p>{album.artist}</p>
+									<p>{album.date}</p>
+								</div>
+							))}
+						</Carousel>
 					</div>
 				</div>
 			</div>

@@ -1,0 +1,44 @@
+[
+    {
+        "img": "https://content.discogs.com/media/filter-very-best-things-300x300.jpeg",
+        "name": "Album 1",
+        "artist": "Artist 1",
+        "date": "2024-04-22"
+    },
+    {
+        "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQJgYwm907WdY0ZKplzxRYITVnCrchmI67DabdR1OEf6WhdqjLs",
+        "name": "Album 2",
+        "artist": "Artist 2",
+        "date": "2024-04-23"
+    },
+    {
+        "img": "https://content.discogs.com/media/filter-very-best-things-300x300.jpeg",
+        "name": "Album 3",
+        "artist": "Artist 3",
+        "date": "2024-04-24"
+    },
+    {
+        "img": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3pKNHPLzPTyFUk0vbMcnqgK_hQ0P1PUEoAaV0PtjYRc4krv1F",
+        "name": "Album 4",
+        "artist": "Artist 4",
+        "date": "2024-04-25"
+    },
+    {
+        "img": "https://content.discogs.com/media/filter-very-best-things-300x300.jpeg",
+        "name": "Album 5",
+        "artist": "Artist 5",
+        "date": "2024-04-26"
+    },
+    {
+        "img": "https://content.discogs.com/media/filter-very-best-things-300x300.jpeg",
+        "name": "Album 6",
+        "artist": "Artist 6",
+        "date": "2024-04-26"
+    },
+    {
+        "img": "https://content.discogs.com/media/filter-very-best-things-300x300.jpeg",
+        "name": "Album 7",
+        "artist": "Artist 7",
+        "date": "2024-04-26"
+    }
+]
