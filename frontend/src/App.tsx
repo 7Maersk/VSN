@@ -1,5 +1,7 @@
+import { MainPage } from './pages'
+
 function App() {
-	return <div>Hello VSN</div>
+	return <MainPage />
 }
 
 export default App
