@@ -21,6 +21,11 @@ Post.init({
         allowNull: false
     },
 
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+
     text: {
         type: DataTypes.STRING,
         allowNull: false

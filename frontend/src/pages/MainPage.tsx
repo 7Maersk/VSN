@@ -9,13 +9,15 @@ import { Separator } from '@/components/ui/separator'
 import { Album, Disc3, Headphones, Library, ListMusic, Settings, Star, User } from 'lucide-react'
 
 import albumsData from './albums.json'
+// import menuData from './menu.json';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { Link } from 'react-router-dom'
 
 //TODO: Добавить react router dom
 
-const MainPage = ({}) => {
+
+const MainPage = ({ }) => {
 	return (
 		<div className="h-full grid grid-cols-[20rem_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] grid-rows-4 gap-2">
 			<div className="col-span-1 row-span-4">
@@ -126,7 +128,6 @@ const MainPage = ({}) => {
 					<Separator orientation="vertical" />
 				</div>
 			</div>
-
 			<div className="col-span-8 row-span-4">
 				<div className="h-full grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] grid-rows-12 gap-4">
 					{/* сверху слева новостей добавить надпись Последние новости */}
@@ -218,22 +219,6 @@ const MainPage = ({}) => {
 								</Carousel>
 							</div>
 						</div>
-
-						{/* 						
-						<Carousel responsive={responsive} infinite={true}>
-							{albums.map((album, index) => (
-								<div className="card" style={{ padding: '10px', userSelect: 'none' }} key={index}>
-									<a href='https://www.npmjs.com/package/react-multi-carousel'>
-										{/* нужно сделать, чтобы картинка принимала размер изначального изображения в карте, чтобы не было разных размеров альбомов 
-										<img className='album--image rounded-md object-cover w-full h-full object-left-top' src={album.img} alt={album.name} 
-										style={{ width: '100%', height: 'auto', objectFit: 'cover' }} />
-									</a>
-									<h2>{album.name}</h2>
-									<p>{album.artist}</p>
-									<p>{album.date}</p>
-								</div>
-							))}
-						</Carousel> */}
 					</div>
 				</div>
 			</div>

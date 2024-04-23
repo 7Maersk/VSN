@@ -22,8 +22,8 @@ UserInfo.belongsTo(User)
 User.hasMany(Post)
 Post.belongsTo(User)
 
-Country.belongsTo(Record)
-Record.hasOne(Country)
+Country.hasMany(Record)
+Record.belongsTo(Country)
 
 Song.belongsTo(Record)
 Record.hasMany(Song)
@@ -31,8 +31,14 @@ Record.hasMany(Song)
 Artist.belongsToMany(Song, { through: ExtraArtist })
 Song.belongsToMany(Artist, { through: ExtraArtist })
 
-Record.belongsToMany(Artist, { through: RecordArtist })
-Artist.belongsToMany(Record, { through: RecordArtist })
+Record.belongsToMany(Artist, {
+    through: RecordArtist,
+    foreignKey: 'record_id'
+});
+Artist.belongsToMany(Record, {
+    through: RecordArtist,
+    foreignKey: "artist_id"
+});
 
 Record.belongsToMany(Genre, { through: RecordGenre })
 Genre.belongsToMany(Record, { through: RecordGenre })
