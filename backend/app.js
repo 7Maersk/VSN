@@ -3,9 +3,15 @@ require('dotenv').config()
 var express = require('express')
 var app = express()
 var db = require('./db.config')
-
+var cors = require('cors');
+var corsOptions = {
+    origin: 'http://localhost:5173',
+    credentials: true,
+    optionSuccessStatus: 200 
+};
+app.use(cors(corsOptions));
 // var { User, Role, Comment } = require('./models')
-const { userRouter, commentRouter, userCollectionRouter, postRouter, artistRouter, recordRouter } = require('./routes')
+const { userRouter, commentRouter, userCollectionRouter, postRouter, artistRouter, recordRouter, genreRouter } = require('./routes')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -20,3 +26,4 @@ app.use('/collection', userCollectionRouter)
 app.use('/post', postRouter)
 app.use('/artists', artistRouter)
 app.use('/records', recordRouter)
+app.use('/genres', genreRouter)

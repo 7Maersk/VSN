@@ -1,10 +1,19 @@
 const { Op } = require('sequelize');
-const { Record, Genre, RecordArtist, Artist, RecordGenre, Country } = require('../models');
+const { Record, Genre, RecordArtist, Artist, RecordGenre, Country, sequelize } = require('../models');
 
 module.exports = {
     async findAll(req, res) {
         try {
-            const records = await Record.findAll();
+            const records = await Record.findAll({
+                attributes: ['id', 'name', 'cover'],
+                include: [
+                    {
+                        model: Artist,
+                        attributes: ['nickname'],
+                        through: { attributes: [] }
+                    }
+                ]
+            });
             return res.json({ records });
         } catch (error) {
             console.log(error);
@@ -16,10 +25,22 @@ module.exports = {
         const recordId = req.params.recordId;
 
         try {
-            const record = await Record.findByPk(recordId);
+            const record = await Record.findByPk(recordId, {
+                include: [{
+                    model: Country,
+                    attributes: ['name']
+                },
+                {
+                    model: Artist,
+                    attributes: ['nickname'],
+                    through: { attributes: [] }
+                }]
+            });
+
             if (!record) {
                 return res.status(404).json({ message: 'Запись не найдена' });
             }
+
             return res.json({ record });
         } catch (error) {
             console.log(error);
@@ -27,8 +48,10 @@ module.exports = {
         }
     },
 
+    //работает не до конца верно, не знаю как решить 
     async findByArtist(req, res) {
         const artistName = req.params.artistName;
+
         try {
             const artist = await Artist.findOne({ where: { nickname: artistName } });
 
@@ -36,15 +59,15 @@ module.exports = {
                 return res.status(404).json({ message: 'Артист не найден' });
             }
 
-            const recordsArtists = await RecordArtist.findAll({
-                where: { artist_id: artist.id }
-            })
-
-            const recordIds = recordsArtists.map(recordsArtist => recordsArtist.record_id)
-
             const records = await Record.findAll({
-                where: { id: recordIds }
-            })
+                include: [{
+                    model: Artist,
+                    attributes: ['nickname'],
+                    through: { attributes: [] },
+                    where: { nickname: artistName }
+                }],
+                attributes: ['id', 'name', 'cover']
+            });
 
             return res.json({ records });
         } catch (error) {
@@ -52,6 +75,7 @@ module.exports = {
             return res.status(500).json({ message: 'Ошибка при поиске пластинок по артисту' });
         }
     },
+
 
     async findByGenre(req, res) {
         const genreName = req.params.genre;
@@ -69,9 +93,16 @@ module.exports = {
             });
 
             const recordIds = recordsGenres.map(recordGenre => recordGenre.record_id);
-
             const records = await Record.findAll({
-                where: { id: recordIds }
+                where: { id: recordIds },
+                attributes: ['id', 'name', 'cover'],
+                include: [
+                    {
+                        model: Artist,
+                        attributes: ['nickname'],
+                        through: { attributes: [] }
+                    }
+                ]
             });
 
             return res.json({ records });
@@ -97,7 +128,15 @@ module.exports = {
             const records = await Record.findAll({
                 where: {
                     country_id: countryId
-                }
+                },
+                attributes: ['id', 'name', 'cover'],
+                include: [
+                    {
+                        model: Artist,
+                        attributes: ['nickname'],
+                        through: { attributes: [] }
+                    }
+                ]
             });
 
             return res.json({ records });
