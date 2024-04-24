@@ -30,7 +30,7 @@ const Sidebar = () => {
 								>
 									<NavLink to={'/profile'}>
 										<User className="h-5 w-5" />
-										Profile
+										{t("translation.profile")}
 									</NavLink>
 								</NavigationMenuLink>
 							</NavigationMenuItem>
@@ -41,7 +41,7 @@ const Sidebar = () => {
 								>
 									<NavLink to={'/settings'}>
 										<Settings className="h-5 w-5" />
-										Settings
+										{t("translation.settings")}
 									</NavLink>
 								</NavigationMenuLink>
 							</NavigationMenuItem>
@@ -52,7 +52,7 @@ const Sidebar = () => {
 								>
 									<NavLink to={'/favorites'}>
 										<Star className="h-5 w-5" />
-										Favorites
+										{t("translation.favorites")}
 									</NavLink>
 								</NavigationMenuLink>
 							</NavigationMenuItem>
@@ -63,7 +63,7 @@ const Sidebar = () => {
 								>
 									<NavLink to={'/collection'}>
 										<ListMusic className="h-5 w-5" />
-										My collection
+										{t("translation.myCollection")}
 									</NavLink>
 								</NavigationMenuLink>
 							</NavigationMenuItem>
@@ -74,7 +74,7 @@ const Sidebar = () => {
 								>
 									<NavLink to={'/recommendation'}>
 										<Disc3 className="h-5 w-5" />
-										Recommendations
+										{t("translation.recommendations")}
 									</NavLink>
 								</NavigationMenuLink>
 							</NavigationMenuItem>
@@ -85,7 +85,7 @@ const Sidebar = () => {
 								>
 									<NavLink to={'/blog'}>
 										<Album className="h-5 w-5" />
-										Blog
+										{t("translation.blog")}
 									</NavLink>
 								</NavigationMenuLink>
 							</NavigationMenuItem>
@@ -93,7 +93,7 @@ const Sidebar = () => {
 					</NavigationMenu>
 				</div>
 				<div className="p-4 flex flex-col gap-4 items-start">
-					<h4 className="scroll-m-20 text-xl font-semibold tracking-tight px-4">Database</h4>
+					<h4 className="scroll-m-20 text-xl font-semibold tracking-tight px-4">{t("translation.database")}</h4>
 					<NavigationMenu orientation="vertical" className="max-w-full [&>*]:w-full items-start w-full">
 						<NavigationMenuList className="flex-col items-start space-x-0 w-full gap-2">
 							<NavigationMenuItem className="w-full">
@@ -103,7 +103,7 @@ const Sidebar = () => {
 								>
 									<NavLink to={'/albums'}>
 										<Library className="h-5 w-5" />
-										Albums
+										{t("translation.albums")}
 									</NavLink>
 								</NavigationMenuLink>
 							</NavigationMenuItem>
@@ -114,7 +114,7 @@ const Sidebar = () => {
 								>
 									<NavLink to={'/artists'}>
 										<Headphones className="h-5 w-5" />
-										Artists
+										{t("translation.artists")}
 									</NavLink>
 								</NavigationMenuLink>
 							</NavigationMenuItem>

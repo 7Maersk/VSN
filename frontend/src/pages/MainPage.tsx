@@ -4,9 +4,10 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card'
 
 import albumsData from './albums.json'
 import Sidebar from '@/components/Sidebar'
+import { useTranslation } from 'react-i18next'
 
 const MainPage = () => {
-
+	const [t] = useTranslation("global")
 	//вероятно нужно это добавить в файл обработки навбара, чтобы он подгружал все объекты сразу(плюс переделать кнопку)
 	return (
 		<div className="h-full grid grid-cols-[20rem_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] grid-rows-4 gap-2">
@@ -60,7 +61,7 @@ const MainPage = () => {
 					<div className="col-start-2 col-end-8 row-start-8 row-end-9">
 						<div className="grid grid-cols-6 grid-rows-[min-content_1fr] gap-y-2 mt-2">
 							<h3 className="col-span-6 scroll-m-20 text-2xl font-semibold tracking-tight">
-							{/* {t("translation.lastreleases")} */}Last releases
+							{t("translation.lastreleases")}
 							</h3>
 							<div className="col-span-6">
 								<Carousel

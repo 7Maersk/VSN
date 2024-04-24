@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import server from '../main'
 import Sidebar from '@/components/Sidebar'
+import { useTranslation } from 'react-i18next'
 
 interface Album {
 	id: number
@@ -39,6 +40,9 @@ interface Genre {
 }
 
 const AlbumsPage = () => {
+	const [t] = useTranslation("global")
+
+
 	const [open, setOpen] = useState(false)
 	const [open1, setOpen1] = useState(false)
 	const [open2, setOpen2] = useState(false)
@@ -103,7 +107,7 @@ const AlbumsPage = () => {
 					<div className="col-span-8 row-span-1 px-4 py-2 grid grid-cols-12 grid-rows-1 w-full h-full items-center justify-between gap-x-4">
 						<Input
 							type="search"
-							placeholder="Search"
+							placeholder={t("translation.search")}
 							className="min-[1600px]:col-span-8 min-[1200px]:col-span-6 sm:col-span-2"
 						/>
 						<div className="col-span-4 flex items-center justify-end gap-10">
@@ -117,7 +121,7 @@ const AlbumsPage = () => {
 												aria-expanded={open}
 												className="justify-between"
 											>
-												Alphabet
+												{t("translation.alphabet")}
 												<CaretSortIcon className="ml-2 h-5 w-5 shrink-0 opacity-90" />
 											</Button>
 										</PopoverTrigger>
@@ -127,11 +131,11 @@ const AlbumsPage = () => {
 													<CommandGroup>
 														<CommandItem className="flex items-center gap-1">
 															<ChevronUp className="h-5 w-5 shrink-0 opacity-90" />
-															Asc
+															{t("translation.asc")}
 														</CommandItem>
 														<CommandItem className="flex items-center gap-1">
 															<ChevronDown className="h-5 w-5 shrink-0 opacity-90" />
-															Desc
+															{t("translation.desc")}
 														</CommandItem>
 													</CommandGroup>
 												</CommandList>
@@ -148,7 +152,7 @@ const AlbumsPage = () => {
 												aria-expanded={open1}
 												className="justify-between"
 											>
-												Year
+												{t("translation.year")}
 												<CaretSortIcon className="ml-2 h-5 w-5 shrink-0 opacity-90" />
 											</Button>
 										</PopoverTrigger>
@@ -158,11 +162,11 @@ const AlbumsPage = () => {
 													<CommandGroup>
 														<CommandItem className="flex items-center gap-1">
 															<ChevronUp className="h-5 w-5 shrink-0 opacity-90" />
-															Asc
+															{t("translation.asc")}
 														</CommandItem>
 														<CommandItem className="flex items-center gap-1">
 															<ChevronDown className="h-5 w-5 shrink-0 opacity-90" />
-															Desc
+															{t("translation.desc")}
 														</CommandItem>
 													</CommandGroup>
 												</CommandList>
@@ -273,14 +277,14 @@ const AlbumsPage = () => {
 													selectedGenre && 'text-muted-foreground'
 												)}
 											>
-												{selectedGenre ? selectedGenre : 'Genre'}
+												{selectedGenre ? selectedGenre : t("translation.genre")}
 												<CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 											</Button>
 										</PopoverTrigger>
 										<PopoverContent className="w-[200px] p-0">
 											<Command>
-												<CommandInput placeholder="Search genre..." />
-												<CommandEmpty>No genre found.</CommandEmpty>
+												<CommandInput placeholder={t("translation.searchgenre")} />
+												<CommandEmpty>{t("translation.nogenre")}</CommandEmpty>
 												<CommandList>
 													<CommandGroup>
 														{genres.map((genre) => (
@@ -319,14 +323,14 @@ const AlbumsPage = () => {
 													selectedArtist && 'text-muted-foreground'
 												)}
 											>
-												{selectedArtist ? selectedArtist : 'Artist'}
+												{selectedArtist ? selectedArtist : t("translation.artist")}
 												<CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 											</Button>
 										</PopoverTrigger>
 										<PopoverContent className="w-[200px] p-0">
 											<Command>
-												<CommandInput placeholder="Search artist..." />
-												<CommandEmpty>No framework found.</CommandEmpty>
+												<CommandInput placeholder={t("translation.searchartist")} />
+												<CommandEmpty>{t("translation.noartist")}</CommandEmpty>
 												<CommandList>
 													<CommandGroup>
 														{artists.map((artist) => (

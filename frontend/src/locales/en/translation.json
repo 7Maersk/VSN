@@ -16,6 +16,11 @@
         "artist": "Artist",
         "searchgenre": "Search genre...",
         "searchartist": "Search artist...",
-        "lastreleases": "Last releases"
+        "nogenre": "No genre found.",
+        "noartist": "No artists found.",
+        "lastreleases": "Last releases",
+        "database": "Database",
+        "albums": "Albums",
+        "artists": "Artists"
     }
 }
