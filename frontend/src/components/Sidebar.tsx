@@ -7,11 +7,18 @@ import {
 } from '@components/ui/navigation-menu'
 import { Separator } from '@components/ui/separator'
 import { Album, Disc3, Headphones, Library, ListMusic, Settings, Star, User } from 'lucide-react'
+import { useTranslation } from 'react-i18next'
 
 const Sidebar = () => {
+	const [t, i18n] = useTranslation("global")
+	const handleChangeLanguage = (lang: string) => {
+		i18n.changeLanguage(lang)
+	}
 	return (
 		<div className="h-full grid max-w-xs grid-cols-[20rem_min-content] ">
 			<div>
+				<button onClick={() => handleChangeLanguage("en")}>En</button>
+				<button onClick={() => handleChangeLanguage("ru")}>Ru</button>
 				<div className="p-4 flex flex-col gap-4 items-start">
 					<h4 className="scroll-m-20 text-xl font-semibold tracking-tight px-4">Menu</h4>
 					<NavigationMenu orientation="vertical" className="max-w-full [&>*]:w-full items-start w-full">

@@ -1,0 +1,21 @@
+{
+    "translation": {
+        "menu": "Menu",
+        "profile": "Profile",
+        "settings": "Settings",
+        "favorites": "Favorites",
+        "myCollection": "My collection",
+        "recommendations": "Recomendations",
+        "blog": "Blog",
+        "search": "Search",
+        "alphabet": "Alphabet",
+        "year": "Year",
+        "asc": "Asc",
+        "desc": "Desc",
+        "genre": "Genre",
+        "artist": "Artist",
+        "searchgenre": "Search genre...",
+        "searchartist": "Search artist...",
+        "lastreleases": "Last releases"
+    }
+}

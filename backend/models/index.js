@@ -12,6 +12,7 @@ var RecordArtist = require('./RecordArtist.model')
 var RecordGenre = require('./RecordGenre.model')
 var Comment = require('./Comment.model')
 var UserCollection = require('./UserCollection.model')
+var PostType = require('./PostType.model')
 
 Role.hasMany(User)
 User.belongsTo(Role)
@@ -28,8 +29,14 @@ Record.belongsTo(Country)
 Song.belongsTo(Record)
 Record.hasMany(Song)
 
-Artist.belongsToMany(Song, { through: ExtraArtist })
-Song.belongsToMany(Artist, { through: ExtraArtist })
+Artist.belongsToMany(Song, {
+    through: ExtraArtist,
+    foreignKey: 'artist_id'
+})
+Song.belongsToMany(Artist, {
+    through: ExtraArtist,
+    foreignKey: 'song_id'
+})
 
 Record.belongsToMany(Artist, {
     through: RecordArtist,
@@ -50,9 +57,15 @@ Comment.belongsTo(Post)
 Record.hasMany(Comment)
 Comment.belongsTo(Record)
 
+Post.belongsTo(PostType, { foreignKey: 'type_id' });
+PostType.hasMany(Post, { foreignKey: 'type_id' });
+
 Record.belongsToMany(User, { through: UserCollection })
 User.belongsToMany(Record, { through: UserCollection })
 
+//!!!
+RecordArtist.belongsTo(Record)
+Song.belongsTo(Record)
 
 module.exports = {
     User,
@@ -68,5 +81,6 @@ module.exports = {
     RecordArtist,
     RecordGenre,
     Comment,
-    UserCollection
+    UserCollection,
+    PostType
 }

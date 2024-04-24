@@ -1,0 +1,21 @@
+{
+    "translation": {
+        "menu": "Меню",
+        "profile": "Профиль",
+        "settings": "Настройки",
+        "favorites": "Избранное",
+        "myCollection": "Моя коллекция",
+        "recommendations": "Рекомендации",
+        "blog": "Блог",
+        "search": "Поиск",
+        "alphabet": "По алфавиту",
+        "year": "По году",
+        "asc": "По возрастанию",
+        "desc": "По убыванию",
+        "genre": "Жанр",
+        "artist": "Артист",
+        "searchgenre": "Искать жанр...",
+        "searchartist": "Искать артиста...",
+        "lastreleases": "Последние релизы"
+    }
+}

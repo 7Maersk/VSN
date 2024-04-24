@@ -1,46 +1,20 @@
 import { Button } from '@/components/ui/button'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/ui/command'
 import { Input } from '@/components/ui/input'
-import {
-	NavigationMenu,
-	NavigationMenuItem,
-	NavigationMenuLink,
-	NavigationMenuList,
-} from '@/components/ui/navigation-menu'
+
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import { Separator } from '@/components/ui/separator'
 import {
 	Album,
 	ChevronDown,
-	ChevronUp,
-	Disc3,
-	Headphones,
-	Library,
-	ListMusic,
-	Settings,
-	Star,
-	User,
+	ChevronUp
 } from 'lucide-react'
 import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
 import { cn } from '@/lib/utils'
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
-import axios from 'axios'
+import server from '../main'
 import Sidebar from '@/components/Sidebar'
-// import albumsData from './albums.json'
-
-// const languages = [
-// 	{ label: 'English', value: 'en' },
-// 	{ label: 'French', value: 'fr' },
-// 	{ label: 'German', value: 'de' },
-// 	{ label: 'Spanish', value: 'es' },
-// 	{ label: 'Portuguese', value: 'pt' },
-// 	{ label: 'Russian', value: 'ru' },
-// 	{ label: 'Japanese', value: 'ja' },
-// 	{ label: 'Korean', value: 'ko' },
-// 	{ label: 'Chinese', value: 'zh' },
-// ]
 
 interface Album {
 	id: number
@@ -77,17 +51,28 @@ const AlbumsPage = () => {
 	const [artists, setArtists] = useState<Artist[]>([])
 
 	useEffect(() => {
-		fetch('http://localhost:3001/api/records')
-			.then((response) => response.json())
-			.then((data) => setAlbums(data.records))
-			.catch((error) => console.error('Ошибка в поиске альбомов:', error))
-	}, [])
+		server.get('/records')
+			.then(response => {
+				setAlbums(response.data.records);
+			})
+			.catch(error => {
+				console.error('Ошибка в поиске альбомов:', error);
+			});
+	}, []);
 
 	useEffect(() => {
+		server.get('/records')
+			.then(response => {
+				setAlbums(response.data.records);
+			})
+			.catch(error => {
+				console.error('Ошибка в поиске альбомов:', error);
+			});
+
 		const fetchArtists = async () => {
 			try {
-				const response = await axios.get<{ artists: Artist[] }>('http://localhost:3001/api/artists')
-				setArtists(response.data.artists)
+				const response = await server.get('/artists');
+				setArtists(response.data.artists);
 			} catch (error) {
 				console.error('Ошибка в поиске артистов:', error)
 			}
@@ -98,8 +83,8 @@ const AlbumsPage = () => {
 	useEffect(() => {
 		const fetchGenres = async () => {
 			try {
-				const response = await axios.get('http://localhost:3001/api/genres')
-				setGenres(response.data.genres)
+				const response = await server.get('/genres');
+				setGenres(response.data.genres);
 			} catch (error) {
 				console.error('Ошибка в поиске жанров:', error)
 			}

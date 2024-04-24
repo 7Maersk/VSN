@@ -7,11 +7,10 @@ var cors = require('cors');
 var corsOptions = {
     origin: 'http://localhost:5173',
     credentials: true,
-    optionSuccessStatus: 200 
+    optionSuccessStatus: 200
 };
 app.use(cors(corsOptions));
-// var { User, Role, Comment } = require('./models')
-const { userRouter, commentRouter, userCollectionRouter, postRouter, artistRouter, recordRouter, genreRouter } = require('./routes')
+const { userRouter, commentRouter, userCollectionRouter, postRouter, artistRouter, recordRouter, genreRouter, songRouter } = require('./routes')
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
@@ -27,3 +26,4 @@ app.use('/api/post', postRouter)
 app.use('/api/artists', artistRouter)
 app.use('/api/records', recordRouter)
 app.use('/api/genres', genreRouter)
+app.use('/api/songs', songRouter)
