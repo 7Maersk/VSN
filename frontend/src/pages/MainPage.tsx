@@ -1,132 +1,15 @@
-import {
-	NavigationMenu,
-	NavigationMenuItem,
-	NavigationMenuLink,
-	NavigationMenuList,
-} from '@/components/ui/navigation-menu'
-
-import { Separator } from '@/components/ui/separator'
-import { Album, Disc3, Headphones, Library, ListMusic, Settings, Star, User } from 'lucide-react'
-
-import albumsData from './albums.json'
-// import menuData from './menu.json';
+import { Link} from 'react-router-dom'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
-import { Link } from 'react-router-dom'
 
-//TODO: Добавить react router dom
+import albumsData from './albums.json'
+import Sidebar from '@/components/Sidebar'
 
-
-const MainPage = ({ }) => {
+const MainPage = () => {
 	return (
 		<div className="h-full grid grid-cols-[20rem_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] grid-rows-4 gap-2">
 			<div className="col-span-1 row-span-4">
-				<div className="h-full grid max-w-xs grid-cols-[20rem_min-content] ">
-					<div>
-						<div className="p-4 flex flex-col gap-4 items-start">
-							<h4 className="scroll-m-20 text-xl font-semibold tracking-tight px-4">Menu</h4>
-							<NavigationMenu
-								orientation="vertical"
-								className="max-w-full [&>*]:w-full items-start w-full"
-							>
-								<NavigationMenuList className="flex-col items-start space-x-0 w-full gap-2">
-									<NavigationMenuItem className="w-full">
-										<div className="cursor-pointer w-full">
-											<NavigationMenuLink
-												className={`gap-4 w-full group inline-flex h-9 items-center justify-start rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50`}
-											>
-												<User className="h-5 w-5" />
-												Profile
-											</NavigationMenuLink>
-										</div>
-									</NavigationMenuItem>
-									<NavigationMenuItem className="w-full">
-										<div className="cursor-pointer w-full">
-											<NavigationMenuLink
-												className={`gap-4 w-full group inline-flex h-9 items-center justify-start rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50`}
-											>
-												<Settings className="h-5 w-5" />
-												Settings
-											</NavigationMenuLink>
-										</div>
-									</NavigationMenuItem>
-									<NavigationMenuItem className="w-full">
-										<div className="cursor-pointer w-full">
-											<NavigationMenuLink
-												className={`gap-4 w-full group inline-flex h-9 items-center justify-start rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50`}
-											>
-												<Star className="h-5 w-5" />
-												Favorites
-											</NavigationMenuLink>
-										</div>
-									</NavigationMenuItem>
-									<NavigationMenuItem className="w-full">
-										<div className="cursor-pointer w-full">
-											<NavigationMenuLink
-												className={`gap-4 w-full group inline-flex h-9 items-center justify-start rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50`}
-											>
-												<ListMusic className="h-5 w-5" />
-												My collection
-											</NavigationMenuLink>
-										</div>
-									</NavigationMenuItem>
-									<NavigationMenuItem className="w-full">
-										<div className="cursor-pointer w-full">
-											<NavigationMenuLink
-												className={`gap-4 w-full group inline-flex h-9 items-center justify-start rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50`}
-											>
-												<Disc3 className="h-5 w-5" />
-												Recomendations
-											</NavigationMenuLink>
-										</div>
-									</NavigationMenuItem>
-									<NavigationMenuItem className="w-full">
-										<div className="cursor-pointer w-full">
-											<NavigationMenuLink
-												className={`gap-4 w-full group inline-flex h-9 items-center justify-start rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50`}
-											>
-												<Album className="h-5 w-5" />
-												Blog
-											</NavigationMenuLink>
-										</div>
-									</NavigationMenuItem>
-								</NavigationMenuList>
-							</NavigationMenu>
-						</div>
-						<div className="p-4 flex flex-col gap-4 items-start">
-							<h4 className="scroll-m-20 text-xl font-semibold tracking-tight px-4">Database</h4>
-							<NavigationMenu
-								orientation="vertical"
-								className="max-w-full [&>*]:w-full items-start w-full"
-							>
-								<NavigationMenuList className="flex-col items-start space-x-0 w-full gap-2">
-									<NavigationMenuItem className="w-full">
-										<Link to={'/albums'} className="cursor-pointer w-full">
-											<NavigationMenuLink
-												className={`gap-4 w-full group inline-flex h-9 items-center justify-start rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50`}
-											>
-												<Library className="h-5 w-5" />
-												Albums
-											</NavigationMenuLink>
-										</Link>
-									</NavigationMenuItem>
-									<NavigationMenuItem className="w-full">
-										<Link to={'/artists'} className="cursor-pointer w-full">
-											<NavigationMenuLink
-												className={`gap-4 w-full group inline-flex h-9 items-center justify-start rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50`}
-											>
-												<Headphones className="h-5 w-5" />
-												Artists
-											</NavigationMenuLink>
-										</Link>
-									</NavigationMenuItem>
-								</NavigationMenuList>
-							</NavigationMenu>
-						</div>
-					</div>
-
-					<Separator orientation="vertical" />
-				</div>
+				<Sidebar />
 			</div>
 			<div className="col-span-8 row-span-4">
 				<div className="h-full grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] grid-rows-12 gap-4">
