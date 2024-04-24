@@ -4,9 +4,7 @@ const { findOne } = require('../models/Post.model')
 module.exports = {
     async create(req, res) {
         const { datetime, username, name, text, img } = req.body
-
         const user = await UserInfo.findOne({ where: { nickname: username } })
-        console.log(user)
 
         return Post.create({
             datetime,
@@ -44,12 +42,23 @@ module.exports = {
 
         try {
             const post = await Post.findByPk(postId);
-
             if (!post) {
                 return res.status(404).json({ message: 'Пост не найден' });
             }
+            const user = await User.findByPk(post.user_id);
+            if (!user) {
+                return res.status(404).json({ message: 'Пользователь не найден' });
+            }
+            const userInfo = await UserInfo.findOne({
+                where: { user_id: user.id }
+            });
 
-            return res.json({ post });
+            if (!userInfo) {
+                return res.status(404).json({ message: 'Информация о пользователе не найдена' });
+            }
+            const { id, datetime, name, text, img } = post;
+            const { nickname } = userInfo;
+            return res.json({ post: { id, datetime, name, text, img, nickname } });
         } catch (error) {
             console.log(error);
             return res.status(500).json({ message: 'Ошибка при поиске поста' });
@@ -58,12 +67,30 @@ module.exports = {
 
     async findAll(req, res) {
         try {
-            const posts = await Post.findAll();
+            const posts = await Post.findAll({
+                include: [
+                    {
+                        model: User,
+                        include: {
+                            model: UserInfo,
+                            attributes: ['nickname']
+                        }
+                    }
+                ],
+                attributes: ['id', 'name', 'img']
+            });
 
-            return res.json({ posts });
+            const formattedPosts = posts.map(post => {
+                const { id, name, img, User } = post;
+                const nickname = User && User.UserInfo ? User.UserInfo.nickname : null;
+                return { id, name, img, nickname };
+            });
+
+            return res.json({ posts: formattedPosts });
         } catch (error) {
             console.log(error);
             return res.status(500).json({ message: 'Ошибка при поиске всех постов' });
         }
     }
+
 }

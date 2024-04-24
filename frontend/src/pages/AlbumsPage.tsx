@@ -78,7 +78,7 @@ const AlbumsPage = () => {
 	const [artists, setArtists] = useState<Artist[]>([]);
 
 	useEffect(() => {
-		fetch('http://localhost:3001/records')
+		fetch('http://localhost:3001/api/records')
 			.then(response => response.json())
 			.then(data => setAlbums(data.records))
 			.catch(error => console.error('Ошибка в поиске альбомов:', error));
@@ -87,7 +87,7 @@ const AlbumsPage = () => {
 	useEffect(() => {
 		const fetchArtists = async () => {
 			try {
-				const response = await axios.get<{ artists: Artist[] }>('http://localhost:3001/artists');
+				const response = await axios.get<{ artists: Artist[] }>('http://localhost:3001/api/artists');
 				setArtists(response.data.artists);
 			} catch (error) {
 				console.error('Ошибка в поиске артистов:', error);
@@ -99,7 +99,7 @@ const AlbumsPage = () => {
 	useEffect(() => {
 		const fetchGenres = async () => {
 			try {
-				const response = await axios.get('http://localhost:3001/genres');
+				const response = await axios.get('http://localhost:3001/api/genres');
 				setGenres(response.data.genres);
 			} catch (error) {
 				console.error('Ошибка в поиске жанров:', error);

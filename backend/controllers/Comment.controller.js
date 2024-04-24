@@ -39,7 +39,6 @@ module.exports = {
 
     async getBy(req, res) {
         const { objectid, type } = req.query
-        console.log(objectid, type) // перед коммитом убираем
         let [record_id, post_id] = [null, null]
         switch (type) {
             case 'record':
