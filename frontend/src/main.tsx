@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { ThemeProvider } from '@components/ThemeProvider.tsx'
 import App from './App.tsx'
 import AlbumsPage from './pages/AlbumsPage.tsx'
+import ArtistsPage from './pages/ArtistsPage.tsx'
 import '../app/globals.css'
 
 import axios from "axios";
@@ -32,7 +33,7 @@ const router = createBrowserRouter([
 	},
 	{
 		path: '/artists',
-		element: <div>This is artists page</div>,
+		element: <ArtistsPage />,
 	},
 	{
 		path: '/albums',

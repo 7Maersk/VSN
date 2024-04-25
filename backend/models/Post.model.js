@@ -34,6 +34,10 @@ Post.init({
     img: {
         type: DataTypes.STRING,
         allowNull: true
+    },
+    type_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 }, {
     tableName: 'post',

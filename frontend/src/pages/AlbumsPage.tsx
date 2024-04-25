@@ -176,96 +176,6 @@ const AlbumsPage = () => {
 								</div>
 							</div>
 							<div className="flex items-center gap-4">
-								{/* <div>
-									<Popover open={open2} onOpenChange={setOpen2}>
-										<PopoverTrigger asChild>
-											<Button
-												variant="outline"
-												role="combobox"
-												className={cn('justify-between', value && 'text-muted-foreground')}
-											>
-												{value
-													? languages.find((language) => language.value === value)?.label
-													: 'Genre'}
-												<CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-											</Button>
-										</PopoverTrigger>
-										<PopoverContent className="w-[200px] p-0">
-											<Command>
-												<CommandInput placeholder="Search framework..." />
-												<CommandEmpty>No framework found.</CommandEmpty>
-												<CommandList>
-													<CommandGroup>
-														{languages.map((language) => (
-															<CommandItem
-																value={language.label}
-																key={language.value}
-																onSelect={() => {
-																	setValue(language.value)
-																}}
-															>
-																{language.label}
-																<CheckIcon
-																	className={cn(
-																		'ml-auto h-4 w-4',
-																		language.value === value
-																			? 'opacity-100'
-																			: 'opacity-0'
-																	)}
-																/>
-															</CommandItem>
-														))}
-													</CommandGroup>
-												</CommandList>
-											</Command>
-										</PopoverContent>
-									</Popover>
-								</div> */}
-								{/* <div>
-									<Popover open={open3} onOpenChange={setOpen3}>
-										<PopoverTrigger asChild>
-											<Button
-												variant="outline"
-												role="combobox"
-												className={cn('justify-between', value && 'text-muted-foreground')}
-											>
-												{value
-													? languages.find((language) => language.value === value)?.label
-													: 'Artist'}
-												<CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-											</Button>
-										</PopoverTrigger>
-										<PopoverContent className="w-[200px] p-0">
-											<Command>
-												<CommandInput placeholder="Search framework..." />
-												<CommandEmpty>No framework foundук.</CommandEmpty>
-												<CommandList>
-													<CommandGroup>
-														{languages.map((language) => (
-															<CommandItem
-																value={language.label}
-																key={language.value}
-																onSelect={() => {
-																	setValue(language.value)
-																}}
-															>
-																{language.label}
-																<CheckIcon
-																	className={cn(
-																		'ml-auto h-4 w-4',
-																		language.value === value
-																			? 'opacity-100'
-																			: 'opacity-0'
-																	)}
-																/>
-															</CommandItem>
-														))}
-													</CommandGroup>
-												</CommandList>
-											</Command>
-										</PopoverContent>
-									</Popover>
-								</div> */}
 								<div>
 									<Popover open={open2} onOpenChange={setOpen2}>
 										<PopoverTrigger asChild>
@@ -361,33 +271,6 @@ const AlbumsPage = () => {
 							</div>
 						</div>
 					</div>
-					{/* <div className="col-span-8 row-span-11 grid grid-cols-5 auto-rows-min gap-6 px-4 py-4 pt-0">
-							{albumsData.map((album) => (
-								<Card className="rounded-md border-none shadow-sm">
-									<CardContent className="flex aspect-square items-end justify-start p-6 relative">
-										<Link to={'/item'} className="contents">
-											<img
-												src={album.img}
-												alt={`Album ${album.name}`}
-												className="absolute w-full h-full object-cover object-center top-0 left-0 rounded-t-md"
-											/>
-										</Link>
-									</CardContent>
-									<CardFooter className="border border-t-0 rounded-bl-md rounded-br-md p-0">
-										<Link
-											to={'/item'}
-											className="flex w-full h-full flex-col items-start px-4 py-2"
-										>
-											<span className="text-base font-semibold">{album.name}</span>
-											<span className="text-sm font-semibold">{album.artist}</span>
-											<span className="text-sm font-semibold">{album.date}</span>
-											<span className="text-sm font-semibold">{album.name}</span>
-										</Link>
-									</CardFooter>
-								</Card>
-							))}
-
-					</div> */}
 					<div className="col-span-8 row-span-11 grid grid-cols-5 auto-rows-min gap-6 px-4 py-4 pt-0">
 						{albums.map((album) => (
 							<Card key={album.id} className="rounded-md border-none shadow-sm">
