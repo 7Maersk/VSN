@@ -21,6 +21,7 @@
         "lastreleases": "Last releases",
         "database": "Database",
         "albums": "Albums",
-        "artists": "Artists"
+        "artists": "Artists",
+        "home": "Home"
     }
 }
