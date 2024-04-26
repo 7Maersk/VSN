@@ -3,45 +3,20 @@ import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, Command
 import { Input } from '@/components/ui/input'
 
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
-import {
-	Album,
-	ChevronDown,
-	ChevronUp
-} from 'lucide-react'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
 import { cn } from '@/lib/utils'
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
-import server from '../main'
+
 import Sidebar from '@/components/Sidebar'
 import { useTranslation } from 'react-i18next'
-
-interface Album {
-	id: number
-	name: string
-	cover: string
-	rating: number
-	artists: Artist[]
-}
-
-interface Artist {
-	id: number
-	nickname: string
-	first_name: string
-	last_name: string
-	surname: string
-	bio: string
-	avatar: string
-}
-
-interface Genre {
-	name: string
-}
+import { Albums, Artist, Genre } from '@/types'
+import api from '@/api/api.config'
 
 const AlbumsPage = () => {
-	const [t] = useTranslation("global")
-
+	const [t] = useTranslation('global')
 
 	const [open, setOpen] = useState(false)
 	const [open1, setOpen1] = useState(false)
@@ -50,50 +25,14 @@ const AlbumsPage = () => {
 	const [selectedGenre, setGenre] = useState('')
 	const [selectedArtist, setArtist] = useState('')
 
-	const [albums, setAlbums] = useState<Album[]>([])
+	const [albums, setAlbums] = useState<Albums[]>([])
 	const [genres, setGenres] = useState<Genre[]>([])
 	const [artists, setArtists] = useState<Artist[]>([])
 
 	useEffect(() => {
-		server.get('/records')
-			.then(response => {
-				setAlbums(response.data.records);
-			})
-			.catch(error => {
-				console.error('Ошибка в поиске альбомов:', error);
-			});
-	}, []);
-
-	useEffect(() => {
-		server.get('/records')
-			.then(response => {
-				setAlbums(response.data.records);
-			})
-			.catch(error => {
-				console.error('Ошибка в поиске альбомов:', error);
-			});
-
-		const fetchArtists = async () => {
-			try {
-				const response = await server.get('/artists');
-				setArtists(response.data.artists);
-			} catch (error) {
-				console.error('Ошибка в поиске артистов:', error)
-			}
-		}
-		fetchArtists()
-	}, [])
-
-	useEffect(() => {
-		const fetchGenres = async () => {
-			try {
-				const response = await server.get('/genres');
-				setGenres(response.data.genres);
-			} catch (error) {
-				console.error('Ошибка в поиске жанров:', error)
-			}
-		}
-		fetchGenres()
+		api.getArtists().then((artists) => setArtists(artists))
+		api.getRecords().then((albums) => setAlbums(albums))
+		api.getGenres().then((genres) => setGenres(genres))
 	}, [])
 
 	return (
@@ -107,7 +46,7 @@ const AlbumsPage = () => {
 					<div className="col-span-8 row-span-1 px-4 py-2 grid grid-cols-12 grid-rows-1 w-full h-full items-center justify-between gap-x-4">
 						<Input
 							type="search"
-							placeholder={t("translation.search")}
+							placeholder={t('translation.search')}
 							className="min-[1600px]:col-span-8 min-[1200px]:col-span-6 sm:col-span-2"
 						/>
 						<div className="col-span-4 flex items-center justify-end gap-10">
@@ -121,7 +60,7 @@ const AlbumsPage = () => {
 												aria-expanded={open}
 												className="justify-between"
 											>
-												{t("translation.alphabet")}
+												{t('translation.alphabet')}
 												<CaretSortIcon className="ml-2 h-5 w-5 shrink-0 opacity-90" />
 											</Button>
 										</PopoverTrigger>
@@ -131,11 +70,11 @@ const AlbumsPage = () => {
 													<CommandGroup>
 														<CommandItem className="flex items-center gap-1">
 															<ChevronUp className="h-5 w-5 shrink-0 opacity-90" />
-															{t("translation.asc")}
+															{t('translation.asc')}
 														</CommandItem>
 														<CommandItem className="flex items-center gap-1">
 															<ChevronDown className="h-5 w-5 shrink-0 opacity-90" />
-															{t("translation.desc")}
+															{t('translation.desc')}
 														</CommandItem>
 													</CommandGroup>
 												</CommandList>
@@ -152,7 +91,7 @@ const AlbumsPage = () => {
 												aria-expanded={open1}
 												className="justify-between"
 											>
-												{t("translation.year")}
+												{t('translation.year')}
 												<CaretSortIcon className="ml-2 h-5 w-5 shrink-0 opacity-90" />
 											</Button>
 										</PopoverTrigger>
@@ -162,11 +101,11 @@ const AlbumsPage = () => {
 													<CommandGroup>
 														<CommandItem className="flex items-center gap-1">
 															<ChevronUp className="h-5 w-5 shrink-0 opacity-90" />
-															{t("translation.asc")}
+															{t('translation.asc')}
 														</CommandItem>
 														<CommandItem className="flex items-center gap-1">
 															<ChevronDown className="h-5 w-5 shrink-0 opacity-90" />
-															{t("translation.desc")}
+															{t('translation.desc')}
 														</CommandItem>
 													</CommandGroup>
 												</CommandList>
@@ -187,14 +126,14 @@ const AlbumsPage = () => {
 													selectedGenre && 'text-muted-foreground'
 												)}
 											>
-												{selectedGenre ? selectedGenre : t("translation.genre")}
+												{selectedGenre ? selectedGenre : t('translation.genre')}
 												<CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 											</Button>
 										</PopoverTrigger>
 										<PopoverContent className="w-[200px] p-0">
 											<Command>
-												<CommandInput placeholder={t("translation.searchgenre")} />
-												<CommandEmpty>{t("translation.nogenre")}</CommandEmpty>
+												<CommandInput placeholder={t('translation.searchgenre')} />
+												<CommandEmpty>{t('translation.nogenre')}</CommandEmpty>
 												<CommandList>
 													<CommandGroup>
 														{genres.map((genre) => (
@@ -233,14 +172,14 @@ const AlbumsPage = () => {
 													selectedArtist && 'text-muted-foreground'
 												)}
 											>
-												{selectedArtist ? selectedArtist : t("translation.artist")}
+												{selectedArtist ? selectedArtist : t('translation.artist')}
 												<CaretSortIcon className="ml-2 h-4 w-4 shrink-0 opacity-50" />
 											</Button>
 										</PopoverTrigger>
 										<PopoverContent className="w-[200px] p-0">
 											<Command>
-												<CommandInput placeholder={t("translation.searchartist")} />
-												<CommandEmpty>{t("translation.noartist")}</CommandEmpty>
+												<CommandInput placeholder={t('translation.searchartist')} />
+												<CommandEmpty>{t('translation.noartist')}</CommandEmpty>
 												<CommandList>
 													<CommandGroup>
 														{artists.map((artist) => (
