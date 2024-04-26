@@ -11,7 +11,7 @@ recordRouter.get('/:recordId', async (req, res) => {
     await recordController.findById(req, res);
 });
 
-recordRouter.get('/artist/:artistName', async (req, res) => {
+recordRouter.get('/artistn/:artistName', async (req, res) => {
     await recordController.findByArtist(req, res);
 });
 
@@ -21,6 +21,10 @@ recordRouter.get('/genre/:genre', async (req, res) => {
 
 recordRouter.get('/country/:countryName', async (req, res) => {
     await recordController.findByCountry(req, res);
+});
+
+recordRouter.get('/artist/:artistId', async (req, res) => {
+    await recordController.findByArtistId(req, res);
 });
 
 module.exports = recordRouter;

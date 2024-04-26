@@ -13,6 +13,7 @@ import global_en from './locales/en/translation.json'
 import global_ru from './locales/ru/translation.json'
 import i18next from 'i18next'
 import { I18nextProvider } from 'react-i18next'
+import ArtistPage from './pages/ArtistPage.tsx'
 
 i18next.init({
 	interpolation: { escapeValue: false },
@@ -43,6 +44,10 @@ const router = createBrowserRouter([
 	{
 		path: '/album/:id',
 		element: <AlbumPage />,
+	},
+	{
+		path: '/artist/:id',
+		element: <ArtistPage />,
 	},
 ])
 

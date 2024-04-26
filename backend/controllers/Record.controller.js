@@ -48,35 +48,6 @@ module.exports = {
         }
     },
 
-    //работает не до конца верно, не знаю как решить 
-    async findByArtist(req, res) {
-        const artistName = req.params.artistName;
-
-        try {
-            const artist = await Artist.findOne({ where: { nickname: artistName } });
-
-            if (!artist) {
-                return res.status(404).json({ message: 'Артист не найден' });
-            }
-
-            const records = await Record.findAll({
-                include: [{
-                    model: Artist,
-                    attributes: ['nickname'],
-                    through: { attributes: [] },
-                    where: { nickname: artistName }
-                }],
-                attributes: ['id', 'name', 'cover']
-            });
-
-            return res.json({ records });
-        } catch (error) {
-            console.log(error);
-            return res.status(500).json({ message: 'Ошибка при поиске пластинок по артисту' });
-        }
-    },
-
-
     async findByGenre(req, res) {
         const genreName = req.params.genre;
         try {
@@ -144,6 +115,62 @@ module.exports = {
             console.log(error);
             return res.status(500).json({ message: 'Ошибка при поиске записей по стране' });
         }
+    },
+
+    //работает не до конца верно, не знаю как решить 
+    async findByArtist(req, res) {
+        const artistName = req.params.artistName;
+
+        try {
+            const artist = await Artist.findOne({ where: { nickname: artistName } });
+
+            if (!artist) {
+                return res.status(404).json({ message: 'Артист не найден' });
+            }
+
+            const records = await Record.findAll({
+                include: [{
+                    model: Artist,
+                    attributes: ['nickname'],
+                    through: { attributes: [] },
+                    where: { nickname: artistName }
+                }],
+                attributes: ['id', 'name', 'cover']
+            });
+
+            return res.json({ records });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ message: 'Ошибка при поиске пластинок по артисту' });
+        }
+    },
+
+    async findByArtistId(req, res) {
+        const artistId = req.params.artistId;
+
+        try {
+            const artist = await Artist.findByPk(artistId);
+
+            if (!artist) {
+                return res.status(404).json({ message: 'Артист не найден' });
+            }
+
+            const records = await Record.findAll({
+                include: [{
+                    model: Artist,
+                    attributes: ['nickname'],
+                    through: { attributes: [] },
+                    where: { id: artistId }
+                }],
+                attributes: ['id', 'name', 'cover']
+            });
+
+            return res.json({ records });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({ message: 'Ошибка при поиске пластинок по id артиста' });
+        }
     }
+
 
 }

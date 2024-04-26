@@ -8,23 +8,21 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import api from '@/api/api.config'
 import { Album, Albums, Artist } from '@/types'
 
-const AlbumPage = () => {
+const ArtistPage = () => {
     const { id } = useParams<{ id: string }>()
-    const [album, setAlbum] = useState<Album | null>(null)
+    const [artist, setArtist] = useState<Artist | null>(null)
     const [albums, setAlbums] = useState<Albums[]>([])
 
     const [t] = useTranslation('global')
 
     useEffect(() => {
-        api.getRecord(id || '1').then((album) => setAlbum(album))
-        api.getArtistRecord(id || '1').then((nickname) => {
-            api.getRecordsArtist(nickname).then((albums: Albums[]) => {
-                setAlbums(albums)
-            })
+        api.getArtist(id || '1').then((artist) => setArtist(artist))
+        api.getRecordsArtistId(id || '1').then((albums: Albums[]) => {
+            setAlbums(albums)
         })
     }, [id])
 
-    if (!album) {
+    if (!artist) {
         return <div>404</div>
     }
 
@@ -39,12 +37,12 @@ const AlbumPage = () => {
             </div>
             <div className="col-span-8 row-span-4">
                 <div>
-                    <h2>{album.name}</h2>
-                    <img src={album.cover} alt={`Album ${album.name}`} />
-                    <p>Release Date: {album.release_date}</p>
-                    <p>Country: {album.country.name}</p>
-                    <p>Rating: {album.rating}</p>
-                    <p>Artists: {album.artists.map((artist) => artist.nickname).join(', ')}</p>
+                    <h2>{artist.nickname}</h2>
+                    <img src={artist.avatar} alt={`Album ${artist.nickname}`} />
+                    <p>First name: {artist.first_name}</p>
+                    <p>Surname: {artist.surname}</p>
+                    <p>Last name: {artist.last_name}</p>
+                    <p>Bio: {artist.bio}</p>
                 </div>
                 <div className="col-span-6">
                     <h3 className="col-span-6 scroll-m-20 text-2xl font-semibold tracking-tight">
@@ -97,4 +95,4 @@ const AlbumPage = () => {
     )
 }
 
-export default AlbumPage
+export default ArtistPage

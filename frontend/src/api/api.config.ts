@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Albums, Artist, Genre } from '@types'
+import { Albums, Artist, Genre } from '@/types'
 import { Album } from '@/types'
 
 const server = axios.create({
@@ -52,7 +52,7 @@ const api = {
 
 	getRecordsArtist: (nickname: string) => {
 		return server
-			.get<{ records: Albums[] }>(`/records/artist/${nickname}`)
+			.get<{ records: Albums[] }>(`/records/artistn/${nickname}`)
 			.then(({ data }) => data.records)
 			.catch((error) => {
 				console.error(error)
@@ -67,6 +67,26 @@ const api = {
 			.catch((error) => {
 				console.error(error)
 				return []
+			})
+	},
+
+	getRecordsArtistId: (id: string) => {
+		return server
+			.get<{ records: Albums[] }>(`/records/artist/${id}`)
+			.then(({ data }) => data.records)
+			.catch((error) => {
+				console.error(error)
+				return []
+			})
+	},
+
+	getArtist: (id: string): Promise<Artist | null> => {
+		return server
+			.get<{ artist: Artist }>(`/artists/${id}`)
+			.then(({ data }) => data.artist)
+			.catch((error) => {
+				console.error(error)
+				return null
 			})
 	},
 }
