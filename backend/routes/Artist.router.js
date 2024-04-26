@@ -11,4 +11,8 @@ artistRouter.get('/:artistId', async (req, res) => {
     await artistController.findById(req, res);
 });
 
+artistRouter.get('/record/:recordId', async (req, res) => {
+    await artistController.getFirstArtistNickname(req, res)
+})
+
 module.exports = artistRouter;

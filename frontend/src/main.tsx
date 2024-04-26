@@ -5,6 +5,7 @@ import { ThemeProvider } from '@components/ThemeProvider.tsx'
 import App from './App.tsx'
 import AlbumsPage from './pages/AlbumsPage.tsx'
 import ArtistsPage from './pages/ArtistsPage.tsx'
+import AlbumPage from './pages/AlbumPage.tsx'
 import '../app/globals.css'
 
 import axios from "axios";
@@ -38,6 +39,10 @@ const router = createBrowserRouter([
 	{
 		path: '/albums',
 		element: <AlbumsPage />,
+	},
+	{
+		path: '/album/:id',
+		element: <AlbumPage />,
 	},
 ])
 

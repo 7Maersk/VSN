@@ -285,7 +285,7 @@ const AlbumsPage = () => {
 								</CardContent>
 								<CardFooter className="border border-t-0 rounded-bl-md rounded-br-md p-0">
 									<Link
-										to={`/item/${album.id}`}
+										to={`/album/${album.id}`}
 										className="flex w-full h-full flex-col items-start px-4 py-2"
 									>
 										<span className="text-base font-semibold">{album.name}</span>
