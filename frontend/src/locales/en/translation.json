@@ -22,6 +22,7 @@
         "database": "Database",
         "albums": "Albums",
         "artists": "Artists",
-        "more": "More artist releases"
+        "more": "More artist releases",
+        "home": "Home"
     }
 }
