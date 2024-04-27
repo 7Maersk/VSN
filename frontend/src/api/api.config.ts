@@ -10,6 +10,7 @@ const server = axios.create({
 })
 
 const api = {
+	staticURL: 'http://localhost:3001',
 	getArtists: (): Promise<Artist[]> => {
 		return server
 			.get<{ artists: Artist[] }>('/artists')

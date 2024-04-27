@@ -11,17 +11,8 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import Sidebar from '@/components/Sidebar'
 import { useTranslation } from 'react-i18next'
 
-interface Artist {
-	id: number
-	nickname: string
-	first_name: string
-	last_name: string
-	surname: string
-	bio: string
-	avatar: string
-}
-
 import api from '../api/api.config'
+import { Artist } from '@/types'
 
 const ArtistsPage = () => {
 	const [t] = useTranslation('global')
@@ -87,12 +78,12 @@ const ArtistsPage = () => {
 						</div>
 					</div>
 					<div className="col-span-8 row-span-11 grid grid-cols-5 auto-rows-min gap-6 px-4 py-4 pt-0">
-						{artists.map((artist) => (
+						{artists.map((artist: Artist) => (
 							<Card key={artist.id} className="rounded-md border-none shadow-sm">
 								<CardContent className="flex aspect-square items-end justify-start p-6 relative">
 									<Link to={`/artist/${artist.id}`} className="contents">
 										<img
-											src={artist.avatar}
+											src={`${api.staticURL}/artists/${artist.avatar}`}
 											alt={`Avatar of ${artist.nickname}`}
 											className="absolute w-full h-full object-cover object-center top-0 left-0 rounded-t-md"
 										/>

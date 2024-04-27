@@ -9,8 +9,11 @@ var corsOptions = {
     credentials: true,
     optionSuccessStatus: 200
 };
-app.use(cors(corsOptions));
+
 const { userRouter, commentRouter, userCollectionRouter, postRouter, artistRouter, recordRouter, genreRouter, songRouter } = require('./routes')
+
+app.use(cors(corsOptions));
+app.use(express.static('public'));
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
