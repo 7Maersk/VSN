@@ -134,4 +134,6 @@ const api = {
 	},
 }
 
-export default { api, server }
+// export default { api, server }
+export default api;
+

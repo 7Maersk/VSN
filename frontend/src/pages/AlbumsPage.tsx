@@ -211,12 +211,12 @@ const AlbumsPage = () => {
 						</div>
 					</div>
 					<div className="col-span-8 row-span-11 grid grid-cols-5 auto-rows-min gap-6 px-4 py-4 pt-0">
-						{albums.map((album) => (
+						{albums.map((album: Albums) => (
 							<Card key={album.id} className="rounded-md border-none shadow-sm">
 								<CardContent className="flex aspect-square items-end justify-start p-6 relative">
 									<Link to={`/album/${album.id}`} className="contents">
 										<img
-											src={album.cover}
+											src={`${api.staticURL}/albums/${album.cover}`}
 											alt={`Album ${album.name}`}
 											className="absolute w-full h-full object-cover object-center top-0 left-0 rounded-t-md"
 										/>

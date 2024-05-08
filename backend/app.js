@@ -10,7 +10,7 @@ var corsOptions = {
     optionSuccessStatus: 200
 };
 
-const { userRouter, commentRouter, userCollectionRouter, postRouter, artistRouter, recordRouter, genreRouter, songRouter } = require('./routes')
+const { userRouter, commentRouter, userCollectionRouter, postRouter, artistRouter, recordRouter, genreRouter, songRouter } = require('./routes');
 
 app.use(cors(corsOptions));
 app.use(express.static('public'));

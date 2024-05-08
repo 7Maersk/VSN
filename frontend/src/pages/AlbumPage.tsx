@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom'
 
 import Sidebar from '@/components/Sidebar'
 import { useTranslation } from 'react-i18next'
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
+import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import api from '@/api/api.config'
 import { Album, Albums, Artist } from '@/types'
@@ -64,7 +64,8 @@ const AlbumPage = () => {
                                             <CardContent className="flex aspect-square items-end justify-start p-6 relative">
                                                 <Link to={`/album/${rec.id}`} className="contents">
                                                     <img
-                                                        src={rec.cover}
+                                                        // src={rec.cover}
+                                                        src={`${api.staticURL}/albums/${rec.cover}`}
                                                         alt={`Album ${rec.name}`}
                                                         className="absolute w-full h-full object-cover object-center top-0 left-0 rounded-t-md"
                                                     />
@@ -88,8 +89,6 @@ const AlbumPage = () => {
                                 ))}
                             </CarouselContent>
                         )}
-                        <CarouselPrevious />
-                        <CarouselNext />
                     </Carousel>
                 </div>
             </div>
