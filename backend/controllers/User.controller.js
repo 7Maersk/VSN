@@ -61,26 +61,6 @@ module.exports = {
         }
     },
 
-    verifyToken(req, res, next) {
-        let token = req.headers["x-access-token"]; 
-        if (!token) {
-             res.status(403).send({
-                message: "Токен не предоставлен"
-            });
-            return;
-        }
-        jwt.verify(token, config.secret, (err, decoded) => {
-            if (err) {
-                res.status(401).send({
-                    message: "Неверно введенный логин и/или пароль"
-                });
-                return;
-            }
-            req.userId = decoded.id;
-            next();
-        });
-    },
-
     async delete(req, res) {
         const { id } = req.body;
 

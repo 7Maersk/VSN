@@ -11,6 +11,7 @@ var corsOptions = {
 };
 
 const { userRouter, commentRouter, userCollectionRouter, postRouter, artistRouter, recordRouter, genreRouter, songRouter } = require('./routes');
+const { verifyToken } = require('./controllers/Auth.controller');
 
 app.use(cors(corsOptions));
 app.use(express.static('public'));
