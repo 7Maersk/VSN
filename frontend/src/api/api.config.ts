@@ -52,6 +52,7 @@ server.interceptors.response.use(
 );
 
 const api = {
+	baseUrl: 'http://localhost:3001/api',
 	staticURL: 'http://localhost:3001',
 	getArtists: (): Promise<Artist[]> => {
 		return server
