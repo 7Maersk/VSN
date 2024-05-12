@@ -23,8 +23,8 @@ const ArtistsPage = () => {
 
 	useEffect(() => {
 		api.getArtists().then((artists) => {
-            setArtists(artists)
-        })
+			setArtists(artists)
+		})
 	}, [])
 
 	return (
@@ -35,47 +35,39 @@ const ArtistsPage = () => {
 
 			<div className="col-span-8 row-span-4">
 				<div className="h-full grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] grid-rows-12 gap-2">
-					<div className="col-span-8 row-span-1 px-4 py-2 grid grid-cols-12 grid-rows-1 w-full h-full items-center justify-between gap-x-4">
-						<Input
-							type="search"
-							placeholder={t('translation.search')}
-							className="min-[1600px]:col-span-8 min-[1200px]:col-span-6 sm:col-span-2"
-						/>
-						<div className="col-span-4 flex items-center justify-end gap-10">
-							<div className="flex items-center gap-4">
-								<div>
-									<Popover open={open} onOpenChange={setOpen}>
-										<PopoverTrigger asChild>
-											<Button
-												variant="outline"
-												role="combobox"
-												aria-expanded={open}
-												className="justify-between"
-											>
-												{t('translation.alphabet')}
-												<CaretSortIcon className="ml-2 h-5 w-5 shrink-0 opacity-90" />
-											</Button>
-										</PopoverTrigger>
-										<PopoverContent className="w-[200px] p-0">
-											<Command>
-												<CommandList>
-													<CommandGroup>
-														<CommandItem className="flex items-center gap-1">
-															<ChevronUp className="h-5 w-5 shrink-0 opacity-90" />
-															{t('translation.asc')}
-														</CommandItem>
-														<CommandItem className="flex items-center gap-1">
-															<ChevronDown className="h-5 w-5 shrink-0 opacity-90" />
-															{t('translation.desc')}
-														</CommandItem>
-													</CommandGroup>
-												</CommandList>
-											</Command>
-										</PopoverContent>
-									</Popover>
-								</div>
-							</div>
-						</div>
+					<div className="col-span-8 row-span-1 px-4 py-2 flex w-full h-full items-center justify-between gap-x-4">
+						<Input type="search" placeholder={t('translation.search')} />
+						
+							<Popover open={open} onOpenChange={setOpen}>
+								<PopoverTrigger asChild>
+									<Button
+										variant="outline"
+										role="combobox"
+										aria-expanded={open}
+										className="justify-between"
+									>
+										{t('translation.alphabet')}
+										<CaretSortIcon className="ml-2 h-5 w-5 shrink-0 opacity-90" />
+									</Button>
+								</PopoverTrigger>
+								<PopoverContent className="w-[200px] p-0">
+									<Command>
+										<CommandList>
+											<CommandGroup>
+												<CommandItem className="flex items-center gap-1">
+													<ChevronUp className="h-5 w-5 shrink-0 opacity-90" />
+													{t('translation.asc')}
+												</CommandItem>
+												<CommandItem className="flex items-center gap-1">
+													<ChevronDown className="h-5 w-5 shrink-0 opacity-90" />
+													{t('translation.desc')}
+												</CommandItem>
+											</CommandGroup>
+										</CommandList>
+									</Command>
+								</PopoverContent>
+							</Popover>
+						
 					</div>
 					<div className="col-span-8 row-span-11 grid grid-cols-5 auto-rows-min gap-6 px-4 py-4 pt-0">
 						{artists.map((artist: Artist) => (
