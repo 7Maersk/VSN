@@ -10,23 +10,21 @@ const server = axios.create({
 })
 
 // let's think about it
-server.interceptors.request.use(
-	(config) => {
-		config.headers.Authorization = `Bearer ${localStorage.getItem("token")}`
-		return config
-	}
-)
+server.interceptors.request.use((config) => {
+	config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
+	return config
+})
 
 server.interceptors.response.use(
 	// в случае валидного accessToken ничего не делаем:
 	(config) => {
-		return config;
+		return config
 	},
 	// в случае просроченного accessToken пытаемся его обновить:
 	async (error) => {
-		// предотвращаем зацикленный запрос, добавляя свойство _isRetry 
-		const originalRequest = { ...error.config };
-		originalRequest._isRetry = true;
+		// предотвращаем зацикленный запрос, добавляя свойство _isRetry
+		const originalRequest = { ...error.config }
+		originalRequest._isRetry = true
 		if (
 			// проверим, что ошибка именно из-за невалидного accessToken
 			error.response.status === 401 &&
@@ -36,24 +34,35 @@ server.interceptors.response.use(
 		) {
 			try {
 				// запрос на обновление токенов
-				const resp = await server.get("/api/refresh");
+				const resp = await server.get('/api/refresh')
 				// сохраняем новый accessToken в localStorage
-				localStorage.setItem("token", resp.data.accessToken);
+				localStorage.setItem('token', resp.data.accessToken)
 				// переотправляем запрос с обновленным accessToken
-				return server.request(originalRequest);
+				return server.request(originalRequest)
 			} catch (error) {
-				console.log("AUTH ERROR");
+				console.log('AUTH ERROR')
 			}
 		}
 		// на случай, если возникла другая ошибка (не связанная с авторизацией)
-		// пробросим эту ошибку 
-		throw error;
+		// пробросим эту ошибку
+		throw error
 	}
-);
+)
 
 const api = {
 	baseUrl: 'http://localhost:3001/api',
 	staticURL: 'http://localhost:3001',
+
+	login: (login: string, password: string): Promise<any> => {
+		return server
+			.post<{ token: string }>('user/login', {
+				login,
+				password,
+			})
+			.then(({ data }) => localStorage.setItem('token', data.token))
+			.catch((error) => console.error(error))
+	},
+
 	getArtists: (): Promise<Artist[]> => {
 		return server
 			.get<{ artists: Artist[] }>('/artists')
@@ -136,5 +145,4 @@ const api = {
 }
 
 // export default { api, server }
-export default api;
-
+export default api

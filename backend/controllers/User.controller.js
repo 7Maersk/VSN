@@ -54,7 +54,7 @@ module.exports = {
             const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
                 expiresIn: 28800
             });
-            res.json({ token });
+           return  res.json({ token });
         } catch (error) {
             console.error('Ошибка при аутентификации:', error);
             res.status(500).json({ message: 'Ошибка при аутентификации пользователя' });
