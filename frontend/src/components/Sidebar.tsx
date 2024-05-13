@@ -10,10 +10,9 @@ import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs'
 import { useTheme } from '@/components/ThemeProvider'
 import { Album, Disc3, Headphones, Home, Library, ListMusic, Moon, Settings, Star, Sun, User } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { useAuthStore } from '@/types/AuthStore'
 
 const Sidebar = () => {
-	const { isLoggedIn } = useAuthStore();
+	const isLoggedIn = false
 	const [t, i18n] = useTranslation('global')
 	const { setTheme, theme } = useTheme()
 

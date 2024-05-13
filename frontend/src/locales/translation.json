@@ -1,0 +1,59 @@
+{
+    "en": {
+        "translation": {
+            "menu": "Menu",
+            "profile": "Profile",
+            "settings": "Settings",
+            "favorites": "Favorites",
+            "myCollection": "My collection",
+            "recommendations": "Recomendations",
+            "blog": "Blog",
+            "search": "Search",
+            "alphabet": "Alphabet",
+            "year": "Year",
+            "asc": "Asc",
+            "desc": "Desc",
+            "genre": "Genre",
+            "artist": "Artist",
+            "searchgenre": "Search genre...",
+            "searchartist": "Search artist...",
+            "nogenre": "No genre found.",
+            "noartist": "No artists found.",
+            "lastreleases": "Last releases",
+            "database": "Database",
+            "albums": "Albums",
+            "artists": "Artists",
+            "more": "More artist releases",
+            "home": "Home"
+        }
+    },
+    "ru": {
+        "translation": {
+            "menu": "Меню",
+            "profile": "Профиль",
+            "settings": "Настройки",
+            "favorites": "Избранное",
+            "myCollection": "Моя коллекция",
+            "recommendations": "Рекомендации",
+            "blog": "Блог",
+            "search": "Поиск",
+            "alphabet": "По алфавиту",
+            "year": "По году",
+            "asc": "По возрастанию",
+            "desc": "По убыванию",
+            "genre": "Жанр",
+            "artist": "Артист",
+            "searchgenre": "Искать жанр...",
+            "searchartist": "Искать артиста...",
+            "nogenre": "Жанров не найдено.",
+            "noartist": "Артистов не найдено.",
+            "lastreleases": "Последние релизы",
+            "database": "База данных",
+            "albums": "Альбомы",
+            "artists": "Артисты",
+            "more": "Другие релизы артиста",
+            "home": "Главная"
+        }
+    }
+    
+}

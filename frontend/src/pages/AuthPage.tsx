@@ -1,13 +1,10 @@
-import api from '@/api/api.config'
 import { FormControl, FormField, FormItem, FormLabel, FormMessage, Form } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
-import { useAuthStore } from '@/types/AuthStore'
-import { useNavigate } from 'react-router-dom'
-
+import { useLocation, useNavigate } from 'react-router-dom'
 
 const formSchema = z.object({
 	login: z
@@ -21,8 +18,9 @@ const formSchema = z.object({
 })
 
 const AuthPage = () => {
-	const login = useAuthStore((state) => state.login)
-	const navigate = useNavigate();
+	const navigate = useNavigate()
+	const location = useLocation()
+	const fromPage = location.state?.from?.pathname || '/'
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -33,12 +31,8 @@ const AuthPage = () => {
 		mode: 'onChange',
 	})
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
-		api.login(values.login, values.password).then((token) => {
-			localStorage.setItem('token', token)
-			login()
-			navigate("/")
-		})
+	function onSubmit({ login, password }: z.infer<typeof formSchema>) {
+		console.log(login, password)
 	}
 
 	return (
