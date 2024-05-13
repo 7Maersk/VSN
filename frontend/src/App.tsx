@@ -1,8 +1,8 @@
 import { AuthPage, MainPage } from './pages'
 
 function App() {
-	return <AuthPage />
-	// <MainPage />
+	// return <AuthPage />
+	return <MainPage />
 }
 
 export default App

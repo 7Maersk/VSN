@@ -5,6 +5,9 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
+import { useAuthStore } from '@/types/AuthStore'
+import MainPage from './MainPage'
+
 
 const formSchema = z.object({
 	login: z
@@ -18,6 +21,8 @@ const formSchema = z.object({
 })
 
 const AuthPage = () => {
+	const login = useAuthStore((state) => state.login)
+	const { isLoggedIn } = useAuthStore();
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -29,6 +34,11 @@ const AuthPage = () => {
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		api.login(values.login, values.password).then(() => console.log('OK'))
+		login()
+	}
+
+	if (isLoggedIn){
+		return <MainPage />
 	}
 
 	return (

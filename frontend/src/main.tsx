@@ -14,6 +14,7 @@ import global_ru from './locales/ru/translation.json'
 import i18next from 'i18next'
 import { I18nextProvider } from 'react-i18next'
 import ArtistPage from './pages/ArtistPage.tsx'
+import AuthPage from './pages/AuthPage.tsx'
 
 i18next.init({
 	interpolation: { escapeValue: false },
@@ -48,6 +49,10 @@ const router = createBrowserRouter([
 	{
 		path: '/artist/:id',
 		element: <ArtistPage />,
+	},
+	{
+		path: '/login',
+		element: <AuthPage />,
 	},
 ])
 

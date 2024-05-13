@@ -10,8 +10,10 @@ import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs'
 import { useTheme } from '@/components/ThemeProvider'
 import { Album, Disc3, Headphones, Home, Library, ListMusic, Moon, Settings, Star, Sun, User } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
+import { useAuthStore } from '@/types/AuthStore'
 
 const Sidebar = () => {
+	const { isLoggedIn } = useAuthStore();
 	const [t, i18n] = useTranslation('global')
 	const { setTheme, theme } = useTheme()
 
@@ -64,17 +66,19 @@ const Sidebar = () => {
 									</NavLink>
 								</NavigationMenuLink>
 							</NavigationMenuItem>
-							<NavigationMenuItem className="w-full">
-								<NavigationMenuLink
-									asChild
-									className={`gap-4 w-full group inline-flex h-9 items-center justify-start rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50  [&.active]:bg-accent`}
-								>
-									<NavLink to={'/profile'}>
-										<User className="h-5 w-5" />
-										{t('translation.profile')}
-									</NavLink>
-								</NavigationMenuLink>
-							</NavigationMenuItem>
+							{isLoggedIn ? (
+								<NavigationMenuItem className="w-full">
+									<NavigationMenuLink
+										asChild
+										className={`gap-4 w-full group inline-flex h-9 items-center justify-start rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50  [&.active]:bg-accent`}
+									>
+										<NavLink to={'/profile'}>
+											<User className="h-5 w-5" />
+											{t('translation.profile')}
+										</NavLink>
+									</NavigationMenuLink>
+								</NavigationMenuItem>
+							) : null}
 							<NavigationMenuItem className="w-full">
 								<NavigationMenuLink
 									asChild
