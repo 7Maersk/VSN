@@ -59,7 +59,7 @@ const api = {
 				login,
 				password,
 			})
-			.then(({ data }) => localStorage.setItem('token', data.token))
+			.then(({ data }) => data.token)
 			.catch((error) => console.error(error))
 	},
 

@@ -5,10 +5,12 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import albumsData from './albums.json'
 import Sidebar from '@/components/Sidebar'
 import { useTranslation } from 'react-i18next'
+import { useAuthStore } from '@/types/AuthStore'
 
 const MainPage = () => {
 	const [t] = useTranslation("global")
-	//вероятно нужно это добавить в файл обработки навбара, чтобы он подгружал все объекты сразу(плюс переделать кнопку)
+	const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
+	console.log(isLoggedIn)
 	return (
 		<div className="h-full grid grid-cols-[20rem_1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] grid-rows-4 gap-2">
 			<div className="col-span-1 row-span-4">
@@ -16,7 +18,6 @@ const MainPage = () => {
 			</div>
 			<div className="col-span-8 row-span-4">
 				<div className="h-full grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] grid-rows-12 gap-4">
-					{/* сверху слева новостей добавить надпись Последние новости */}
 					<div className="col-start-2 col-end-6 row-start-2 row-end-8 relative">
 						<img
 							src="https://cdnn21.img.ria.ru/images/07e5/08/12/1746226187_0:22:3071:1749_1920x0_80_0_0_8952d3e406e75032fec31f71cef5abee.jpg"
