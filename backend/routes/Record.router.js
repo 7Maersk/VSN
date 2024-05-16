@@ -27,4 +27,8 @@ recordRouter.get('/artist/:artistId', async (req, res) => {
     await recordController.findByArtistId(req, res);
 });
 
+recordRouter.post('/add', async (req, res) => {
+    await recordController.addById(req, res);
+});
+
 module.exports = recordRouter;
