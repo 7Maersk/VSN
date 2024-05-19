@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
-import Sidebar from '@/components/Sidebar'
 import { useTranslation } from 'react-i18next'
 import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carousel'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
-import api from '@/api/api.config'
+import { api } from '@/api/api.config'
 import { Album, Albums, Artist } from '@/types'
 
 const AlbumPage = () => {

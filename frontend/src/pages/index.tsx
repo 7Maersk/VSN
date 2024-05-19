@@ -4,3 +4,6 @@ export { default as ArtistPage } from './ArtistPage'
 export { default as ArtistsPage } from './ArtistsPage'
 export { default as AlbumPage } from './AlbumPage'
 export { default as AlbumsPage } from './AlbumsPage'
+
+export { default as ProfilePage } from './ProfilePage'
+export { default as CollectionPage } from './CollectionPage'

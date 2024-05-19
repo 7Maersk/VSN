@@ -10,7 +10,16 @@ import '../app/globals.css'
 
 import translation from './locales/translation.json'
 
-import { ArtistPage, AlbumPage, ArtistsPage, AlbumsPage, AuthPage, MainPage } from './pages'
+import {
+	ArtistPage,
+	AlbumPage,
+	ArtistsPage,
+	AlbumsPage,
+	AuthPage,
+	MainPage,
+	ProfilePage,
+	CollectionPage,
+} from './pages'
 
 i18next.init({
 	interpolation: { escapeValue: false },
@@ -37,11 +46,20 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 							<Route path="albums" element={<AlbumsPage />} />
 							<Route path="album/:id" element={<AlbumPage />} />
 							<Route path="artist/:id" element={<ArtistPage />} />
+							<Route path="artists" element={<ArtistsPage />} />
 							<Route
-								path="artists"
+								path="profile"
 								element={
 									<PrivateRoute>
-										<ArtistsPage />
+										<ProfilePage />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path="collection"
+								element={
+									<PrivateRoute>
+										<CollectionPage />
 									</PrivateRoute>
 								}
 							/>
