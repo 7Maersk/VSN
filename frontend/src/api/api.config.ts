@@ -1,5 +1,5 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
-import { Albums, Artist, AuthResponse, Genre } from '@/types'
+import { Albums, Artist, AuthResponse, Genre, Post } from '@/types'
 import { Album } from '@/types'
 
 const server = axios.create({
@@ -58,6 +58,14 @@ server.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 const api = {
 	baseUrl: 'http://localhost:3001/api',
 	staticURL: 'http://localhost:3001',
+
+	getPosts: (): Promise<Post[]> => {
+		return server.get<{ posts: Post[] }>('/post').then(({ data}) => data.posts)
+		.catch((error) => {
+			console.error(error)
+			return []
+		})
+	},
 
 	getArtists: (): Promise<Artist[]> => {
 		return server

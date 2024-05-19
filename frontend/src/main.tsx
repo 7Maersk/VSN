@@ -19,6 +19,7 @@ import {
 	MainPage,
 	ProfilePage,
 	CollectionPage,
+	BlogPage,
 } from './pages'
 
 i18next.init({
@@ -47,6 +48,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 							<Route path="album/:id" element={<AlbumPage />} />
 							<Route path="artist/:id" element={<ArtistPage />} />
 							<Route path="artists" element={<ArtistsPage />} />
+							<Route path="blog" element={<BlogPage />} />
 							<Route
 								path="profile"
 								element={

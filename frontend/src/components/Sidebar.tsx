@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next'
 import { ReactElement, useState } from 'react'
 
 const Sidebar = () => {
-	const isLoggedIn = false
+	const isLoggedIn = true
 	const [t, i18n] = useTranslation('global')
 	const { setTheme, theme } = useTheme()
 	const [menuItems, setMenuItems] = useState<
@@ -49,14 +49,14 @@ const Sidebar = () => {
 			menuGroup: 'menu',
 		},
 		{
-			protected: false,
+			protected: true,
 			link: '/settings',
 			text: 'translation.settings',
 			icon: <Settings className="h-5 w-5" />,
 			menuGroup: 'menu',
 		},
 		{
-			protected: false,
+			protected: true,
 			link: '/favorites',
 			text: 'translation.favorites',
 			icon: <Star className="h-5 w-5" />,
@@ -70,7 +70,7 @@ const Sidebar = () => {
 			menuGroup: 'menu',
 		},
 		{
-			protected: false,
+			protected: true,
 			link: '/recommendation',
 			text: 'translation.recommendations',
 			icon: <Disc3 className="h-5 w-5" />,
@@ -129,10 +129,10 @@ const Sidebar = () => {
 									if (item.protected) {
 										if (isLoggedIn) {
 											return (
-												<NavigationMenuItem className="w-full">
+												<NavigationMenuItem key={item.text} className="w-full">
 													<NavigationMenuLink
 														asChild
-														className={`gap-4 w-full group inline-flex h-9 items-center justify-start rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50  [&.active]:bg-primary/50`}
+														className={`gap-4 w-full group inline-flex h-9 items-center justify-start rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-primary/50 data-[state=open]:bg-primary/50 [&.active]:bg-primary/50`}
 													>
 														<NavLink to={item.link}>
 															{item.icon}
@@ -147,10 +147,10 @@ const Sidebar = () => {
 									}
 
 									return (
-										<NavigationMenuItem className="w-full">
+										<NavigationMenuItem className="w-full" key={item.text}>
 											<NavigationMenuLink
 												asChild
-												className={`gap-4 w-full group inline-flex h-9 items-center justify-start rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50  [&.active]:bg-primary/50`}
+												className={`gap-4 w-full group inline-flex h-9 items-center justify-start rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-primary/50 data-[state=open]:bg-accent/50  [&.active]:bg-primary/50`}
 											>
 												<NavLink to={item.link}>
 													{item.icon}
@@ -173,7 +173,7 @@ const Sidebar = () => {
 								.filter((item) => item.menuGroup === 'database')
 								.map((item) => {
 									return (
-										<NavigationMenuItem className="w-full">
+										<NavigationMenuItem className="w-full" key={item.text}>
 											<NavigationMenuLink
 												asChild
 												className={`gap-4 w-full group inline-flex h-9 items-center justify-start rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent data-[state=open]:bg-accent/50 [&.active]:bg-primary/50`}

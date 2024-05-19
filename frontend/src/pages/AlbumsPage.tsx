@@ -10,7 +10,6 @@ import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Card, CardContent, CardFooter } from '@components/ui/card'
 
-import Sidebar from '@components/Sidebar'
 import { useTranslation } from 'react-i18next'
 import { Albums, Artist, Genre } from '@/types'
 import { api } from '@/api/api.config'
@@ -28,6 +27,19 @@ const AlbumsPage = () => {
 	const [albums, setAlbums] = useState<Albums[]>([])
 	const [genres, setGenres] = useState<Genre[]>([])
 	const [artists, setArtists] = useState<Artist[]>([])
+
+	const filterByArtist = (): Albums[] => {
+		console.log(
+			selectedArtist !== ''
+				? albums.filter(
+						(album) => album.artists.filter((artist) => artist.nickname === selectedArtist).length > 0
+				  )
+				: albums
+		)
+		return selectedArtist !== ''
+			? albums.filter((album) => album.artists.filter((artist) => artist.nickname === selectedArtist).length > 0)
+			: albums
+	}
 
 	useEffect(() => {
 		api.getArtists().then((artists: Artist[]) => setArtists(artists))
@@ -113,7 +125,7 @@ const AlbumsPage = () => {
 												value={genre.name}
 												key={genre.name}
 												onSelect={() => {
-													setGenre(genre.name)
+													selectedGenre === genre.name ? setGenre('') : setGenre(genre.name)
 												}}
 											>
 												{genre.name}
@@ -153,7 +165,9 @@ const AlbumsPage = () => {
 												value={artist.nickname}
 												key={artist.id}
 												onSelect={() => {
-													setArtist(artist.nickname)
+													selectedArtist === artist.nickname
+														? setArtist('')
+														: setArtist(artist.nickname)
 												}}
 											>
 												{artist.nickname}
@@ -173,14 +187,15 @@ const AlbumsPage = () => {
 				</div>
 			</div>
 			<div className="col-span-8 row-span-11 grid grid-cols-5 auto-rows-min gap-6 px-4 py-4 pt-0">
-				{albums.map((album: Albums) => (
-					<Card key={album.id} className="rounded-md border-none shadow-sm">
+				{filterByArtist().map((album: Albums) => (
+					<Card key={album.id + Date.now()} className="rounded-md border-none shadow-sm">
 						<CardContent className="flex aspect-square items-end justify-start p-6 relative">
 							<Link to={`/album/${album.id}`} className="contents">
 								<img
-									src={`${api.staticURL}/albums/${album.cover}`}
+									src={album.cover}
 									alt={`Album ${album.name}`}
 									className="absolute w-full h-full object-cover object-center top-0 left-0 rounded-t-md"
+									crossOrigin="anonymous"
 								/>
 							</Link>
 						</CardContent>
