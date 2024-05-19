@@ -28,16 +28,11 @@ const AlbumsPage = () => {
 	const [genres, setGenres] = useState<Genre[]>([])
 	const [artists, setArtists] = useState<Artist[]>([])
 
+	const [search, setSearch] = useState('')
+
 	const filterByArtist = (): Albums[] => {
-		console.log(
-			selectedArtist !== ''
-				? albums.filter(
-						(album) => album.artists.filter((artist) => artist.nickname === selectedArtist).length > 0
-				  )
-				: albums
-		)
-		return selectedArtist !== ''
-			? albums.filter((album) => album.artists.filter((artist) => artist.nickname === selectedArtist).length > 0)
+		return selectedArtist !== '' || search !== ''
+			? albums.filter((album) => album.artists.filter((artist) => artist.nickname === selectedArtist || artist.nickname.toLowerCase().includes(search.toLowerCase())).length > 0)
 			: albums
 	}
 
@@ -50,7 +45,13 @@ const AlbumsPage = () => {
 	return (
 		<>
 			<div className="col-span-8 row-span-1 px-4 py-2 flex w-full h-full items-center justify-between gap-x-4">
-				<Input type="search" placeholder={t('translation.search')} className="w-full" />
+				<Input
+					type="search"
+					placeholder={t('translation.search')}
+					className="w-full"
+					value={search}
+					onChange={({ target }) => setSearch(target.value)}
+				/>
 
 				<div className="flex gap-x-4 justify-end">
 					<Popover open={open} onOpenChange={setOpen}>
