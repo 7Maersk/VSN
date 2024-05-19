@@ -67,6 +67,12 @@ User.belongsToMany(Record, { through: UserCollection })
 RecordArtist.belongsTo(Record)
 Song.belongsTo(Record)
 
+Song.hasMany(ExtraArtist, { foreignKey: 'song_id' });
+ExtraArtist.belongsTo(Song, { foreignKey: 'song_id' });
+
+ExtraArtist.belongsTo(Artist, { foreignKey: 'artist_id' });
+Artist.hasMany(ExtraArtist, { foreignKey: 'artist_id' });
+
 module.exports = {
     User,
     Role,

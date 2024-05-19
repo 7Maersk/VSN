@@ -62,6 +62,11 @@ module.exports = {
                         model: Artist,
                         attributes: ['nickname'],
                         through: { attributes: [] }
+                    },
+                    {
+                        model: Genre,
+                        attributes: ['name'],
+                        through: { attributes: [] }
                     }
                 ]
             });
@@ -71,6 +76,7 @@ module.exports = {
             return res.status(500).json({ message: 'Ошибка при поиске всех записей' });
         }
     },
+
 
     async addById(req, res) {
         const releaseId = req.body.releaseId;
@@ -211,159 +217,40 @@ module.exports = {
         }
     },
 
-    // async addById(req, res) {
-    //     const releaseId = req.body.releaseId;
-    //     const discogsUrl = `https://api.discogs.com/releases/${releaseId}?key=${DISCOGS_API_KEY}&secret=${DISCOGS_API_SECRET}`;
-
-    //     const transaction = await sequelize.transaction();
-
-    //     try {
-    //         const response = await axios.get(discogsUrl);
-    //         const data = response.data;
-
-    //         if (data.message && data.message === "Release not found.") {
-    //             await transaction.rollback();
-    //             return res.status(404).json({ message: 'Релиз не найден в Discogs.' });
-    //         }
-
-    //         const isVinyl = data.formats.some(format =>
-    //             /vinyl/i.test(format.name) || /lp/i.test(format.name)
-    //         );
-
-    //         if (!isVinyl) {
-    //             await transaction.rollback();
-    //             return res.status(400).json({ message: 'Релиз не является пластинкой.' });
-    //         }
-
-    //         const name = data.title;
-    //         const katalog_number = data.labels[0]?.catno;
-    //         const release_date = parseReleaseDate(data.released);
-    //         const countryName = data.country;
-
-    //         let cover = data.images.find(image => image.type === 'primary')?.uri;
-    //         if (!cover) {
-    //             cover = data.images.find(image => image.type === 'secondary')?.uri;
-    //         }
-
-    //         const rating = data.community?.rating?.average || 0;
-
-    //         const existingRecord = await Record.findOne({ where: { katalog_number }, transaction });
-    //         if (existingRecord) {
-    //             await transaction.rollback();
-    //             return res.status(400).json({ message: 'Запись с таким каталожным номером уже существует', existingRecord });
-    //         }
-
-    //         let country = await Country.findOne({ where: { name: countryName }, transaction });
-    //         if (!country) {
-    //             country = await Country.create({ name: countryName }, { transaction });
-    //         }
-    //         const countryId = country ? country.id : null;
-    //         const newRecord = await Record.create({
-    //             name,
-    //             katalog_number,
-    //             release_date,
-    //             country_id: countryId,
-    //             cover,
-    //             rating
-    //         }, { transaction });
-
-    //         const artists = data.artists || [];
-    //         for (const artist of artists) {
-    //             let dbArtist = await Artist.findOne({ where: { nickname: artist.name }, transaction });
-    //             if (!dbArtist) {
-    //                 const artistResponse = await axios.get(`${artist.resource_url}?key=${DISCOGS_API_KEY}&secret=${DISCOGS_API_SECRET}`);
-    //                 const artistData = artistResponse.data;
-    //                 dbArtist = await Artist.create({
-    //                     nickname: artist.name,
-    //                     first_name: artistData.realname || '',
-    //                     last_name: '',
-    //                     surname: '',
-    //                     bio: artistData.profile || '',
-    //                     avatar: artistData.images?.find(image => image.type === 'primary')?.uri || ''
-    //                 }, { transaction });
-    //             }
-
-    //             await RecordArtist.create({
-    //                 record_id: newRecord.id,
-    //                 artist_id: dbArtist.id
-    //             }, { transaction });
-    //         }
-
-    //         const genres = data.genres || [];
-    //         for (const genreName of genres) {
-    //             let genre = await Genre.findOne({ where: { name: genreName }, transaction });
-    //             if (!genre) {
-    //                 genre = await Genre.create({ name: genreName }, { transaction });
-    //             }
-    //             const genreId = genre ? genre.id : null;
-    //             await RecordGenre.create({
-    //                 record_id: newRecord.id,
-    //                 genre_id: genreId
-    //             }, { transaction });
-    //         }
-
-    //         const tracklist = data.tracklist || [];
-    //         for (const track of tracklist) {
-    //             const durationString = track.duration;
-    //             const duration = durationToSeconds(durationString);
-    //             const newSong = await Song.create({
-    //                 title: track.title,
-    //                 duration,
-    //                 position: track.position,
-    //                 record_id: newRecord.id
-    //             }, { transaction });
-
-    //             if (track.extraartists && track.extraartists.length > 0) {
-    //                 for (const extraArtist of track.extraartists) {
-    //                     if (extraArtist.role === 'Featuring') {
-    //                         let dbArtist = await Artist.findOne({ where: { nickname: extraArtist.name }, transaction });
-    //                         if (!dbArtist) {
-    //                             const artistResponse = await axios.get(`${extraArtist.resource_url}?key=${DISCOGS_API_KEY}&secret=${DISCOGS_API_SECRET}`);
-    //                             const artistData = artistResponse.data;
-    //                             dbArtist = await Artist.create({
-    //                                 nickname: extraArtist.name,
-    //                                 first_name: artistData.realname || '',
-    //                                 last_name: '',
-    //                                 surname: '',
-    //                                 bio: artistData.profile || '',
-    //                                 avatar: artistData.images?.find(image => image.type === 'primary')?.uri || ''
-    //                             }, { transaction });
-    //                         }
-
-    //                         await ExtraArtist.create({
-    //                             song_id: newSong.id,
-    //                             artist_id: dbArtist.id
-    //                         }, { transaction });
-    //                     }
-    //                 }
-    //             }
-    //         }
-
-    //         await transaction.commit();
-    //         return res.json(newRecord);
-    //     } catch (error) {
-    //         await transaction.rollback();
-    //         console.error('Error fetching data from Discogs API:', error);
-    //         return res.status(500).json({ message: 'Ошибка при запросе данных из Discogs API' });
-    //     }
-    // },
-
-
 
     async findById(req, res) {
         const recordId = req.params.recordId;
 
         try {
             const record = await Record.findByPk(recordId, {
-                include: [{
-                    model: Country,
-                    attributes: ['name']
-                },
-                {
-                    model: Artist,
-                    attributes: ['nickname'],
-                    through: { attributes: [] }
-                }]
+                include: [
+                    {
+                        model: Country,
+                        attributes: ['name']
+                    },
+                    {
+                        model: Artist,
+                        attributes: ['nickname'],
+                        through: { attributes: [] }
+                    },
+                    {
+                        model: Song,
+                        attributes: ['title', 'duration', 'position'],
+                        order: [['position', 'ASC']],
+                        include: [
+                            {
+                                model: ExtraArtist,
+                                attributes: ['id'],
+                                include: [
+                                    {
+                                        model: Artist,
+                                        attributes: ['nickname']
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
             });
 
             if (!record) {
@@ -376,6 +263,7 @@ module.exports = {
             return res.status(500).json({ message: 'Ошибка при поиске записи' });
         }
     },
+
 
     async findByGenre(req, res) {
         const genreName = req.params.genre;
