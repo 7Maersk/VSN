@@ -6,20 +6,47 @@ type AuthState = {
 	user: {
 		id: number | undefined
 		login: string | undefined
-	}
-	isAuth: boolean
+	} | null
 	accessToken: string | undefined
 	refreshToken: string | undefined
 }
 
 type AuthAction = {
-	login: () => void
-	logout: () => void
+	logIn: (login: string, password: string) => void
+	logOut: () => void
 }
 
-const useAuthStore = {} 
-// create<AuthState & AuthAction>()(
-	// devtools((set) => ({}))
-// )
+const useAuth = create<AuthState & AuthAction>()(
+	devtools(
+		persist(
+			(set) => ({
+				user: null, // <-- initially "unknown"
 
-export default useAuthStore
+				accessToken: undefined,
+				refreshToken: undefined,
+
+				logIn: async (login: string, password: string) => {
+					AuthService.login(login, password)
+						.then(({ data }) => {
+							const { user, accessToken, refreshToken } = data
+							set({
+								user,
+								accessToken,
+								refreshToken,
+							})
+						})
+						.catch(() => {
+							set({ user: null, accessToken: undefined, refreshToken: undefined })
+						})
+				},
+
+				logOut: async () => {},
+			}),
+			{
+				name: 'auth',
+			}
+		)
+	)
+)
+
+export default useAuth

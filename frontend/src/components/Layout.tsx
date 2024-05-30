@@ -8,7 +8,7 @@ const Layout = () => {
 				<Sidebar />
 			</div>
 			<div className="col-span-8 row-span-4">
-				<div className="h-full grid grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr_1fr_1fr] grid-rows-12 gap-4">
+				<div className="h-full grid grid-cols-[repeat(8,_1fr)] grid-rows-12 gap-4">
 					<Outlet />
 				</div>
 			</div>

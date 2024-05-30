@@ -4,7 +4,9 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Button } from '@/components/ui/button'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Navigate, useLocation, useNavigate } from 'react-router-dom'
+
+import useAuth from '@/store/auth.store'
 
 const formSchema = z.object({
 	login: z
@@ -13,14 +15,14 @@ const formSchema = z.object({
 		.max(50, { message: 'Максимальная длина 50 символов' }),
 	password: z
 		.string()
-		.min(6, { message: 'Минимальная длина 6 символов' })
+		.min(4, { message: 'Минимальная длина 6 символов' })
 		.max(16, { message: 'Максимальная длина 16 символов' }),
 })
 
 const AuthPage = () => {
 	const navigate = useNavigate()
 	const location = useLocation()
-	const fromPage = location.state?.from?.pathname || '/'
+	const { logIn, user } = useAuth()
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -32,11 +34,16 @@ const AuthPage = () => {
 	})
 
 	function onSubmit({ login, password }: z.infer<typeof formSchema>) {
-		console.log(login, password)
+		logIn(login, password)
+	}
+
+	if (user) {
+		const fromPage = location.state?.from?.pathname || '/'
+		return <Navigate to={fromPage}/>
 	}
 
 	return (
-		<div className="flex justify-center w-full h-full">
+		<div className="flex justify-center w-full h-full col-span-8 row-span-12">
 			<Form {...form}>
 				<form
 					onSubmit={form.handleSubmit(onSubmit)}
