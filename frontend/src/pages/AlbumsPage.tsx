@@ -193,10 +193,9 @@ const AlbumsPage = () => {
 						<CardContent className="flex aspect-square items-end justify-start p-6 relative">
 							<Link to={`/album/${album.id}`} className="contents">
 								<img
-									src={album.cover}
+									src={`${api.staticURL}/albums/${album.cover}`}
 									alt={`Album ${album.name}`}
 									className="absolute w-full h-full object-cover object-center top-0 left-0 rounded-t-md"
-									crossOrigin="anonymous"
 								/>
 							</Link>
 						</CardContent>
