@@ -11,7 +11,12 @@ const server = axios.create({
 })
 
 server.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-	config.headers.Authorization = `Bearer ${localStorage.getItem('token')}`
+	const state = localStorage.getItem('state')
+	if (state) {
+		const tokens = JSON.parse(state)
+		config.headers.Authorization = `Bearer ${tokens.accessToken}`
+	}
+	
 	return config
 })
 
@@ -60,11 +65,13 @@ const api = {
 	staticURL: 'http://localhost:3001',
 
 	getPosts: (): Promise<Post[]> => {
-		return server.get<{ posts: Post[] }>('/post').then(({ data}) => data.posts)
-		.catch((error) => {
-			console.error(error)
-			return []
-		})
+		return server
+			.get<{ posts: Post[] }>('/post')
+			.then(({ data }) => data.posts)
+			.catch((error) => {
+				console.error(error)
+				return []
+			})
 	},
 
 	getArtists: (): Promise<Artist[]> => {
