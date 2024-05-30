@@ -21,6 +21,11 @@ Post.init({
         allowNull: false
     },
 
+    name: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+
     text: {
         type: DataTypes.STRING,
         allowNull: false
@@ -29,6 +34,10 @@ Post.init({
     img: {
         type: DataTypes.STRING,
         allowNull: true
+    },
+    type_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false
     }
 }, {
     tableName: 'post',

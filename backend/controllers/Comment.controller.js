@@ -21,7 +21,7 @@ module.exports = {
                 post_id = objectId
                 break
             default:
-                res.status(400).json({ message: 'Ошибка при создании комментария' })
+                return res.status(400).json({ message: 'Ошибка при создании комментария' })
         }
         return Comment.create({
             datetime,
@@ -39,7 +39,6 @@ module.exports = {
 
     async getBy(req, res) {
         const { objectid, type } = req.query
-        console.log(objectid, type) // перед коммитом убираем
         let [record_id, post_id] = [null, null]
         switch (type) {
             case 'record':
@@ -49,8 +48,9 @@ module.exports = {
                 post_id = objectid
                 break
             default:
-                res.status(400).json({ message: 'Ошибка при загрузке комментариев' })
+                return res.status(400).json({ message: '111Ошибка при загрузке комментариев' })
         }
+
 
         return Comment.findAll({
             where: {
@@ -58,7 +58,7 @@ module.exports = {
                 post_id
             }
         })
-            .then(comments => res.json({ status: 'ok', comments }))
+            .then(comments => res.json({ comments }))
             .catch(err => {
                 console.log(err)
                 res.status(400).json({ message: 'Ошибка загрузке комментариев' })

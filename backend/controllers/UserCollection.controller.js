@@ -2,9 +2,7 @@ const { UserCollection } = require('../models')
 
 module.exports = {
     async create(req, res) {
-
         const { user_id, record_id, is_fav } = req.body
-
         let is_exist = await UserCollection.findAll({
             where: {
                 user_id,
@@ -54,6 +52,7 @@ module.exports = {
     // async delete(req, res) {
     //     const
     // }
+    // в req.body приходит user_id?
 
 
 }

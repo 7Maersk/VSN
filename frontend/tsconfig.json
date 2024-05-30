@@ -25,6 +25,7 @@
 			"@/*": ["./src/*"],
 			"@components/*": ["./src/components/*"],
       		"@/lib/utils/*":["./src/lib/utils/*"],
+			"@types/*": ["./src/types/*"]
 		}
 	},
 	"include": ["src"],

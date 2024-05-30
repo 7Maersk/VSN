@@ -1,30 +1,76 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-import { ThemeProvider } from '@components/ThemeProvider.tsx'
-import App from './App.tsx'
-import AlbumsPage from './pages/AlbumsPage.tsx'
+import i18next from 'i18next'
+import { I18nextProvider } from 'react-i18next'
+import { Route, Routes, BrowserRouter } from 'react-router-dom'
+import { ThemeProvider, Layout } from '@/components'
+import { PrivateRoute } from './hoc'
+import { Toaster } from '@/components/ui/toaster'
 import '../app/globals.css'
 
-const router = createBrowserRouter([
-	{
-		path: '/',
-		element: <App />,
+import translation from './locales/translation.json'
+
+import {
+	ArtistPage,
+	AlbumPage,
+	ArtistsPage,
+	AlbumsPage,
+	AuthPage,
+	MainPage,
+	ProfilePage,
+	CollectionPage,
+	BlogPage,
+} from './pages'
+
+i18next.init({
+	interpolation: { escapeValue: false },
+	lng: 'ru',
+	resources: {
+		en: {
+			global: translation.en,
+		},
+		ru: {
+			global: translation.ru,
+		},
 	},
-	{
-		path: '/artists',
-		element: <div>This is artists page</div>,
-	},
-	{
-		path: '/albums',
-		element: <AlbumsPage />,
-	},
-])
+})
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
 	<React.StrictMode>
-		<ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
-			<RouterProvider router={router} />
-		</ThemeProvider>
+		<BrowserRouter>
+			<ThemeProvider defaultTheme="system" storageKey="vite-ui-theme">
+				<I18nextProvider i18n={i18next}>
+					<Routes>
+						<Route path="/" element={<Layout />}>
+							<Route index path="/" element={<MainPage />} />
+							<Route path="login" element={<AuthPage />} />
+							<Route path="albums" element={<AlbumsPage />} />
+							<Route path="album/:id" element={<AlbumPage />} />
+							<Route path="artist/:id" element={<ArtistPage />} />
+							<Route path="artists" element={<ArtistsPage />} />
+							<Route path="blog" element={<BlogPage />} />
+							<Route
+								path="profile"
+								element={
+									<PrivateRoute>
+										<ProfilePage />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path="collection"
+								element={
+									<PrivateRoute>
+										<CollectionPage />
+									</PrivateRoute>
+								}
+							/>
+							<Route path="*" element={<div>404</div>} />
+						</Route>
+					</Routes>
+					<Toaster />
+				</I18nextProvider>
+			</ThemeProvider>
+		</BrowserRouter>
 	</React.StrictMode>
 )
