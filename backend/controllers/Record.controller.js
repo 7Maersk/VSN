@@ -3,8 +3,6 @@ const { sequelize } = require('../db.config')
 const axios = require('axios')
 const { Record, Genre, RecordArtist, Artist, RecordGenre, Country, Song, ExtraArtist } = require('../models')
 
-const DISCOGS_API_KEY = 'NHtHpxAeScysczOrWfzz'
-const DISCOGS_API_SECRET = 'TWEQMcVJWNPRgFYFsFbyHWUPYgUeNsAJ'
 
 const fs = require('fs')
 
@@ -58,41 +56,108 @@ function parseReleaseDate(releaseDateStr) {
  * @param {{ images: {resource_url: string, type: string}[], title: string, }} data
  * @returns {string} название обложки с расширением (.jpg, .jpeg, .png, ...)
  */
-const saveImage = async (data, path) => {
-	const primary = data.images.find((image) => image.type === 'primary')
-	const secondary = data.images.find((image) => image.type === 'secondary')
+const saveAlbumImage = async (data, path) => {
+	if (!data.images || data.images.length === 0) {
+		return 'empty.png';
+	}
 
-	if (primary.length === 0) {
-		const res1 = await axios.get(`https://api.codetabs.com/v1/proxy/?quest=${secondary.resource_url}`, {
-			responseType: 'arraybuffer',
-		})
+	const primary = data.images.find((image) => image.type === 'primary');
+	const secondary = data.images.find((image) => image.type === 'secondary');
 
-		return await fs.promises
-			.writeFile(
-				`${data.title}.${secondary.resource_url.split('/').at(-1).split('.').at(-1)}`.replaceAll(' ', '_'),
-				res1.data
-			)
-			.then(() => `${data.title.replace(/\//g, '\u2215')}.${secondary.resource_url.split('/').at(-1).split('.').at(-1)}`.replaceAll(' ', '_'))
-			.catch((err) => {
-				console.error(err)
-				return 'Ошибка при сохранении изображения'
-			})
-	} else {
-		const res1 = await axios.get(`https://api.codetabs.com/v1/proxy/?quest=${primary.resource_url}`, {
-			responseType: 'arraybuffer',
-		})
-		return await fs.promises
-			.writeFile(
-				`${path}${data.title.replace(/\//g, '\u2215')}.${primary.resource_url.split('/').at(-1).split('.').at(-1)}`.replaceAll(' ', '_'),
-				res1.data
-			)
-			.then(() => `${data.title}.${secondary.resource_url.split('/').at(-1).split('.').at(-1)}`.replaceAll(' ', '_'))
-			.catch((err) => {
-				console.error(err)
-				return 'Ошибка при сохранении изображения'
-			})
+	const fetchImage = async (url, retries = 3) => {
+		for (let attempt = 1; attempt <= retries; attempt++) {
+			try {
+				const response = await axios.get(`https://api.codetabs.com/v1/proxy/?quest=${url}`, {
+					responseType: 'arraybuffer',
+					timeout: 10000, // Устанавливаем таймаут в 10 секунд
+				});
+				return response.data;
+			} catch (error) {
+				if (attempt === retries) {
+					console.error(`Failed to fetch image after ${retries} attempts:`, error);
+					return null;
+				}
+				console.warn(`Attempt ${attempt} failed, retrying...`);
+			}
+		}
+		return null;
+	};
+
+	try {
+		let imageData;
+		let fileName;
+
+		if (!primary) {
+			if (!secondary) {
+				return 'empty.png';
+			}
+			imageData = await fetchImage(secondary.resource_url);
+			if (!imageData) {
+				return 'empty.png';
+			}
+			fileName = `${data.title}.${secondary.resource_url.split('/').pop().split('.').pop()}`.replaceAll(' ', '_');
+		} else {
+			imageData = await fetchImage(primary.resource_url);
+			if (!imageData) {
+				return 'empty.png';
+			}
+			fileName = `${data.title}.${primary.resource_url.split('/').pop().split('.').pop()}`.replaceAll(' ', '_');
+		}
+
+		await fs.promises.writeFile(`${path}${fileName}`, imageData);
+		return fileName;
+	} catch (err) {
+		console.error(err);
+		return 'Ошибка при сохранении изображения';
 	}
 }
+
+
+const saveArtistImage = async (data, path) => {
+	const fetchImage = async (url, retries = 3) => {
+		for (let attempt = 1; attempt <= retries; attempt++) {
+			try {
+				const response = await axios.get(`https://api.codetabs.com/v1/proxy/?quest=${url}`, {
+					responseType: 'arraybuffer',
+					timeout: 10000, // Устанавливаем таймаут в 10 секунд
+				});
+				return response.data;
+			} catch (error) {
+				if (attempt === retries) {
+					console.error(`Failed to fetch image after ${retries} attempts:`, error);
+					throw error;
+				}
+				console.warn(`Attempt ${attempt} failed, retrying...`);
+			}
+		}
+	};
+
+	const primary = data.images.find((image) => image.type === 'primary');
+	const secondary = data.images.find((image) => image.type === 'secondary');
+
+	try {
+		let imageUrl;
+		let fileName;
+
+		if (!primary) {
+			if (!secondary) {
+				return 'blank.png';
+			}
+			imageUrl = secondary.resource_url;
+			fileName = `${data.name}.${secondary.resource_url.split('/').pop().split('.').pop()}`.replaceAll(' ', '_');
+		} else {
+			imageUrl = primary.resource_url;
+			fileName = `${data.name}.${primary.resource_url.split('/').pop().split('.').pop()}`.replaceAll(' ', '_');
+		}
+
+		const imageData = await fetchImage(imageUrl);
+		await fs.promises.writeFile(`${path}${fileName}`, imageData);
+		return fileName;
+	} catch (err) {
+		console.error(err);
+		return 'blank.png';
+	}
+};
 
 module.exports = {
 	async findAll(req, res) {
@@ -121,7 +186,7 @@ module.exports = {
 
 	async addById(req, res) {
 		const releaseId = req.body.releaseId
-		const discogsUrl = `https://api.discogs.com/releases/${releaseId}?key=${DISCOGS_API_KEY}&secret=${DISCOGS_API_SECRET}`
+		const discogsUrl = `https://api.discogs.com/releases/${releaseId}?key=${process.env.DISCOGS_API_KEY}&secret=${process.env.DISCOGS_API_SECRET}`
 
 		const transaction = await sequelize.transaction()
 
@@ -151,19 +216,17 @@ module.exports = {
 			// 	cover = data.images.find((image) => image.type === 'secondary')?.uri
 			// }
 
-            const cover = await saveImage(data, 'backend/public/albums/')
-
-            console.log('cover', cover)
+			const cover = await saveAlbumImage(data, 'public/albums/')
 
 			const rating = data.community?.rating?.average || 0
 
-			const existingRecord = await Record.findOne({ where: { katalog_number }, transaction })
-			if (existingRecord) {
-				await transaction.rollback()
-				return res
-					.status(400)
-					.json({ message: 'Запись с таким каталожным номером уже существует', existingRecord })
-			}
+			// const existingRecord = await Record.findOne({ where: { katalog_number }, transaction })
+			// if (existingRecord) {
+			// 	await transaction.rollback()
+			// 	return res
+			// 		.status(400)
+			// 		.json({ message: 'Запись с таким каталожным номером уже существует', existingRecord })
+			// }
 
 			let country = await Country.findOne({ where: { name: countryName }, transaction })
 			if (!country) {
@@ -187,10 +250,17 @@ module.exports = {
 				let dbArtist = await Artist.findOne({ where: { nickname: artist.name }, transaction })
 				if (!dbArtist) {
 					const artistResponse = await axios.get(
-						`${artist.resource_url}?key=${DISCOGS_API_KEY}&secret=${DISCOGS_API_SECRET}`
+						`${artist.resource_url}?key=${process.env.DISCOGS_API_KEY}&secret=${process.env.DISCOGS_API_SECRET}`
 					)
 					const artistData = artistResponse.data
 					const { first_name, last_name, surname } = splitArtistName(artistData.realname)
+
+					let avatar;
+					if (artistResponse.data.images && artistResponse.data.images.length > 0) {
+						avatar = await saveArtistImage(artistData, 'public/artists/');
+					} else {
+						avatar = 'blank.png';
+					}
 					dbArtist = await Artist.create(
 						{
 							nickname: artist.name,
@@ -198,7 +268,7 @@ module.exports = {
 							last_name,
 							surname,
 							bio: artistData.profile || '',
-							avatar: artistData.images?.find((image) => image.type === 'primary')?.uri || '',
+							avatar: avatar,
 						},
 						{ transaction }
 					)
@@ -249,10 +319,17 @@ module.exports = {
 							let dbArtist = await Artist.findOne({ where: { nickname: extraArtist.name }, transaction })
 							if (!dbArtist) {
 								const artistResponse = await axios.get(
-									`${extraArtist.resource_url}?key=${DISCOGS_API_KEY}&secret=${DISCOGS_API_SECRET}`
+									`${extraArtist.resource_url}?key=${process.env.DISCOGS_API_KEY}&secret=${process.env.DISCOGS_API_SECRET}`
 								)
 								const artistData = artistResponse.data
 								const { first_name, last_name, surname } = splitArtistName(artistData.realname)
+
+								let avatar;
+								if (artistResponse.data.images && artistResponse.data.images.length > 0) {
+									avatar = await saveArtistImage(artistData, 'public/artists/');
+								} else {
+									avatar = 'blank.png';
+								}
 								dbArtist = await Artist.create(
 									{
 										nickname: extraArtist.name,
@@ -260,7 +337,7 @@ module.exports = {
 										last_name,
 										surname,
 										bio: artistData.profile || '',
-										avatar: artistData.images?.find((image) => image.type === 'primary')?.uri || '',
+										avatar: avatar,
 									},
 									{ transaction }
 								)

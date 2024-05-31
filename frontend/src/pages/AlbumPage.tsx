@@ -35,7 +35,7 @@ const AlbumPage = () => {
 		<>
 			<div>
 				<h2>{album.name}</h2>
-				<img src={album.cover} alt={`Album ${album.name}`} />
+				<img src={`${api.staticURL}/albums/${album.cover}`} alt={`Album ${album.name}`} />
 				<p>Release Date: {album.release_date}</p>
 				<p>Country: {album.country.name}</p>
 				<p>Rating: {album.rating}</p>
