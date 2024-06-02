@@ -20,6 +20,7 @@ import {
 	ProfilePage,
 	CollectionPage,
 	BlogPage,
+	SettingsPage,
 } from './pages'
 
 i18next.init({
@@ -62,6 +63,14 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 								element={
 									<PrivateRoute>
 										<CollectionPage />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path="settings"
+								element={
+									<PrivateRoute>
+										<SettingsPage />
 									</PrivateRoute>
 								}
 							/>

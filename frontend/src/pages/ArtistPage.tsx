@@ -29,27 +29,31 @@ const ArtistPage = () => {
 	}
 
 	return (
-		<>
-			<div className="col-span-12 row-span-3 flex gap-4">
+		<div className="col-span-8 row-span-12 px-4 py-4">
+			<div className="flex gap-4">
 				<img
-					className="aspect-square object-cover object-center rounded-md"
+					className="aspect-square object-cover object-center rounded-md max-w-xs"
 					src={`${api.staticURL}/artists/${artist.avatar}`}
 					alt={`Album ${artist.nickname}`}
 				/>
-				<div>
+				<div className="border rounded-md p-4">
 					<h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
 						{artist.nickname}
 					</h2>
 					<h3 className="scroll-m-20 text-2xl font-semibold tracking-tight mt-6">
-						{artist.first_name} {artist.surname} {artist.last_name}
+						<span className="mr-2">Имя:</span>
+						<span>
+							{artist.first_name} {artist.surname} {artist.last_name}
+						</span>
 					</h3>
 					<p className="leading-7 [&:not(:first-child)]:mt-6">
-						<span className="text-lg font-semibold">Bio: </span>
+						<span className="text-lg font-semibold mr-2">Bio:</span>
 						{artist.bio}
 					</p>
 				</div>
 			</div>
-			<div className="col-span-12 row-span-3">
+
+			<div className="mt-4">
 				<h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{t('translation.more')}</h3>
 				<Carousel
 					opts={{
@@ -71,12 +75,17 @@ const ArtistPage = () => {
 												/>
 											</Link>
 										</CardContent>
-										<CardFooter className="border border-t-0 rounded-bl-md rounded-br-md p-0">
+										<CardFooter className="border border-t-0 rounded-bl-md rounded-br-md py-2 px-4 min-h-32 flex flex-col items-start justify-between">
 											<Link
 												to={`/album/${rec.id}`}
-												className="flex w-full h-full flex-col items-start px-4 py-2"
+												className="w-full h-full"
 											>
 												<span className="text-base font-semibold">{rec.name}</span>
+											</Link>
+											<Link
+												to={`/album/${rec.id}`}
+												className="w-full h-full mt-1"
+											>
 												<span className="text-sm font-semibold">
 													{rec.artists.map((artist: Artist) => artist.nickname).join(', ')}
 												</span>
@@ -89,7 +98,7 @@ const ArtistPage = () => {
 					)}
 				</Carousel>
 			</div>
-		</>
+		</div>
 	)
 }
 

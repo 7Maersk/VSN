@@ -15,12 +15,15 @@ const AlbumPage = () => {
 	const [t] = useTranslation('global')
 
 	useEffect(() => {
-		api.getRecord(id || '1').then((album) => setAlbum(album))
-		api.getArtistRecord(id || '1').then((nickname) => {
-			api.getRecordsArtist(nickname).then((albums: Albums[]) => {
-				setAlbums(albums)
+		api.getRecord(id || '1')
+			.then((album) => setAlbum(album))
+			.then(() => {
+				api.getArtistRecord(id || '1').then((nickname) => {
+					api.getRecordsArtist(nickname).then((albums: Albums[]) => {
+						setAlbums(albums.filter((el) => el.id !== Number(id)))
+					})
+				})
 			})
-		})
 	}, [id])
 
 	if (!album) {
@@ -32,25 +35,41 @@ const AlbumPage = () => {
 	}
 
 	return (
-		<>
-			<div>
-				<h2>{album.name}</h2>
-				<img src={`${api.staticURL}/albums/${album.cover}`} alt={`Album ${album.name}`} />
-				<p>Release Date: {album.release_date}</p>
-				<p>Country: {album.country.name}</p>
-				<p>Rating: {album.rating}</p>
-				<p>Artists: {album.artists.map((artist) => artist.nickname).join(', ')}</p>
+		<div className="col-span-8 row-span-12 px-4 py-4">
+			<div className="flex gap-4">
+				<img
+					className="aspect-square object-cover object-center rounded-md max-w-xs"
+					src={`${api.staticURL}/albums/${album.cover}`}
+					alt={`Album ${album.name}`}
+				/>
+				<div className="border rounded-md p-4 w-full">
+					<h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+						{album.name}
+					</h2>
+
+					<p className="leading-7 [&:not(:first-child)]:mt-4">
+						<b>Release Date:</b> {album.release_date}
+					</p>
+					<p className="leading-7 [&:not(:first-child)]:mt-2">
+						<b>Country:</b> {album.country.name}
+					</p>
+					<p className="leading-7 [&:not(:first-child)]:mt-2">
+						<b>Rating:</b> {album.rating}
+					</p>
+					<p className="leading-7 [&:not(:first-child)]:mt-2">
+						<b>Artists:</b> {album.artists.map((artist) => artist.nickname).join(', ')}
+					</p>
+				</div>
 			</div>
-			<div className="col-span-6">
-				<h3 className="col-span-6 scroll-m-20 text-2xl font-semibold tracking-tight">
-					{t('translation.more')}
-				</h3>
+			<div className="mt-4">
+				<h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{t('translation.more')}</h3>
 				<Carousel
 					opts={{
 						align: 'start',
 					}}
-					className="w-full "
+					className="mt-4"
 				>
+					{albums.length === 0 && <div className="text-lg font-semibold">Нет других релизов</div>}
 					{albums && (
 						<CarouselContent>
 							{albums.map((rec) => (
@@ -84,7 +103,7 @@ const AlbumPage = () => {
 					)}
 				</Carousel>
 			</div>
-		</>
+		</div>
 	)
 }
 
