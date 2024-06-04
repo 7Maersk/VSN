@@ -59,6 +59,9 @@ const AlbumPage = () => {
 					<p className="leading-7 [&:not(:first-child)]:mt-2">
 						<b>Artists:</b> {album.artists.map((artist) => artist.nickname).join(', ')}
 					</p>
+					<p className="leading-7 [&:not(:first-child)]:mt-2">
+						<b>Genres:</b> {album.genres.map((genre) => genre.name).join(', ')}
+					</p>
 				</div>
 			</div>
 			<div className="mt-4">

@@ -1,7 +1,7 @@
 const { Op } = require('sequelize')
 const { sequelize } = require('../db.config')
 const axios = require('axios')
-const { Record, Genre, RecordArtist, Artist, RecordGenre, Country, Song, ExtraArtist } = require('../models')
+const { Record, Genre, RecordArtist, Artist, RecordGenre, Country, Song, ExtraArtist, UserCollection } = require('../models')
 
 
 const fs = require('fs')
@@ -365,7 +365,7 @@ module.exports = {
 	},
 
 	async findById(req, res) {
-		const recordId = req.params.recordId
+		const recordId = req.params.recordId;
 
 		try {
 			const record = await Record.findByPk(recordId, {
@@ -396,17 +396,22 @@ module.exports = {
 							},
 						],
 					},
+					{
+						model: Genre,
+						attributes: ['name'],
+						through: { attributes: [] },
+					},
 				],
-			})
+			});
 
 			if (!record) {
-				return res.status(404).json({ message: 'Запись не найдена' })
+				return res.status(404).json({ message: 'Запись не найдена' });
 			}
 
-			return res.json({ record })
+			return res.json({ record });
 		} catch (error) {
-			console.log(error)
-			return res.status(500).json({ message: 'Ошибка при поиске записи' })
+			console.log(error);
+			return res.status(500).json({ message: 'Ошибка при поиске записи' });
 		}
 	},
 
@@ -537,4 +542,84 @@ module.exports = {
 			return res.status(500).json({ message: 'Ошибка при поиске пластинок по id артиста' })
 		}
 	},
+
+	async getRecommendations(req, res) {
+		const userId = req.body.userId || req.params.userId;
+	
+		if (!userId) {
+			return res.status(400).json({ message: 'userId не указан' });
+		}
+	
+		try {
+			// Получаем записи из коллекции пользователя
+			const userCollection = await UserCollection.findAll({
+				where: { user_id: userId }
+			});
+	
+			if (userCollection.length === 0) {
+				return res.status(404).json({ message: 'Коллекция пользователя пуста' });
+			}
+	
+			const recordIds = userCollection.map(item => item.record_id);
+	
+			// Получаем жанры и артистов для записей из коллекции пользователя
+			const recordGenres = await RecordGenre.findAll({
+				where: { record_id: recordIds }
+			});
+	
+			const genreIds = recordGenres.map(recordGenre => recordGenre.genre_id);
+	
+			const recordArtists = await RecordArtist.findAll({
+				where: { record_id: recordIds }
+			});
+	
+			const artistIds = recordArtists.map(recordArtist => recordArtist.artist_id);
+	
+			// Получаем все записи, которые не принадлежат коллекции пользователя, но имеют совпадения по жанрам или артистам
+			const recommendations = await Record.findAll({
+				where: {
+					id: {
+						[Op.notIn]: recordIds
+					},
+					[Op.or]: [
+						{
+							'$genres.id$': {
+								[Op.in]: genreIds
+							}
+						},
+						{
+							'$artists.id$': {
+								[Op.in]: artistIds
+							}
+						}
+					]
+				},
+				include: [
+					{
+						model: Genre,
+						through: { attributes: [] },
+						attributes: ['name']
+					},
+					{
+						model: Artist,
+						through: { attributes: [] },
+						attributes: ['nickname']
+					}
+				]
+			});
+	
+			// Преобразуем данные перед отправкой
+			const formattedRecommendations = recommendations.map(record => ({
+				name: record.name,
+				cover: record.cover,
+				genres: record.genres.map(genre => genre.name),
+				artists: record.artists.map(artist => artist.nickname)
+			}));
+	
+			return res.json({ recommendations: formattedRecommendations });
+		} catch (error) {
+			console.error(error);
+			return res.status(500).json({ message: 'Ошибка при получении рекомендаций' });
+		}
+	}
 }

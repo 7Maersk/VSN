@@ -31,6 +31,8 @@ recordRouter.post('/add', async (req, res) => {
     await recordController.addById(req, res);
 });
 
-recordRouter.get('/testing', async (req, res) => await recordController.testing(req, res))
+recordRouter.post('/rec', async (req, res) => {
+    await recordController.getRecommendations(req, res);
+});
 
 module.exports = recordRouter;
