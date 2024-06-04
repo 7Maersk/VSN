@@ -1,6 +1,7 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import { Albums, Artist, AuthResponse, Genre, Post } from '@/types'
 import { Album } from '@/types'
+import User from '@/types/User'
 
 const server = axios.create({
 	withCredentials: true,
@@ -16,7 +17,7 @@ server.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 		const tokens = JSON.parse(state)
 		config.headers.Authorization = `Bearer ${tokens.accessToken}`
 	}
-	
+
 	return config
 })
 
@@ -148,6 +149,16 @@ const api = {
 		return server
 			.get<{ artist: Artist }>(`/artists/${id}`)
 			.then(({ data }) => data.artist)
+			.catch((error) => {
+				console.error(error)
+				return null
+			})
+	},
+
+	getUserInfo: (id: string): Promise<User | null> => {
+		return server
+			.get<{ user: User }>(`/user/${id}`)
+			.then(({ data }) => data.user)
 			.catch((error) => {
 				console.error(error)
 				return null

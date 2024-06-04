@@ -4,7 +4,10 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
+import { api } from '@/api/api.config'
 import { z } from 'zod'
+import { Albums, User } from '@/types'
+import { useEffect, useState } from 'react'
 
 const formSchema = z.object({
 	login: z
@@ -20,6 +23,10 @@ const formSchema = z.object({
 })
 
 const SettingsPage = () => {
+
+	const id = JSON.parse(localStorage.getItem('auth') || '{}')?.state?.user?.id ?? 'ID не найден';
+	const [user, setUser] = useState<User | null>(null)
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -28,6 +35,21 @@ const SettingsPage = () => {
 		},
 		mode: 'onChange',
 	})
+
+	useEffect(() => {
+		api.getUserInfo(id || 1).then((user) => setUser(user))
+	}, [id])
+
+	console.log(api.getUserInfo(id || 1))
+
+	/* не понимаю почему возвращается пустой промис, причем в нетворк респонс с сервера приходит
+	мое видение страницы настроек - это когда ты на нее заходишь у тебя уже заполнены поля ник био аватар из базы данных, 
+	ты можешь стереть или дополнить что то, после этого данные обновляются в бдшке
+	пароль меняется отдельной ссылкой на смену пароля(контроллер написал) */
+
+	// if (!user) {
+	// 	return <div>Авторизуйтесь для редактирования профиля</div>
+	// }
 
 	const fileRef = form.register('picture')
 
@@ -48,7 +70,7 @@ const SettingsPage = () => {
 						name="login"
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>Логин</FormLabel>
+								<FormLabel>Никнейм</FormLabel>
 								<FormControl>
 									<Input placeholder="Логин" type="text" {...field} />
 								</FormControl>
@@ -82,7 +104,7 @@ const SettingsPage = () => {
 							</FormItem>
 						)}
 					/>
-					<FormField
+					{/* <FormField
 						control={form.control}
 						name="password"
 						render={({ field }) => (
@@ -94,7 +116,7 @@ const SettingsPage = () => {
 								<FormMessage />
 							</FormItem>
 						)}
-					/>
+					/> */}
 					<Button
 						type="submit"
 						className="w-full"
