@@ -16,7 +16,7 @@ module.exports = {
             const post = await Post.create({
                 datetime,
                 user_id: user.get('user_id'),
-                type_id: postType.get('id'), // Используем полученный id типа поста
+                type_id: postType.get('id'),
                 name,
                 text,
                 img
@@ -116,32 +116,4 @@ module.exports = {
             return res.status(500).json({ message: 'Ошибка при поиске всех постов' });
         }
     }
-
-    // async findAll(req, res) {
-    //     try {
-    //         const posts = await Post.findAll({
-    //             include: [
-    //                 {
-    //                     model: User,
-    //                     include: {
-    //                         model: UserInfo,
-    //                         attributes: ['nickname']
-    //                     }
-    //                 }
-    //             ],
-    //             attributes: ['id', 'name', 'img']
-    //         });
-
-    //         const formattedPosts = posts.map(post => {
-    //             const { id, name, img, User } = post;
-    //             const nickname = User && User.UserInfo ? User.UserInfo.nickname : null;
-    //             return { id, name, img, nickname };
-    //         });
-
-    //         return res.json({ posts: formattedPosts });
-    //     } catch (error) {
-    //         console.log(error);
-    //         return res.status(500).json({ message: 'Ошибка при поиске всех постов' });
-    //     }
-    // }
 }

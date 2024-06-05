@@ -69,7 +69,7 @@ const saveAlbumImage = async (data, path) => {
 			try {
 				const response = await axios.get(`https://api.codetabs.com/v1/proxy/?quest=${url}`, {
 					responseType: 'arraybuffer',
-					timeout: 10000, // Устанавливаем таймаут в 10 секунд
+					timeout: 10000,
 				});
 				return response.data;
 			} catch (error) {
@@ -119,7 +119,7 @@ const saveArtistImage = async (data, path) => {
 			try {
 				const response = await axios.get(`https://api.codetabs.com/v1/proxy/?quest=${url}`, {
 					responseType: 'arraybuffer',
-					timeout: 10000, // Устанавливаем таймаут в 10 секунд
+					timeout: 10000,
 				});
 				return response.data;
 			} catch (error) {
@@ -210,24 +210,8 @@ module.exports = {
 			const katalog_number = data.labels[0]?.catno
 			const release_date = parseReleaseDate(data.released)
 			const countryName = data.country
-
-			// let cover = data.images.find((image) => image.type === 'primary')?.uri
-			// if (!cover) {
-			// 	cover = data.images.find((image) => image.type === 'secondary')?.uri
-			// }
-
 			const cover = await saveAlbumImage(data, 'public/albums/')
-
 			const rating = data.community?.rating?.average || 0
-
-			// const existingRecord = await Record.findOne({ where: { katalog_number }, transaction })
-			// if (existingRecord) {
-			// 	await transaction.rollback()
-			// 	return res
-			// 		.status(400)
-			// 		.json({ message: 'Запись с таким каталожным номером уже существует', existingRecord })
-			// }
-
 			let country = await Country.findOne({ where: { name: countryName }, transaction })
 			if (!country) {
 				country = await Country.create({ name: countryName }, { transaction })
@@ -484,7 +468,6 @@ module.exports = {
 		}
 	},
 
-	//работает не до конца верно, не знаю как решить
 	async findByArtist(req, res) {
 		const artistName = req.params.artistName
 
@@ -545,37 +528,33 @@ module.exports = {
 
 	async getRecommendations(req, res) {
 		const userId = req.body.userId || req.params.userId;
-	
+
 		if (!userId) {
 			return res.status(400).json({ message: 'userId не указан' });
 		}
-	
+
 		try {
-			// Получаем записи из коллекции пользователя
 			const userCollection = await UserCollection.findAll({
 				where: { user_id: userId }
 			});
-	
+
 			if (userCollection.length === 0) {
 				return res.status(404).json({ message: 'Коллекция пользователя пуста' });
 			}
-	
+
 			const recordIds = userCollection.map(item => item.record_id);
-	
-			// Получаем жанры и артистов для записей из коллекции пользователя
 			const recordGenres = await RecordGenre.findAll({
 				where: { record_id: recordIds }
 			});
-	
+
 			const genreIds = recordGenres.map(recordGenre => recordGenre.genre_id);
-	
+
 			const recordArtists = await RecordArtist.findAll({
 				where: { record_id: recordIds }
 			});
-	
+
 			const artistIds = recordArtists.map(recordArtist => recordArtist.artist_id);
-	
-			// Получаем все записи, которые не принадлежат коллекции пользователя, но имеют совпадения по жанрам или артистам
+
 			const recommendations = await Record.findAll({
 				where: {
 					id: {
@@ -607,15 +586,14 @@ module.exports = {
 					}
 				]
 			});
-	
-			// Преобразуем данные перед отправкой
+
 			const formattedRecommendations = recommendations.map(record => ({
 				name: record.name,
 				cover: record.cover,
 				genres: record.genres.map(genre => genre.name),
 				artists: record.artists.map(artist => artist.nickname)
 			}));
-	
+
 			return res.json({ recommendations: formattedRecommendations });
 		} catch (error) {
 			console.error(error);
