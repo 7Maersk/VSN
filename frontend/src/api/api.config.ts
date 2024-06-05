@@ -1,5 +1,5 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
-import { Albums, Artist, AuthResponse, Genre, Post } from '@/types'
+import { Albums, Artist, AuthResponse, Genre, Post, Comment } from '@/types'
 import { Album } from '@/types'
 import User from '@/types/User'
 
@@ -10,6 +10,11 @@ const server = axios.create({
 		'Content-Type': 'application/json',
 	},
 })
+
+interface CommentRequest {
+	type: 'record_id' | 'post_id';
+	id: number;
+}
 
 server.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 	const state = localStorage.getItem('state')
@@ -135,6 +140,29 @@ const api = {
 			})
 	},
 
+	// getComments: (): Promise<Comment[]> => {
+	// 	return server
+	// 		.get<{ comments: Comment[] }>('/comment/getby')
+	// 		.then(({ data }) => data.comments)
+	// 		.catch((error) => {
+	// 			console.error(error)
+	// 			return []
+	// 		})
+	// },
+	
+	getComments: (request: CommentRequest): Promise<Comment[]> => {
+		const { type, id } = request;
+		const endpoint = type === 'record_id' ? `/comment/getby/?record_id=${id}` : `/comment/getby/?post_id=${id}`;
+	
+		return server
+			.get<{ comments: Comment[] }>(endpoint)
+			.then(({ data }) => data.comments)
+			.catch((error) => {
+				console.error(error);
+				return [];
+			});
+	},
+
 	getRecordsArtistId: (id: string) => {
 		return server
 			.get<{ records: Albums[] }>(`/records/artist/${id}`)
@@ -166,9 +194,19 @@ const api = {
 	},
 
 	updateUserInfo: (data: FormData): Promise<AxiosResponse<void>> => {
-		return server.post<void>('/user/updateinfo', data)
+		return server
+			.post<void>('/user/updateinfo', data)
 			.catch((error) => {
 				console.error('Ошибка при обновлении информации о пользователе', error);
+				throw error;
+			});
+	},
+
+	createComment: (data: Omit<Comment, 'id'>): Promise<Comment> => {
+		return server.post<{ comment: Comment }>('/comment/create', data)
+			.then(({ data }) => data.comment)
+			.catch((error) => {
+				console.error('Ошибка при создании комментария:', error);
 				throw error;
 			});
 	},

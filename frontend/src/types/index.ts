@@ -5,5 +5,6 @@ import Genre from './Genre'
 import AuthResponse from './AuthResponse'
 import { Post } from './Post'
 import User from './User'
+import Comment from './Comment'
 
-export { type Album, type Artist, type Genre, type Albums, type AuthResponse, type Post, type User }
+export { type Album, type Artist, type Genre, type Albums, type AuthResponse, type Post, type User, type Comment }
