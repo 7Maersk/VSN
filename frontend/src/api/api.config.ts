@@ -155,15 +155,57 @@ const api = {
 			})
 	},
 
-	getUserInfo: (id: string): Promise<User | null> => {
-		return server
-			.get<{ user: User }>(`/user/${id}`)
-			.then(({ data }) => data.user)
-			.catch((error) => {
-				console.error(error)
-				return null
-			})
+	getUserInfo: async (id: string): Promise<User | null> => {
+		try {
+			const { data } = await server.get<User>(`/user/${id}`);
+			return data;
+		} catch (error) {
+			console.error('API error:', error);
+			return null;
+		}
 	},
+
+	updateUserInfo: (data: FormData): Promise<AxiosResponse<void>> => {
+		return server.post<void>('/user/updateinfo', data)
+			.catch((error) => {
+				console.error('Ошибка при обновлении информации о пользователе', error);
+				throw error;
+			});
+	},
+
+	getRecommendedRecords: (userId: string): Promise<Albums[]> => {
+		return server
+			.post<{ recommendations: Albums[] }>('/records/rec', { userId })
+			.then(({ data }) => {
+				return data.recommendations;
+			})
+			.catch((error) => {
+				console.error('Error fetching recommended records:', error);
+				return [];
+			});
+	},
+
+	getFavoriteCollection: (userId: string): Promise<Albums[]> => {
+		return server
+			.get<{ records: Albums[] }>(`/collection/favorite/${userId}`)
+			.then(({ data }) => data.records)
+			.catch((error) => {
+				console.error(error);
+				return [];
+			});
+	},
+
+	getUserCollection: (userId: string): Promise<Albums[]> => {
+		return server
+			.get<{ records: Albums[] }>(`/collection/${userId}`)
+			.then(({ data }) => data.records)
+			.catch((error) => {
+				console.error(error);
+				return [];
+			});
+	},
+
+
 }
 
 //TODO: Перенести в AuthService.ts

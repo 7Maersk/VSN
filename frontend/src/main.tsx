@@ -21,6 +21,8 @@ import {
 	CollectionPage,
 	BlogPage,
 	SettingsPage,
+	RecommendationsPage,
+	FavoritesPage
 } from './pages'
 
 i18next.init({
@@ -71,6 +73,22 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 								element={
 									<PrivateRoute>
 										<SettingsPage />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path="recommendations"
+								element={
+									<PrivateRoute>
+										<RecommendationsPage />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path="favorites"
+								element={
+									<PrivateRoute>
+										<FavoritesPage />
 									</PrivateRoute>
 								}
 							/>

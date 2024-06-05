@@ -71,7 +71,7 @@ const Sidebar = () => {
 		},
 		{
 			protected: true,
-			link: '/recommendation',
+			link: '/recommendations',
 			text: 'translation.recommendations',
 			icon: <Disc3 className="h-5 w-5" />,
 			menuGroup: 'menu',

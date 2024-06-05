@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next'
 import { Albums, Artist, Genre } from '@/types'
 import { api } from '@/api/api.config'
 
-const CollectionPage = () => {
+const FavoritesPage = () => {
 	const [t] = useTranslation('global')
 
 	const [open, setOpen] = useState(false)
@@ -40,7 +40,7 @@ const CollectionPage = () => {
 
 	useEffect(() => {
 		api.getArtists().then((artists: Artist[]) => setArtists(artists))
-		api.getUserCollection(id).then((albums: Albums[]) => setAlbums(albums))
+		api.getFavoriteCollection(id).then((albums: Albums[]) => setAlbums(albums))
 		api.getGenres().then((genres: Genre[]) => setGenres(genres))
 	}, [])
 
@@ -219,4 +219,4 @@ const CollectionPage = () => {
 	)
 }
 
-export default CollectionPage
+export default FavoritesPage

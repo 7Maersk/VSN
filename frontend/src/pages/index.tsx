@@ -9,3 +9,6 @@ export { default as ProfilePage } from './ProfilePage'
 export { default as CollectionPage } from './CollectionPage'
 export { default as BlogPage } from './BlogPage'
 export { default as SettingsPage } from './SettingsPage'
+export { default as RecommendationsPage } from './RecommendationsPage'
+export { default as FavoritesPage } from './FavoritesPage'
+
