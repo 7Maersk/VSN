@@ -6,6 +6,7 @@ const artistRouter = require('./Artist.router')
 const recordRouter = require('./Record.router')
 const genreRouter = require('./Genre.router')
 const songRouter = require('./Song.router')
+const authRouter = require('./Auth.router')
 
 
-module.exports = { commentRouter, userRouter, userCollectionRouter, postRouter, artistRouter, recordRouter, genreRouter, songRouter }
+module.exports = { commentRouter, userRouter, userCollectionRouter, postRouter, artistRouter, recordRouter, genreRouter, songRouter, authRouter }

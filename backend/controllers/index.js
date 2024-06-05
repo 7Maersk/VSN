@@ -6,8 +6,9 @@ const artistController = require('./Artist.controller')
 const recordController = require('./Record.controller')
 const genreController = require('./Genre.controller')
 const songController = require('./Song.controller')
+const authController = require('./Auth.controller')
 
 
 
 
-module.exports = { userController, commentController, userCollectionController, postController, artistController, recordController, genreController, songController }
+module.exports = { authController, userController, commentController, userCollectionController, postController, artistController, recordController, genreController, songController }

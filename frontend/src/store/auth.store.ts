@@ -20,7 +20,7 @@ const useAuth = create<AuthState & AuthAction>()(
 	devtools(
 		persist(
 			(set) => ({
-				user: null, // <-- initially "unknown"
+				user: null,
 
 				accessToken: undefined,
 				refreshToken: undefined,

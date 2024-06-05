@@ -20,7 +20,7 @@ server.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 	const state = localStorage.getItem('state')
 	if (state) {
 		const tokens = JSON.parse(state)
-		config.headers.Authorization = `Bearer ${tokens.accessToken}`
+		config.headers['Authorization'] = `${tokens.accessToken}`
 	}
 
 	return config
@@ -32,39 +32,39 @@ server.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 // 	return config
 // })
 
-// server.interceptors.response.use(
-// 	// в случае валидного accessToken ничего не делаем:
-// 	(config) => {
-// 		return config
-// 	},
-// 	// в случае просроченного accessToken пытаемся его обновить:
-// 	async (error) => {
-// 		// предотвращаем зацикленный запрос, добавляя свойство _isRetry
-// 		const originalRequest = { ...error.config }
-// 		originalRequest._isRetry = true
-// 		if (
-// 			// проверим, что ошибка именно из-за невалидного accessToken
-// 			error.response.status === 401 &&
-// 			// проверим, что запрос не повторный
-// 			error.config &&
-// 			!error.config._isRetry
-// 		) {
-// 			try {
-// 				// запрос на обновление токенов
-// 				const resp = await server.get('/api/refresh')
-// 				// сохраняем новый accessToken в localStorage
-// 				localStorage.setItem('token', resp.data.accessToken)
-// 				// переотправляем запрос с обновленным accessToken
-// 				return server.request(originalRequest)
-// 			} catch (error) {
-// 				console.log('AUTH ERROR')
-// 			}
-// 		}
-// 		// на случай, если возникла другая ошибка (не связанная с авторизацией)
-// 		// пробросим эту ошибку
-// 		throw error
-// 	}
-// )
+server.interceptors.response.use(
+	// в случае валидного accessToken ничего не делаем:
+	(config) => {
+		return config
+	},
+	// в случае просроченного accessToken пытаемся его обновить:
+	async (error) => {
+		// предотвращаем зацикленный запрос, добавляя свойство _isRetry
+		const originalRequest = { ...error.config }
+		originalRequest._isRetry = true
+		if (
+			// проверим, что ошибка именно из-за невалидного accessToken
+			error.response.status === 401 &&
+			// проверим, что запрос не повторный
+			error.config &&
+			!error.config._isRetry
+		) {
+			try {
+				// запрос на обновление токенов
+				const resp = await server.get('/api/refresh')
+				// сохраняем новый accessToken в localStorage
+				localStorage.setItem('token', resp.data.accessToken)
+				// переотправляем запрос с обновленным accessToken
+				return server.request(originalRequest)
+			} catch (error) {
+				console.log('AUTH ERROR')
+			}
+		}
+		// на случай, если возникла другая ошибка (не связанная с авторизацией)
+		// пробросим эту ошибку
+		throw error
+	}
+)
 
 const api = {
 	baseUrl: 'http://localhost:3001/api',
@@ -261,6 +261,7 @@ class AuthService {
 			password,
 		})
 	}
+
 	static async logout(): Promise<void> {
 		return server.post('user/logout')
 	}

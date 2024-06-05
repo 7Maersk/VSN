@@ -10,7 +10,7 @@ var corsOptions = {
     optionSuccessStatus: 200
 };
 
-const { userRouter, commentRouter, userCollectionRouter, postRouter, artistRouter, recordRouter, genreRouter, songRouter } = require('./routes');
+const { userRouter, commentRouter, userCollectionRouter, postRouter, artistRouter, recordRouter, genreRouter, songRouter, authRouter } = require('./routes');
 const { verifyToken } = require('./controllers/Auth.controller');
 
 app.use(cors(corsOptions));
@@ -33,6 +33,7 @@ app.use('/api/artists', artistRouter)
 app.use('/api/records', recordRouter)
 app.use('/api/genres', genreRouter)
 app.use('/api/songs', songRouter)
+app.use('/api/auth', authRouter)
 
 function fillDB() {
     console.log()

@@ -8,6 +8,7 @@ import { api } from '@/api/api.config'
 import { z } from 'zod'
 import { User } from '@/types'
 import { useEffect, useState } from 'react'
+import useAuth from '@/store/auth.store'
 
 const formSchema = z.object({
 	nickname: z
@@ -24,7 +25,7 @@ const formSchema = z.object({
 
 const SettingsPage = () => {
 
-	const id = (JSON.parse(localStorage.getItem('auth') || '{}')?.state?.user?.id).toString();
+	const auth = useAuth()
 	const [user, setUser] = useState<User | null>(null)
 
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -39,7 +40,7 @@ const SettingsPage = () => {
 	useEffect(() => {
 		const fetchUserInfo = async () => {
 			try {
-				const userData = await api.getUserInfo(id);
+				const userData = await api.getUserInfo(`${auth.user?.id}`);
 				setUser(userData);
 				form.reset({
 					nickname: userData?.nickname || '',
@@ -51,7 +52,7 @@ const SettingsPage = () => {
 		};
 
 		fetchUserInfo();
-	}, [id, form]);
+	}, [auth.user?.id, form]);
 
 	if (!user) {
 		return <div>Авторизуйтесь для редактирования профиля</div>
@@ -62,7 +63,7 @@ const SettingsPage = () => {
 	async function onSubmit({ nickname, bio, picture }: z.infer<typeof formSchema>) {
 		try {
 			const formData = new FormData();
-			formData.append('user_id', id);
+			// formData.append('user_id', id);
 			formData.append('nickname', nickname);
 			formData.append('bio', bio);
 			if (picture && picture.length > 0) { //в случае если файл аватара не добавлен, добавляется изначальное название, он если он добавлен,
