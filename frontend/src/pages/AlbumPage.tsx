@@ -6,13 +6,13 @@ import { Carousel, CarouselContent, CarouselItem } from '@/components/ui/carouse
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import { api } from '@/api/api.config'
 import { Album, Albums, Artist, Comment } from '@/types'
+import useAuth from '@/store/auth.store'
 
 const AlbumPage = () => {
 	const { id } = useParams<{ id: string }>()
 	const [album, setAlbum] = useState<Album | null>(null)
 	const [albums, setAlbums] = useState<Albums[]>([])
-	const user_id = (JSON.parse(localStorage.getItem('auth') || '{}')?.state?.user?.id).toString();
-
+	const { user } = useAuth()
 	const [commentText, setCommentText] = useState('');
 	const [comments, setComments] = useState<Comment[]>([]);
 
@@ -24,10 +24,12 @@ const AlbumPage = () => {
 				const newComment = await api.createComment({
 					datetime: new Date().toISOString(),
 					text: commentText,
-					user_id: user_id,
+					user_id: user!.id || 1,
 					post_id: "",
 					record_id: Number(id),
+					nickname: user?.nickname || ""
 				});
+				console.log(newComment)
 				setComments([...comments, newComment]);
 				setCommentText('');
 			} catch (error) {

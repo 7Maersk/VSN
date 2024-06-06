@@ -218,7 +218,8 @@ const api = {
 
 	createComment: (data: Omit<Comment, 'id'>): Promise<Comment> => {
 		return server.post<{ comment: Comment }>('/comment/create', data)
-			.then(({ data }) => data.comment)
+			.then(({ data }) => data
+			)
 			.catch((error) => {
 				console.error('Ошибка при создании комментария:', error);
 				throw error;

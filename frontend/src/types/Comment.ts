@@ -3,6 +3,7 @@ export default interface Comment {
 	datetime: string
 	text: string
 	user_id: number
+	nickname: string
 	post_id: string
 	record_id: number
 }

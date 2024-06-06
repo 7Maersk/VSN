@@ -56,12 +56,15 @@ module.exports = {
 				expiresIn: '1d',
 			})
 
+			const username = await UserInfo.findOne({where: {user_id: user.id}})
+
 			return res.cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'strict' }).json({
 				accessToken: token,
 				refreshToken: refreshToken,
 				user: {
 					id: user.id,
 					login,
+					nickname: username.nickname,
 				},
 			})
 		} catch (error) {

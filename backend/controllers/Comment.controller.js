@@ -18,8 +18,8 @@ module.exports = {
                 post_id: postIdValue,
                 record_id: recordIdValue
             });
-
-            res.json(newComment);
+            const username = await UserInfo.findOne({where: {user_id: user_id}})
+            return res.json({...newComment.dataValues, nickname:username.dataValues.nickname});
         } catch (error) {
             console.error('Ошибка:', error);
             res.status(500);

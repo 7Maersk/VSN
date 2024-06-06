@@ -6,6 +6,7 @@ type AuthState = {
 	user: {
 		id: number | undefined
 		login: string | undefined
+		nickname: string | undefined
 	} | null
 	accessToken: string | undefined
 	refreshToken: string | undefined
@@ -21,7 +22,6 @@ const useAuth = create<AuthState & AuthAction>()(
 		persist(
 			(set) => ({
 				user: null,
-
 				accessToken: undefined,
 				refreshToken: undefined,
 
@@ -40,7 +40,7 @@ const useAuth = create<AuthState & AuthAction>()(
 						})
 				},
 
-				logOut: async () => {},
+				logOut: async () => { },
 			}),
 			{
 				name: 'auth',
