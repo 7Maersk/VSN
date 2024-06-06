@@ -24,7 +24,8 @@
             "albums": "Albums",
             "artists": "Artists",
             "more": "More artist releases",
-            "home": "Home"
+            "home": "Home",
+            "thread": "Threads"
         }
     },
     "ru": {
@@ -52,7 +53,8 @@
             "albums": "Альбомы",
             "artists": "Артисты",
             "more": "Другие релизы артиста",
-            "home": "Главная"
+            "home": "Главная",
+            "thread": "Треды"
         }
     }
     

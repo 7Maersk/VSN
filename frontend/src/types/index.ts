@@ -6,5 +6,6 @@ import AuthResponse from './AuthResponse'
 import { Post } from './Post'
 import User from './User'
 import Comment from './Comment'
+import Room from './Room'
 
-export { type Album, type Artist, type Genre, type Albums, type AuthResponse, type Post, type User, type Comment }
+export { type Album, type Artist, type Genre, type Albums, type AuthResponse, type Post, type User, type Comment, type Room }

@@ -158,7 +158,7 @@ const AlbumPage = () => {
 			</div>
 			{/* не работает отображение комментов, комменты приходят с сервака, но почему то 
 			не обрабатываются из нетворка, не понимаю в чем проблема */}
-			{comments && (
+			{/* {comments && ( */}
 				<div className="mt-4">
 					<h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{t('translation.comments')}</h3>
 					<div className="mt-4">
@@ -176,17 +176,17 @@ const AlbumPage = () => {
 							Добавить комментарий
 						</button>
 
-						<div className="mt-4">
+						{/* <div className="mt-4">
 							{comments.map((comment) => (
 								<div key={comment.id} className="border p-2 rounded-md mt-2">
 									<p>{comment.text}</p>
 									<p>Дата: {comment.date}</p>
 								</div>
 							))}
-						</div>
+						</div> */}
 					</div>
 				</div>
-			)}
+			{/* )} */}
 		</div>
 	)
 }

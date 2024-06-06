@@ -22,7 +22,9 @@ import {
 	BlogPage,
 	SettingsPage,
 	RecommendationsPage,
-	FavoritesPage
+	FavoritesPage,
+	ThreadPage,
+	ThreadsPage
 } from './pages'
 
 i18next.init({
@@ -52,6 +54,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 							<Route path="artist/:id" element={<ArtistPage />} />
 							<Route path="artists" element={<ArtistsPage />} />
 							<Route path="blog" element={<BlogPage />} />
+							<Route path="threads" element={<ThreadsPage />} />
 							<Route
 								path="profile"
 								element={
@@ -89,6 +92,14 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 								element={
 									<PrivateRoute>
 										<FavoritesPage />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path="thread/:room"
+								element={
+									<PrivateRoute>
+										<ThreadPage />
 									</PrivateRoute>
 								}
 							/>

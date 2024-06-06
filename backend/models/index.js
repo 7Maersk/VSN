@@ -13,6 +13,8 @@ var RecordGenre = require('./RecordGenre.model')
 var Comment = require('./Comment.model')
 var UserCollection = require('./UserCollection.model')
 var PostType = require('./PostType.model')
+var Message = require('./Message.model')
+var Room = require('./Room.model')
 
 Role.hasMany(User)
 User.belongsTo(Role)
@@ -73,6 +75,15 @@ ExtraArtist.belongsTo(Song, { foreignKey: 'song_id' });
 ExtraArtist.belongsTo(Artist, { foreignKey: 'artist_id' });
 Artist.hasMany(ExtraArtist, { foreignKey: 'artist_id' });
 
+Message.belongsTo(Room, { foreignKey: 'room_id' });
+Room.hasMany(Message, { foreignKey: 'room_id' });
+
+Message.belongsTo(User, { foreignKey: 'user_id' });
+User.hasMany(Message, { foreignKey: 'user_id' });
+
+Message.belongsTo(UserInfo, { foreignKey: 'user_id', as: 'user_info' });
+UserInfo.hasMany(Message, { foreignKey: 'user_id', as: 'messages' });
+
 module.exports = {
     User,
     Role,
@@ -88,5 +99,7 @@ module.exports = {
     RecordGenre,
     Comment,
     UserCollection,
-    PostType
+    PostType,
+    Room,
+    Message
 }

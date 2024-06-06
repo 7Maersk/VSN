@@ -2,6 +2,7 @@ import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
 import { Albums, Artist, AuthResponse, Genre, Post, Comment } from '@/types'
 import { Album } from '@/types'
 import User from '@/types/User'
+import Room from '@/types/Room'
 
 const server = axios.create({
 	withCredentials: true,
@@ -140,15 +141,15 @@ const api = {
 			})
 	},
 
-	// getComments: (): Promise<Comment[]> => {
-	// 	return server
-	// 		.get<{ comments: Comment[] }>('/comment/getby')
-	// 		.then(({ data }) => data.comments)
-	// 		.catch((error) => {
-	// 			console.error(error)
-	// 			return []
-	// 		})
-	// },
+	getRooms: (): Promise<Room[]> => {
+		return server
+			.get<{ rooms: Room[] }>('/rooms')
+			.then(({ data }) => data.rooms)
+			.catch((error) => {
+				console.error(error)
+				return []
+			})
+	},
 	
 	getComments: (request: CommentRequest): Promise<Comment[]> => {
 		const { type, id } = request;
