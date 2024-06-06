@@ -1,4 +1,4 @@
-export default interface Artist {
+export default interface Comment {
 	id: number
 	date: string
 	text: string

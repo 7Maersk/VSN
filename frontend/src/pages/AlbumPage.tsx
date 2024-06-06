@@ -38,11 +38,13 @@ const AlbumPage = () => {
 
 	// useEffect(() => {
 	// 	api.getComments({ type: 'record_id', id: Number(id) })
-	// 		.then((comments) => setComments(comments))
+	// 		.then((comments) => {
+	// 			setComments(comments);
+	// 		})
 	// 		.catch((error) => console.error('Ошибка при получении комментариев:', error));
 	// }, [id]);
 
-	// console.log(comments)
+
 
 	// useEffect(() => {
 	// 	api.getRecord(id || '1')
@@ -56,16 +58,33 @@ const AlbumPage = () => {
 	// 		})
 	// }, [id])
 
+	// useEffect(() => {
+	// 	Promise.all([
+	// 		api.getRecord(id || '1'),
+	// 		api.getComments({ type: 'record_id', id: Number(id) })
+	// 	])
+	// 		.then(([album, comments]) => {
+	// 			setAlbum(album);
+	// 			setComments(comments);
+	// 			// console.log(album)
+	// 			// console.log(comments)
+	// 			return api.getArtistRecord(id || '1');
+	// 		})
+	// 		.then((nickname) => {
+	// 			return api.getRecordsArtist(nickname);
+	// 		})
+	// 		.then((albums: Albums[]) => {
+	// 			setAlbums(albums.filter((el) => el.id !== Number(id)));
+	// 		})
+	// 		.catch((error) => console.error('Ошибка при загрузке данных:', error));
+	// }, [id]);
+
 	useEffect(() => {
 		Promise.all([
 			api.getRecord(id || '1'),
-			api.getComments({ type: 'record_id', id: Number(id) })
 		])
-			.then(([album, comments]) => {
+			.then(([album]) => {
 				setAlbum(album);
-				setComments(comments);
-				console.log(album)
-				console.log(comments)
 				return api.getArtistRecord(id || '1');
 			})
 			.then((nickname) => {
@@ -76,6 +95,15 @@ const AlbumPage = () => {
 			})
 			.catch((error) => console.error('Ошибка при загрузке данных:', error));
 	}, [id]);
+
+	useEffect(() => {
+		api.getComments({ type: 'record_id', id: Number(id) })
+			.then((comments) => {
+				console.log(comments);
+				setComments(comments);
+			})
+	}, [id]);
+
 
 	if (!album) {
 		return <div>404</div>
@@ -159,24 +187,24 @@ const AlbumPage = () => {
 			{/* не работает отображение комментов, комменты приходят с сервака, но почему то 
 			не обрабатываются из нетворка, не понимаю в чем проблема */}
 			{/* {comments && ( */}
+			<div className="mt-4">
+				<h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{t('translation.comments')}</h3>
 				<div className="mt-4">
-					<h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{t('translation.comments')}</h3>
-					<div className="mt-4">
-						<input
-							type="text"
-							value={commentText}
-							onChange={(e) => setCommentText(e.target.value)}
-							placeholder="Добавьте комментарий..."
-							className="w-full p-2 border rounded-md"
-						/>
-						<button
-							onClick={handleCommentSubmit}
-							className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
-						>
-							Добавить комментарий
-						</button>
+					<input
+						type="text"
+						value={commentText}
+						onChange={(e) => setCommentText(e.target.value)}
+						placeholder="Добавьте комментарий..."
+						className="w-full p-2 border rounded-md"
+					/>
+					<button
+						onClick={handleCommentSubmit}
+						className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
+					>
+						Добавить комментарий
+					</button>
 
-						{/* <div className="mt-4">
+					{/* <div className="mt-4">
 							{comments.map((comment) => (
 								<div key={comment.id} className="border p-2 rounded-md mt-2">
 									<p>{comment.text}</p>
@@ -184,8 +212,8 @@ const AlbumPage = () => {
 								</div>
 							))}
 						</div> */}
-					</div>
 				</div>
+			</div>
 			{/* )} */}
 		</div>
 	)

@@ -150,19 +150,22 @@ const api = {
 				return []
 			})
 	},
-	
+
 	getComments: (request: CommentRequest): Promise<Comment[]> => {
 		const { type, id } = request;
 		const endpoint = type === 'record_id' ? `/comment/getby/?record_id=${id}` : `/comment/getby/?post_id=${id}`;
-	
+
 		return server
 			.get<{ comments: Comment[] }>(endpoint)
-			.then(({ data }) => data.comments)
+			.then(({ data }) => {
+				return data;
+			})
 			.catch((error) => {
 				console.error(error);
 				return [];
 			});
 	},
+
 
 	getRecordsArtistId: (id: string) => {
 		return server
