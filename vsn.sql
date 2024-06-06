@@ -67,7 +67,7 @@ CREATE TABLE `comments` (
   CONSTRAINT `c_post_id` FOREIGN KEY (`post_id`) REFERENCES `post` (`id`),
   CONSTRAINT `c_record_id` FOREIGN KEY (`record_id`) REFERENCES `record` (`id`),
   CONSTRAINT `c_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -76,7 +76,7 @@ CREATE TABLE `comments` (
 
 LOCK TABLES `comments` WRITE;
 /*!40000 ALTER TABLE `comments` DISABLE KEYS */;
-INSERT INTO `comments` VALUES (1,'2024-04-04 04:12:12','qwe',4,NULL,200),(2,'2024-06-05 11:35:22','qwe',4,NULL,189),(3,'2024-06-05 11:51:09','цккеукк',4,NULL,189),(4,'2024-06-06 07:47:19','qwe',4,NULL,196);
+INSERT INTO `comments` VALUES (1,'2024-04-04 04:12:12','qwe',4,NULL,200),(2,'2024-06-05 11:35:22','qwe',4,NULL,189),(3,'2024-06-05 11:51:09','цккеукк',4,NULL,189),(4,'2024-06-06 07:47:19','qwe',4,NULL,196),(5,'2024-06-06 12:46:59','qwe',4,NULL,197),(6,'2024-06-06 12:47:21','penis',4,NULL,197),(7,'2024-06-06 12:51:07','йцу',4,NULL,189),(8,'2024-06-06 12:57:32','йцу',4,NULL,190),(9,'2024-06-06 12:57:59','rt',4,NULL,190),(10,'2024-06-06 12:58:43','к',4,NULL,190),(11,'2024-06-06 12:59:32','йцу',4,NULL,190),(12,'2024-06-06 13:00:10','к',4,NULL,190),(13,'2024-06-06 13:29:46','йцу',4,NULL,212),(14,'2024-06-06 21:41:58','q',5,9,NULL);
 /*!40000 ALTER TABLE `comments` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -178,7 +178,7 @@ CREATE TABLE `messages` (
   KEY `FK_messages_user_info` (`user_id`),
   CONSTRAINT `FK_messages_user_info` FOREIGN KEY (`user_id`) REFERENCES `user_info` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `room_id` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=42 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -187,7 +187,7 @@ CREATE TABLE `messages` (
 
 LOCK TABLES `messages` WRITE;
 /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
-INSERT INTO `messages` VALUES (10,'qwe',NULL,1,4,'2024-06-06 09:08:29'),(11,'t',NULL,1,4,'2024-06-06 09:08:31'),(12,'r',NULL,1,4,'2024-06-06 09:08:33'),(13,'u',NULL,1,4,'2024-06-06 09:08:34'),(14,'f',NULL,1,4,'2024-06-06 09:08:35'),(15,'s',NULL,1,4,'2024-06-06 09:08:36'),(16,'t',NULL,1,5,'2024-06-06 09:08:57'),(19,'er',NULL,1,4,'2024-06-06 09:23:10'),(20,'t',NULL,1,4,'2024-06-06 09:23:12'),(21,'уцкуцк',NULL,1,4,'2024-06-06 09:28:20'),(22,'qwe',NULL,1,4,'2024-06-06 09:28:24'),(23,'rewe',NULL,1,4,'2024-06-06 09:28:28'),(24,'r',NULL,1,5,'2024-06-06 09:28:46'),(25,'qwe',NULL,1,4,'2024-06-06 09:29:11'),(26,'r',NULL,1,5,'2024-06-06 09:31:17'),(27,'привет',NULL,1,5,'2024-06-06 09:31:23'),(28,'ппа',NULL,1,4,'2024-06-06 09:31:36'),(29,'апап',NULL,1,4,'2024-06-06 09:31:39'),(30,'кеукеуке',NULL,1,5,'2024-06-06 09:31:45'),(31,'fgffgg',NULL,1,5,'2024-06-06 09:31:51'),(32,'fgfg',NULL,1,5,'2024-06-06 09:31:55'),(33,'fgfg',NULL,1,5,'2024-06-06 09:31:59'),(34,'к',NULL,1,5,'2024-06-06 09:34:57'),(35,'п',NULL,1,4,'2024-06-06 09:38:38'),(36,'вапвап',NULL,1,4,'2024-06-06 09:38:40'),(37,'вапавп',NULL,1,5,'2024-06-06 09:38:41'),(38,'ва',NULL,1,4,'2024-06-06 09:38:52'),(39,'куекеке',NULL,1,5,'2024-06-06 09:39:25'),(40,'цук',NULL,1,4,'2024-06-06 09:40:56'),(41,'qwe',NULL,1,4,'2024-06-06 10:02:54');
+INSERT INTO `messages` VALUES (10,'qwe',NULL,1,4,'2024-06-06 09:08:29'),(11,'t',NULL,1,4,'2024-06-06 09:08:31'),(12,'r',NULL,1,4,'2024-06-06 09:08:33'),(13,'u',NULL,1,4,'2024-06-06 09:08:34'),(14,'f',NULL,1,4,'2024-06-06 09:08:35'),(15,'s',NULL,1,4,'2024-06-06 09:08:36'),(16,'t',NULL,1,5,'2024-06-06 09:08:57'),(19,'er',NULL,1,4,'2024-06-06 09:23:10'),(20,'t',NULL,1,4,'2024-06-06 09:23:12'),(21,'уцкуцк',NULL,1,4,'2024-06-06 09:28:20'),(22,'qwe',NULL,1,4,'2024-06-06 09:28:24'),(23,'rewe',NULL,1,4,'2024-06-06 09:28:28'),(24,'r',NULL,1,5,'2024-06-06 09:28:46'),(25,'qwe',NULL,1,4,'2024-06-06 09:29:11'),(26,'r',NULL,1,5,'2024-06-06 09:31:17'),(27,'привет',NULL,1,5,'2024-06-06 09:31:23'),(28,'ппа',NULL,1,4,'2024-06-06 09:31:36'),(29,'апап',NULL,1,4,'2024-06-06 09:31:39'),(30,'кеукеуке',NULL,1,5,'2024-06-06 09:31:45'),(31,'fgffgg',NULL,1,5,'2024-06-06 09:31:51'),(32,'fgfg',NULL,1,5,'2024-06-06 09:31:55'),(33,'fgfg',NULL,1,5,'2024-06-06 09:31:59'),(34,'к',NULL,1,5,'2024-06-06 09:34:57'),(35,'п',NULL,1,4,'2024-06-06 09:38:38'),(36,'вапвап',NULL,1,4,'2024-06-06 09:38:40'),(37,'вапавп',NULL,1,5,'2024-06-06 09:38:41'),(38,'ва',NULL,1,4,'2024-06-06 09:38:52'),(39,'куекеке',NULL,1,5,'2024-06-06 09:39:25'),(40,'цук',NULL,1,4,'2024-06-06 09:40:56'),(41,'qwe',NULL,1,4,'2024-06-06 10:02:54'),(42,'ап',NULL,1,4,'2024-06-06 13:07:20'),(43,'йцу',NULL,1,4,'2024-06-06 13:07:22'),(44,'вайб',NULL,1,4,'2024-06-06 13:47:10');
 /*!40000 ALTER TABLE `messages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -209,8 +209,9 @@ CREATE TABLE `post` (
   PRIMARY KEY (`id`),
   KEY `user_id_idx` (`user_id`),
   KEY `type_id_idx` (`type_id`),
-  CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  CONSTRAINT `FK_post_post_type` FOREIGN KEY (`type_id`) REFERENCES `post_type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -219,6 +220,7 @@ CREATE TABLE `post` (
 
 LOCK TABLES `post` WRITE;
 /*!40000 ALTER TABLE `post` DISABLE KEYS */;
+INSERT INTO `post` VALUES (9,'2024-06-06 21:38:42',4,'qwe','rterwrewrewr','',1);
 /*!40000 ALTER TABLE `post` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -244,7 +246,7 @@ CREATE TABLE `post_type` (
 
 LOCK TABLES `post_type` WRITE;
 /*!40000 ALTER TABLE `post_type` DISABLE KEYS */;
-INSERT INTO `post_type` VALUES (1,'post'),(3,'qwe'),(2,'review');
+INSERT INTO `post_type` VALUES (1,'post'),(2,'review');
 /*!40000 ALTER TABLE `post_type` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -385,7 +387,7 @@ CREATE TABLE `rooms` (
 
 LOCK TABLES `rooms` WRITE;
 /*!40000 ALTER TABLE `rooms` DISABLE KEYS */;
-INSERT INTO `rooms` VALUES (1,'test');
+INSERT INTO `rooms` VALUES (1,'Комната вайба');
 /*!40000 ALTER TABLE `rooms` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -515,4 +517,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-06 18:41:53
+-- Dump completed on 2024-06-06 21:48:11

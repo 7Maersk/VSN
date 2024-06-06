@@ -3,6 +3,7 @@ import io from 'socket.io-client';
 import { useParams } from 'react-router-dom';
 import { api } from '@/api/api.config';
 import useAuth from '@/store/auth.store';
+import { useTranslation } from 'react-i18next';
 
 const socket = io('http://localhost:3001', {
     withCredentials: true,
@@ -29,7 +30,8 @@ const ThreadPage = () => {
     const user_id = auth.user?.id
 
 
-    // Добавляем user_id текущего пользователя
+    const [t] = useTranslation('global')
+
 
     useEffect(() => {
         if (room) {
@@ -61,7 +63,7 @@ const ThreadPage = () => {
 
     return (
         <div>
-            <h2>Chat Room: {room}</h2>
+            <h2>{t('translation.theme')}: {room}</h2>
             <div>
                 {messages.map((msg) => (
                     <div key={msg.id}>
@@ -72,9 +74,10 @@ const ThreadPage = () => {
             <input
                 type="text"
                 value={message}
+                placeholder={t('translation.write')}
                 onChange={(e) => setMessage(e.target.value)}
             />
-            <button onClick={sendMessage}>Send</button>
+            <button onClick={sendMessage}>{t('translation.send')}</button>
         </div>
     );
 };

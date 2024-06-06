@@ -111,6 +111,16 @@ const api = {
 			})
 	},
 
+	getPost: (id: string): Promise<Post | null> => {
+		return server
+			.get<{ post: Post }>(`/post/${id}`)
+			.then(({ data }) => data.post)
+			.catch((error) => {
+				console.error(error)
+				return null
+			})
+	},
+
 	getArtistRecord: (id: string): Promise<string> => {
 		return server
 			.get<{ nickname: string }>(`/artists/record/${id}`)
@@ -156,7 +166,7 @@ const api = {
 		const endpoint = type === 'record_id' ? `/comment/getby/?record_id=${id}` : `/comment/getby/?post_id=${id}`;
 
 		return server
-			.get<{ comments: Comment[] }>(endpoint)
+			.get<Comment[]>(endpoint)
 			.then(({ data }) => {
 				return data;
 			})

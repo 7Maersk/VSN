@@ -13,5 +13,7 @@ export { default as RecommendationsPage } from './RecommendationsPage'
 export { default as FavoritesPage } from './FavoritesPage'
 export { default as ThreadPage } from './ThreadPage'
 export { default as ThreadsPage } from './ThreadsPage'
+export { default as PostPage } from './PostPage'
+
 
 

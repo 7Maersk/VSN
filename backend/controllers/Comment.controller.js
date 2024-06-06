@@ -6,13 +6,13 @@ const { sequelize } = require('../db.config')
 module.exports = {
     async create(req, res) {
         try {
-            const { date, text, user_id, post_id, record_id } = req.body;
+            const { datetime, text, user_id, post_id, record_id } = req.body;
 
             const postIdValue = post_id ? parseInt(post_id, 10) : null;
             const recordIdValue = record_id ? parseInt(record_id, 10) : null;
 
             const newComment = await Comment.create({
-                datetime: date,
+                datetime: datetime,
                 text: text,
                 user_id: user_id,
                 post_id: postIdValue,

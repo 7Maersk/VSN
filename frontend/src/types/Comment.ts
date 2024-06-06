@@ -1,6 +1,6 @@
 export default interface Comment {
 	id: number
-	date: string
+	datetime: string
 	text: string
 	user_id: number
 	post_id: string

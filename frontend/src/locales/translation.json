@@ -26,7 +26,18 @@
             "more": "More artist releases",
             "home": "Home",
             "thread": "Threads",
-            "comments": "Comments"
+            "comments": "Comments",
+            "nickname": "Nickname",
+            "avatar": "Avatar",
+            "bio": "Bio",
+            "save": "Save",
+            "threads": "Here is all threads live! Start talking!",
+            "theme": "Thread theme",
+            "write": "Write here",
+            "add": "Add comment",
+            "nomore": "No more releases by artist",
+            "send": "Send message",
+            "author": "Author"
         }
     },
     "ru": {
@@ -56,8 +67,18 @@
             "more": "Другие релизы артиста",
             "home": "Главная",
             "thread": "Треды",
-            "comments": "Комментарии"
+            "comments": "Комментарии",
+            "nickname": "Никнейм",
+            "avatar": "Аватар",
+            "bio": "Био",
+            "save": "Сохранить",
+            "threads": "Вот все актуальные треды! Начинайте общаться!",
+            "theme": "Тема треда",
+            "write": "Пишите здесь",
+            "add": "Добавить комментарий",
+            "nomore": "Нет других релизов артиста",
+            "send": "Отправить сообщение",
+            "author": "Автор"
         }
     }
-    
 }

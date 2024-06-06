@@ -24,7 +24,8 @@ import {
 	RecommendationsPage,
 	FavoritesPage,
 	ThreadPage,
-	ThreadsPage
+	ThreadsPage,
+	PostPage
 } from './pages'
 
 i18next.init({
@@ -51,6 +52,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 							<Route path="login" element={<AuthPage />} />
 							<Route path="albums" element={<AlbumsPage />} />
 							<Route path="album/:id" element={<AlbumPage />} />
+							<Route path="post/:id" element={<PostPage />} />
 							<Route path="artist/:id" element={<ArtistPage />} />
 							<Route path="artists" element={<ArtistsPage />} />
 							<Route path="blog" element={<BlogPage />} />

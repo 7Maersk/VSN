@@ -22,7 +22,7 @@ const AlbumPage = () => {
 		if (commentText.trim()) {
 			try {
 				const newComment = await api.createComment({
-					date: new Date().toISOString(),
+					datetime: new Date().toISOString(),
 					text: commentText,
 					user_id: user_id,
 					post_id: "",
@@ -99,7 +99,6 @@ const AlbumPage = () => {
 	useEffect(() => {
 		api.getComments({ type: 'record_id', id: Number(id) })
 			.then((comments) => {
-				console.log(comments);
 				setComments(comments);
 			})
 	}, [id]);
@@ -151,7 +150,7 @@ const AlbumPage = () => {
 					}}
 					className="mt-4"
 				>
-					{albums.length === 0 && <div className="text-lg font-semibold">Нет других релизов</div>}
+					{albums.length === 0 && <div className="text-lg font-semibold">{t('translation.nomore')}</div>}
 					{albums && (
 						<CarouselContent>
 							{albums.map((rec) => (
@@ -184,9 +183,6 @@ const AlbumPage = () => {
 					)}
 				</Carousel>
 			</div>
-			{/* не работает отображение комментов, комменты приходят с сервака, но почему то 
-			не обрабатываются из нетворка, не понимаю в чем проблема */}
-			{/* {comments && ( */}
 			<div className="mt-4">
 				<h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{t('translation.comments')}</h3>
 				<div className="mt-4">
@@ -194,27 +190,26 @@ const AlbumPage = () => {
 						type="text"
 						value={commentText}
 						onChange={(e) => setCommentText(e.target.value)}
-						placeholder="Добавьте комментарий..."
+						placeholder={t('translation.add')}
 						className="w-full p-2 border rounded-md"
 					/>
 					<button
 						onClick={handleCommentSubmit}
 						className="mt-2 px-4 py-2 bg-blue-500 text-white rounded-md"
 					>
-						Добавить комментарий
+						{t('translation.add')}
 					</button>
 
-					{/* <div className="mt-4">
-							{comments.map((comment) => (
-								<div key={comment.id} className="border p-2 rounded-md mt-2">
-									<p>{comment.text}</p>
-									<p>Дата: {comment.date}</p>
-								</div>
-							))}
-						</div> */}
+					<div className="mt-4">
+						{comments.map((comment: any) => (
+							<div key={comment.id} className="border p-2 rounded-md mt-2">
+								<p>{t('translation.author')}: {comment.nickname}</p>
+								<p>{comment.text}</p>
+							</div>
+						))}
+					</div>
 				</div>
 			</div>
-			{/* )} */}
 		</div>
 	)
 }

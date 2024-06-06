@@ -9,6 +9,7 @@ import { z } from 'zod'
 import { User } from '@/types'
 import { useEffect, useState } from 'react'
 import useAuth from '@/store/auth.store'
+import { useTranslation } from 'react-i18next'
 
 const formSchema = z.object({
 	nickname: z
@@ -27,6 +28,9 @@ const SettingsPage = () => {
 
 	const auth = useAuth()
 	const [user, setUser] = useState<User | null>(null)
+
+	const [t] = useTranslation('global')
+
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -91,9 +95,9 @@ const SettingsPage = () => {
 						name="nickname"
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>Никнейм</FormLabel>
+								<FormLabel>{t('translation.nickname')}</FormLabel>
 								<FormControl>
-									<Input placeholder="Никнейм" type="text" {...field} />
+									<Input placeholder={t('translation.nickname')} type="text" {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -104,9 +108,9 @@ const SettingsPage = () => {
 						name="picture"
 						render={() => (
 							<FormItem className="w-full">
-								<FormLabel>Аватар</FormLabel>
+								<FormLabel>{t('translation.avatar')}</FormLabel>
 								<FormControl>
-									<Input placeholder="Аватар" type="file" {...fileRef} />
+									<Input placeholder={t('translation.avatar')} type="file" {...fileRef} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -117,9 +121,9 @@ const SettingsPage = () => {
 						name="bio"
 						render={({ field }) => (
 							<FormItem className="w-full">
-								<FormLabel>Био</FormLabel>
+								<FormLabel>{t('translation.bio')}</FormLabel>
 								<FormControl>
-									<Textarea placeholder="Био" {...field} />
+									<Textarea placeholder={t('translation.bio')} {...field} />
 								</FormControl>
 								<FormMessage />
 							</FormItem>
@@ -143,7 +147,7 @@ const SettingsPage = () => {
 						className="w-full"
 					// disabled={!form.formState.isDirty || !form.formState.isValid}
 					>
-						Сохранить
+						{t('translation.save')}
 					</Button>
 				</form>
 			</Form>
