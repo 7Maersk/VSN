@@ -1,7 +1,6 @@
 import { Button } from '@components/ui/button'
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@components/ui/command'
 import { Input } from '@components/ui/input'
-
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover'
 import { ChevronDown, ChevronUp } from 'lucide-react'
 import { CaretSortIcon, CheckIcon } from '@radix-ui/react-icons'
@@ -9,7 +8,6 @@ import { cn } from '@/lib/utils'
 import { Link } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import { Card, CardContent, CardFooter } from '@components/ui/card'
-
 import { useTranslation } from 'react-i18next'
 import { Albums, Artist, Genre } from '@/types'
 import { api } from '@/api/api.config'
@@ -30,17 +28,18 @@ const AlbumsPage = () => {
 
 	const [search, setSearch] = useState('')
 
-	const filterByArtist = (): Albums[] => {
-		return selectedArtist !== '' || search !== ''
-			? albums.filter((album) => album.artists.filter((artist) => artist.nickname === selectedArtist || artist.nickname.toLowerCase().includes(search.toLowerCase())).length > 0)
-			: albums
-	}
 
 	useEffect(() => {
 		api.getArtists().then((artists: Artist[]) => setArtists(artists))
-		api.getRecords().then((albums: Albums[]) => setAlbums(albums))
 		api.getGenres().then((genres: Genre[]) => setGenres(genres))
-	}, [])
+		if (selectedGenre) {
+			api.getRecordsByGenre(selectedGenre).then((albums: Albums[]) => setAlbums(albums))
+		} else if (selectedArtist) {
+			api.getRecordsByArtist(selectedArtist).then((albums: Albums[]) => setAlbums(albums))
+		} else {
+			api.getRecords().then((albums: Albums[]) => setAlbums(albums))
+		}
+	}, [selectedGenre, selectedArtist])
 
 	return (
 		<>
@@ -121,6 +120,12 @@ const AlbumsPage = () => {
 								<CommandEmpty>{t('translation.nogenre')}</CommandEmpty>
 								<CommandList>
 									<CommandGroup>
+										<CommandItem
+											value="reset"
+											onSelect={() => setGenre('')}
+										>
+											{t('translation.resetFilter')}
+										</CommandItem>
 										{genres.map((genre) => (
 											<CommandItem
 												value={genre.name}
@@ -161,14 +166,18 @@ const AlbumsPage = () => {
 								<CommandEmpty>{t('translation.noartist')}</CommandEmpty>
 								<CommandList>
 									<CommandGroup>
+										<CommandItem
+											value="reset"
+											onSelect={() => setArtist('')}
+										>
+											{t('translation.resetFilter')}
+										</CommandItem>
 										{artists.map((artist) => (
 											<CommandItem
 												value={artist.nickname}
-												key={artist.id}
+												key={artist.nickname}
 												onSelect={() => {
-													selectedArtist === artist.nickname
-														? setArtist('')
-														: setArtist(artist.nickname)
+													selectedArtist === artist.nickname ? setArtist('') : setArtist(artist.nickname)
 												}}
 											>
 												{artist.nickname}
@@ -188,7 +197,7 @@ const AlbumsPage = () => {
 				</div>
 			</div>
 			<div className="col-span-8 row-span-11 grid grid-cols-5 auto-rows-min gap-6 px-4 py-4 pt-0">
-				{filterByArtist().map((album: Albums) => (
+				{albums.map((album: Albums) => (
 					<Card key={album.id + Date.now()} className="rounded-md border-none shadow-sm">
 						<CardContent className="flex aspect-square items-end justify-start p-6 relative">
 							<Link to={`/album/${album.id}`} className="contents">
@@ -213,6 +222,7 @@ const AlbumsPage = () => {
 					</Card>
 				))}
 			</div>
+
 		</>
 	)
 }

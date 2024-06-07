@@ -15,6 +15,7 @@ var UserCollection = require('./UserCollection.model')
 var PostType = require('./PostType.model')
 var Message = require('./Message.model')
 var Room = require('./Room.model')
+const Ticket = require('./Ticket.model')
 
 Role.hasMany(User)
 User.belongsTo(Role)
@@ -84,6 +85,9 @@ User.hasMany(Message, { foreignKey: 'user_id' });
 Message.belongsTo(UserInfo, { foreignKey: 'user_id', as: 'user_info' });
 UserInfo.hasMany(Message, { foreignKey: 'user_id', as: 'messages' });
 
+User.hasMany(Ticket, { foreignKey: 'user_id' });
+Ticket.belongsTo(User, { foreignKey: 'user_id' });
+
 module.exports = {
     User,
     Role,
@@ -101,5 +105,6 @@ module.exports = {
     UserCollection,
     PostType,
     Room,
-    Message
+    Message,
+    Ticket
 }

@@ -25,6 +25,7 @@ const { userRouter, commentRouter, userCollectionRouter, postRouter, artistRoute
 const { verifyToken } = require('./controllers/Auth.controller');
 const { Message, Room, UserInfo } = require('./models');
 const { roomController } = require('./controllers');
+const ticketRouter = require('./routes/Ticket.router');
 
 app.use(cors(corsOptions));
 app.use(express.static('public'));
@@ -46,6 +47,7 @@ app.use('/api/genres', genreRouter);
 app.use('/api/songs', songRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/rooms', roomRouter);
+app.use('/api/ticket', ticketRouter);
 
 io.on('connection', (socket) => {
     socket.on('joinRoom', async (roomName) => {

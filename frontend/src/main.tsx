@@ -25,7 +25,8 @@ import {
 	FavoritesPage,
 	ThreadPage,
 	ThreadsPage,
-	PostPage
+	PostPage,
+	TicketsPage
 } from './pages'
 
 i18next.init({
@@ -86,6 +87,14 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 								element={
 									<PrivateRoute>
 										<RecommendationsPage />
+									</PrivateRoute>
+								}
+							/>
+							<Route
+								path="tickets"
+								element={
+									<PrivateRoute>
+										<TicketsPage />
 									</PrivateRoute>
 								}
 							/>

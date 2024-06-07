@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: 127.0.0.1    Database: vsn_db
+-- Host: localhost    Database: vsn_db
 -- ------------------------------------------------------
 -- Server version	8.0.36
 
@@ -420,6 +420,33 @@ INSERT INTO `songs` VALUES (2567,'Pornography',231,'A1',189),(2568,'Oh My Dis Si
 UNLOCK TABLES;
 
 --
+-- Table structure for table `tickets`
+--
+
+DROP TABLE IF EXISTS `tickets`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `tickets` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `text` varchar(256) NOT NULL,
+  `user_id` int unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `ticket_user_id` (`user_id`),
+  CONSTRAINT `ticket_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `tickets`
+--
+
+LOCK TABLES `tickets` WRITE;
+/*!40000 ALTER TABLE `tickets` DISABLE KEYS */;
+INSERT INTO `tickets` VALUES (2,'123',4),(3,'1235',5);
+/*!40000 ALTER TABLE `tickets` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user`
 --
 
@@ -464,7 +491,7 @@ CREATE TABLE `user_collection` (
   KEY `uc_user_id_idx` (`user_id`),
   CONSTRAINT `uc_record_id` FOREIGN KEY (`record_id`) REFERENCES `record` (`id`),
   CONSTRAINT `uc_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -473,7 +500,7 @@ CREATE TABLE `user_collection` (
 
 LOCK TABLES `user_collection` WRITE;
 /*!40000 ALTER TABLE `user_collection` DISABLE KEYS */;
-INSERT INTO `user_collection` VALUES (6,4,189,NULL),(7,4,200,NULL),(8,4,192,1);
+INSERT INTO `user_collection` VALUES (6,4,189,NULL),(7,4,200,NULL),(8,4,192,1),(9,4,233,NULL);
 /*!40000 ALTER TABLE `user_collection` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -516,4 +543,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-07 21:09:06
+-- Dump completed on 2024-06-07 23:41:36

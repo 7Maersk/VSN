@@ -1,8 +1,6 @@
 const { Comment, UserInfo } = require('../models')
 const { sequelize } = require('../db.config')
 
-
-
 module.exports = {
     async create(req, res) {
         try {

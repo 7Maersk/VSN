@@ -14,6 +14,7 @@ export { default as FavoritesPage } from './FavoritesPage'
 export { default as ThreadPage } from './ThreadPage'
 export { default as ThreadsPage } from './ThreadsPage'
 export { default as PostPage } from './PostPage'
+export { default as TicketsPage } from './TicketsPage'
 
 
 

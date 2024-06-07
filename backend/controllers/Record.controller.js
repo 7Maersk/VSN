@@ -163,7 +163,7 @@ module.exports = {
 	async findAll(req, res) {
 		try {
 			const records = await Record.findAll({
-				attributes: ['id', 'name', 'cover'],
+				attributes: ['id', 'name', 'cover', 'release_date'],
 				include: [
 					{
 						model: Artist,
@@ -417,7 +417,7 @@ module.exports = {
 			const recordIds = recordsGenres.map((recordGenre) => recordGenre.record_id)
 			const records = await Record.findAll({
 				where: { id: recordIds },
-				attributes: ['id', 'name', 'cover'],
+				attributes: ['id', 'name', 'cover', 'release_date'],
 				include: [
 					{
 						model: Artist,
@@ -487,7 +487,7 @@ module.exports = {
 						where: { nickname: artistName },
 					},
 				],
-				attributes: ['id', 'name', 'cover'],
+				attributes: ['id', 'name', 'cover', 'release_date'],
 			})
 
 			return res.json({ records })

@@ -1,5 +1,5 @@
 import axios, { AxiosResponse, InternalAxiosRequestConfig } from 'axios'
-import { Albums, Artist, AuthResponse, Genre, Post, Comment } from '@/types'
+import { Albums, Artist, AuthResponse, Genre, Post, Comment, Ticket } from '@/types'
 import { Album } from '@/types'
 import User from '@/types/User'
 import Room from '@/types/Room'
@@ -127,6 +127,54 @@ const api = {
 			record_id: recordId,
 			is_fav: 1
 		}).then(({ data }) => data)
+			.catch((error) => {
+				console.error(error);
+				throw error;
+			});
+	},
+
+	getRecordsByGenre: (genre: string): Promise<Albums[]> => {
+		return server
+			.get<{ records: Albums[] }>(`/records/genre/${genre}`)
+			.then(({ data }) => data.records)
+			.catch((error) => {
+				console.error(error)
+				return []
+			})
+	},
+
+	getRecordsByArtist: (artistName: string): Promise<Albums[]> => {
+		return server
+			.get<{ records: Albums[] }>(`/records/artistn/${artistName}`)
+			.then(({ data }) => data.records)
+			.catch((error) => {
+				console.error(error)
+				return []
+			})
+	},
+
+	getTickets: (): Promise<Ticket[]> => {
+		return server
+			.get<{ tickets: Ticket[] }>('/ticket')
+			.then(({ data }) => { data })
+			.catch((error) => {
+				console.error(error);
+				return [];
+			});
+	},
+
+	addTicket: (data: { text: string }): Promise<void> => {
+		return server.post('/ticket/create', data)
+			.then(() => { })
+			.catch((error) => {
+				console.error(error);
+				throw error;
+			});
+	},
+
+	deleteTicket: (id: number): Promise<void> => {
+		return server.delete(`/ticket/delete/${id}`)
+			.then(() => { })
 			.catch((error) => {
 				console.error(error);
 				throw error;
