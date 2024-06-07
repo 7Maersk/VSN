@@ -9,6 +9,7 @@ export default interface Album {
 	rating: number;
 	cover: string;
 	artists: {
+		id: number;
 		nickname: string;
 	}[];
 	songs: {

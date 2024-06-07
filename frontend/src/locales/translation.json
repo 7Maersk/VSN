@@ -37,7 +37,11 @@
             "add": "Add comment",
             "nomore": "No more releases by artist",
             "send": "Send message",
-            "author": "Author"
+            "author": "Author",
+            "date": "Release date",
+            "country": "Country",
+            "catnumber": "Catalogue number",
+            "rating": "Rating"
         }
     },
     "ru": {
@@ -78,7 +82,11 @@
             "add": "Добавить комментарий",
             "nomore": "Нет других релизов артиста",
             "send": "Отправить сообщение",
-            "author": "Автор"
+            "author": "Автор",
+            "date": "Дата релиза",
+            "country": "Страна",
+            "catnumber": "Каталожный номер",
+            "rating": "Рейтинг"
         }
     }
 }

@@ -360,7 +360,7 @@ module.exports = {
 					},
 					{
 						model: Artist,
-						attributes: ['nickname'],
+						attributes: ['id', 'nickname'],
 						through: { attributes: [] },
 					},
 					{
@@ -588,6 +588,7 @@ module.exports = {
 			});
 
 			const formattedRecommendations = recommendations.map(record => ({
+				id: record.id,
 				name: record.name,
 				cover: record.cover,
 				genres: record.genres.map(genre => genre.name),

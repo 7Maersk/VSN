@@ -111,7 +111,7 @@ const AlbumPage = () => {
 	}
 
 	if (!albums) {
-		return <div>нет других альбомов</div>
+		return <div>{t('translation.nomore')}</div>
 	}
 
 	return (
@@ -128,19 +128,23 @@ const AlbumPage = () => {
 					</h2>
 
 					<p className="leading-7 [&:not(:first-child)]:mt-4">
-						<b>Release Date:</b> {album.release_date}
+						<b>{t('translation.date')}:</b> {album.release_date}
 					</p>
 					<p className="leading-7 [&:not(:first-child)]:mt-2">
-						<b>Country:</b> {album.country.name}
+						<b>{t('translation.country')}:</b> {album.country.name}
 					</p>
 					<p className="leading-7 [&:not(:first-child)]:mt-2">
-						<b>Rating:</b> {album.rating}
+						<b>{t('translation.catnumber')}:</b> {album.katalog_number}
 					</p>
 					<p className="leading-7 [&:not(:first-child)]:mt-2">
-						<b>Artists:</b> {album.artists.map((artist) => artist.nickname).join(', ')}
+						<b>{t('translation.rating')}:</b> {album.rating}
 					</p>
 					<p className="leading-7 [&:not(:first-child)]:mt-2">
-						<b>Genres:</b> {album.genres.map((genre) => genre.name).join(', ')}
+						{/* NEED FIX! */}
+						<b>{t('translation.artists')}:</b> <Link to={`/artist/${album.artists.map((artist) => artist.id)}`}>{album.artists.map((artist) => artist.nickname).join(', ')}</Link>
+					</p>
+					<p className="leading-7 [&:not(:first-child)]:mt-2">
+						<b>{t('translation.genre')}:</b> {album.genres.map((genre) => genre.name).join(', ')}
 					</p>
 				</div>
 			</div>
