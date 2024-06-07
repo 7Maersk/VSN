@@ -1,6 +1,6 @@
 -- MySQL dump 10.13  Distrib 8.0.36, for Win64 (x86_64)
 --
--- Host: localhost    Database: vsn_db
+-- Host: 127.0.0.1    Database: vsn_db
 -- ------------------------------------------------------
 -- Server version	8.0.36
 
@@ -178,7 +178,7 @@ CREATE TABLE `messages` (
   KEY `FK_messages_user_info` (`user_id`),
   CONSTRAINT `FK_messages_user_info` FOREIGN KEY (`user_id`) REFERENCES `user_info` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `room_id` FOREIGN KEY (`room_id`) REFERENCES `rooms` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=47 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -187,7 +187,6 @@ CREATE TABLE `messages` (
 
 LOCK TABLES `messages` WRITE;
 /*!40000 ALTER TABLE `messages` DISABLE KEYS */;
-INSERT INTO `messages` VALUES (10,'qwe',NULL,1,4,'2024-06-06 09:08:29'),(11,'t',NULL,1,4,'2024-06-06 09:08:31'),(12,'r',NULL,1,4,'2024-06-06 09:08:33'),(13,'u',NULL,1,4,'2024-06-06 09:08:34'),(14,'f',NULL,1,4,'2024-06-06 09:08:35'),(15,'s',NULL,1,4,'2024-06-06 09:08:36'),(16,'t',NULL,1,5,'2024-06-06 09:08:57'),(19,'er',NULL,1,4,'2024-06-06 09:23:10'),(20,'t',NULL,1,4,'2024-06-06 09:23:12'),(21,'уцкуцк',NULL,1,4,'2024-06-06 09:28:20'),(22,'qwe',NULL,1,4,'2024-06-06 09:28:24'),(23,'rewe',NULL,1,4,'2024-06-06 09:28:28'),(24,'r',NULL,1,5,'2024-06-06 09:28:46'),(25,'qwe',NULL,1,4,'2024-06-06 09:29:11'),(26,'r',NULL,1,5,'2024-06-06 09:31:17'),(27,'привет',NULL,1,5,'2024-06-06 09:31:23'),(28,'ппа',NULL,1,4,'2024-06-06 09:31:36'),(29,'апап',NULL,1,4,'2024-06-06 09:31:39'),(30,'кеукеуке',NULL,1,5,'2024-06-06 09:31:45'),(31,'fgffgg',NULL,1,5,'2024-06-06 09:31:51'),(32,'fgfg',NULL,1,5,'2024-06-06 09:31:55'),(33,'fgfg',NULL,1,5,'2024-06-06 09:31:59'),(34,'к',NULL,1,5,'2024-06-06 09:34:57'),(35,'п',NULL,1,4,'2024-06-06 09:38:38'),(36,'вапвап',NULL,1,4,'2024-06-06 09:38:40'),(37,'вапавп',NULL,1,5,'2024-06-06 09:38:41'),(38,'ва',NULL,1,4,'2024-06-06 09:38:52'),(39,'куекеке',NULL,1,5,'2024-06-06 09:39:25'),(40,'цук',NULL,1,4,'2024-06-06 09:40:56'),(41,'qwe',NULL,1,4,'2024-06-06 10:02:54'),(42,'ап',NULL,1,4,'2024-06-06 13:07:20'),(43,'йцу',NULL,1,4,'2024-06-06 13:07:22'),(44,'вайб',NULL,1,4,'2024-06-06 13:47:10'),(45,'qwe',NULL,1,4,'2024-06-06 16:01:58'),(46,'екек',NULL,1,4,'2024-06-07 10:52:24');
 /*!40000 ALTER TABLE `messages` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -211,7 +210,7 @@ CREATE TABLE `post` (
   KEY `type_id_idx` (`type_id`),
   CONSTRAINT `FK_post_post_type` FOREIGN KEY (`type_id`) REFERENCES `post_type` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -220,7 +219,7 @@ CREATE TABLE `post` (
 
 LOCK TABLES `post` WRITE;
 /*!40000 ALTER TABLE `post` DISABLE KEYS */;
-INSERT INTO `post` VALUES (9,'2024-06-06 21:38:42',4,'qwe','rterwrewrewr','',1),(10,'2024-06-07 19:08:05',4,'Marco carola гений тек хауса','Ну гений же','marco.jpg',1);
+INSERT INTO `post` VALUES (9,'2024-06-06 21:38:42',4,'qwe','rterwrewrewr','qwert.jpg',1),(10,'2024-06-07 19:08:05',4,'Marco carola гений тек хауса','Ну гений же','marco.jpg',1),(11,'2024-06-07 20:30:10',7,'Пенисы?','ла оалнр','qwe.jpg',1);
 /*!40000 ALTER TABLE `post` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -378,7 +377,7 @@ CREATE TABLE `rooms` (
   `id` int NOT NULL AUTO_INCREMENT,
   `name` varchar(128) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -517,4 +516,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-06-07 19:40:52
+-- Dump completed on 2024-06-07 21:09:06
