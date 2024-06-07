@@ -23,7 +23,7 @@ UserInfo.init({
 
     bio: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
 
     avatar: {

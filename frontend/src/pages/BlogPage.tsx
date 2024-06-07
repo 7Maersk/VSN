@@ -17,13 +17,12 @@ const BlogPage = () => {
 				return <Card className="col-span-4" key={post.id}>
 					<CardHeader>
 						<Link to={`/post/${post.id}`} className="contents">
-							{/* <img
-								src={`${api.staticURL}/albums/${album.cover}`}
-								alt={`Album ${album.name}`}
+							<img
+								src={`${api.staticURL}/images/${post.img}`}
+								alt={`Album ${post.name}`}
 								className="absolute w-full h-full object-cover object-center top-0 left-0 rounded-t-md"
-							/> */}
+							/>
 						</Link>
-						<img src={''} alt={post.name} />
 						<CardTitle>{post.name}</CardTitle>
 					</CardHeader>
 					<CardContent>

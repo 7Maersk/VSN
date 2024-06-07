@@ -26,8 +26,8 @@ const PostPage = () => {
                     datetime: new Date().toISOString(),
                     text: commentText,
                     user_id: user_id,
-                    post_id: "",
-                    record_id: Number(id),
+                    post_id: Number(id),
+                    record_id: "",
                 });
                 setComments([...comments, newComment]);
                 setCommentText('');
@@ -43,7 +43,6 @@ const PostPage = () => {
         ])
             .then(([post]) => {
                 setPost(post);
-                // return api.getArtistRecord(id || '1');
             })
             .catch((error) => console.error('Ошибка при загрузке данных:', error));
     }, [id]);

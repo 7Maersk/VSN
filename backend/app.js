@@ -62,6 +62,7 @@ io.on('connection', (socket) => {
                 order: [['datetime', 'ASC']],
             });
 
+
             const formattedMessages = await Promise.all(messages.map(async (msg) => {
                 const user_info = await UserInfo.findOne({ where: { user_id: msg.user_id } });
                 return {
@@ -69,7 +70,6 @@ io.on('connection', (socket) => {
                     nickname: user_info ? user_info.nickname : 'Unknown'
                 };
             }));
-
 
             socket.emit('initialMessages', formattedMessages);
         } catch (error) {

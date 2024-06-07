@@ -7,6 +7,7 @@ type AuthState = {
 		id: number | undefined
 		login: string | undefined
 		nickname: string | undefined
+		avatar: string | undefined
 	} | null
 	accessToken: string | undefined
 	refreshToken: string | undefined

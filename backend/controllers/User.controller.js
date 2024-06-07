@@ -7,30 +7,65 @@ const generateToken = (userId) => {
 }
 
 module.exports = {
+	// async register(req, res) {
+	// 	const { login, password, roleName } = req.body
+	// 	try {
+	// 		const usern = await User.findOne({ where: { login: login } })
+	// 		if (usern) {
+	// 			return res.status(400).json({ message: 'Пользователь с таким логином существует' })
+	// 		}
+	// 		const role = await Role.findOne({ where: { name: roleName } })
+	// 		if (!role) {
+	// 			return res.status(400).json({ message: 'Роль не найдена' })
+	// 		}
+	// 		const hashedPassword = await bcrypt.hash(password, 10)
+	// 		const user = await User.create({
+	// 			login,
+	// 			password: hashedPassword,
+	// 			role_id: role.id,
+	// 		})
+	// 		const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+	// 			expiresIn: 28800,
+	// 		})
+	// 		return res.status(201).json({ token })
+	// 	} catch (error) {
+	// 		console.error('Ошибка при регистрации:', error)
+	// 		return res.status(500).json({ message: 'Ошибка при регистрации пользователя' })
+	// 	}
+	// },
+
 	async register(req, res) {
-		const { login, password, roleName } = req.body
+		const { login, password, roleName } = req.body;
 		try {
-			const usern = await User.findOne({ where: { login: login } })
+			const usern = await User.findOne({ where: { login: login } });
 			if (usern) {
-				return res.status(400).json({ message: 'Пользователь с таким логином существует' })
+				return res.status(400).json({ message: 'Пользователь с таким логином существует' });
 			}
-			const role = await Role.findOne({ where: { name: roleName } })
+			const role = await Role.findOne({ where: { name: roleName } });
 			if (!role) {
-				return res.status(400).json({ message: 'Роль не найдена' })
+				return res.status(400).json({ message: 'Роль не найдена' });
 			}
-			const hashedPassword = await bcrypt.hash(password, 10)
+			const hashedPassword = await bcrypt.hash(password, 10);
 			const user = await User.create({
 				login,
 				password: hashedPassword,
 				role_id: role.id,
-			})
+			});
+
+			// Создание записи в таблице user_info
+			const userInfo = await UserInfo.create({
+				user_id: user.id,
+				nickname: login,
+				avatar: 'blank.png'
+			});
+
 			const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
 				expiresIn: 28800,
-			})
-			return res.status(201).json({ token })
+			});
+			return res.status(201).json({ token });
 		} catch (error) {
-			console.error('Ошибка при регистрации:', error)
-			return res.status(500).json({ message: 'Ошибка при регистрации пользователя' })
+			console.error('Ошибка при регистрации:', error);
+			return res.status(500).json({ message: 'Ошибка при регистрации пользователя' });
 		}
 	},
 
@@ -56,7 +91,7 @@ module.exports = {
 				expiresIn: '1d',
 			})
 
-			const username = await UserInfo.findOne({where: {user_id: user.id}})
+			const username = await UserInfo.findOne({ where: { user_id: user.id } })
 
 			return res.cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'strict' }).json({
 				accessToken: token,
@@ -65,6 +100,7 @@ module.exports = {
 					id: user.id,
 					login,
 					nickname: username.nickname,
+					avatar: username.avatar
 				},
 			})
 		} catch (error) {

@@ -121,6 +121,30 @@ const api = {
 			})
 	},
 
+	addToFavorites: (userId: number, recordId: number): Promise<void> => {
+		return server.post('/collection/create', {
+			user_id: userId,
+			record_id: recordId,
+			is_fav: 1
+		}).then(({ data }) => data)
+			.catch((error) => {
+				console.error(error);
+				throw error;
+			});
+	},
+
+	addToCollection: (userId: number, recordId: number): Promise<void> => {
+		return server.post('/collection/create', {
+			user_id: userId,
+			record_id: recordId,
+			is_fav: null
+		}).then(({ data }) => data)
+			.catch((error) => {
+				console.error(error);
+				throw error;
+			});
+	},
+
 	getArtistRecord: (id: string): Promise<string> => {
 		return server
 			.get<{ nickname: string }>(`/artists/record/${id}`)
@@ -216,10 +240,9 @@ const api = {
 			});
 	},
 
-	createComment: (data: Omit<Comment, 'id'>): Promise<Comment> => {
+	createComment: (data: Omit<Comment, 'id'>): Promise<{ comment: Comment }> => {
 		return server.post<{ comment: Comment }>('/comment/create', data)
-			.then(({ data }) => data
-			)
+			.then(({ data }) => data)
 			.catch((error) => {
 				console.error('Ошибка при создании комментария:', error);
 				throw error;

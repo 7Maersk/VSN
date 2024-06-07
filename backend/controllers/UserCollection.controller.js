@@ -46,7 +46,6 @@ module.exports = {
         }
 
         console.log(is_exist)
-
     },
 
     async getFavoriteRecords(req, res) {

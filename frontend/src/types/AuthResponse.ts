@@ -3,6 +3,7 @@ export default interface AuthResponse {
 		id: number
 		login: string
 		nickname: string
+		avatar: string
 	}
 	accessToken: string
 	refreshToken: string

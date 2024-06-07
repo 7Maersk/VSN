@@ -33,7 +33,7 @@
             "save": "Save",
             "threads": "Here is all threads live! Start talking!",
             "theme": "Thread theme",
-            "write": "Write here",
+            "write": "Write message here",
             "add": "Add comment",
             "nomore": "No more releases by artist",
             "send": "Send message",
@@ -41,7 +41,8 @@
             "date": "Release date",
             "country": "Country",
             "catnumber": "Catalogue number",
-            "rating": "Rating"
+            "rating": "Rating",
+            "addtocollection": "Add to collection"
         }
     },
     "ru": {
@@ -78,7 +79,7 @@
             "save": "Сохранить",
             "threads": "Вот все актуальные треды! Начинайте общаться!",
             "theme": "Тема треда",
-            "write": "Пишите здесь",
+            "write": "Пишите сообщение здесь",
             "add": "Добавить комментарий",
             "nomore": "Нет других релизов артиста",
             "send": "Отправить сообщение",
@@ -86,7 +87,8 @@
             "date": "Дата релиза",
             "country": "Страна",
             "catnumber": "Каталожный номер",
-            "rating": "Рейтинг"
+            "rating": "Рейтинг",
+            "addtocollection": "Добавить в коллекцию"
         }
     }
 }
