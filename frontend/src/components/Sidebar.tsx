@@ -8,7 +8,7 @@ import {
 import { Separator } from '@components/ui/separator'
 import { Tabs, TabsList, TabsTrigger } from '@components/ui/tabs'
 import { useTheme } from '@/components/ThemeProvider'
-import { Album, Disc3, Headphones, Home, Library, ListMusic, Moon, Settings, Star, Sun, User, MessageSquare } from 'lucide-react'
+import { Album, Disc3, Headphones, Home, Library, ListMusic, Moon, Settings, Star, Sun, User, MessageSquare, MessageSquareWarning } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { ReactElement, useState } from 'react'
 
@@ -88,6 +88,13 @@ const Sidebar = () => {
 			link: '/threads',
 			text: 'translation.thread',
 			icon: <MessageSquare className="h-5 w-5" />,
+			menuGroup: 'menu',
+		},
+		{
+			protected: true,
+			link: '/tickets',
+			text: 'translation.feedback',
+			icon: <MessageSquareWarning className="h-5 w-5" />,
 			menuGroup: 'menu',
 		},
 	])

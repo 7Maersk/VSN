@@ -43,7 +43,8 @@
             "catnumber": "Catalogue number",
             "rating": "Rating",
             "addtocollection": "Add to collection",
-            "resetFilter": "Reset filter"
+            "resetFilter": "Reset filter",
+            "feedback": "Feedback"
         }
     },
     "ru": {
@@ -90,7 +91,8 @@
             "catnumber": "Каталожный номер",
             "rating": "Рейтинг",
             "addtocollection": "Добавить в коллекцию",
-            "resetFilter": "Сбросить фильтр"
+            "resetFilter": "Сбросить фильтр",
+            "feedback": "Обратная связь"
         }
     }
 }

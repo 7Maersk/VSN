@@ -111,6 +111,19 @@ const api = {
 			})
 	},
 
+	addVinylRecord: (releaseId: number) => {
+		return server
+			.post('/records/add', { releaseId })
+			.then(response => {
+				console.log("!!!", response.data)
+				response.data
+			})
+			.catch(error => {
+				console.error('Failed to add vinyl record:', error);
+				throw error;
+			});
+	},
+
 	getPost: (id: string): Promise<Post | null> => {
 		return server
 			.get<{ post: Post }>(`/post/${id}`)
@@ -155,15 +168,18 @@ const api = {
 
 	getTickets: (): Promise<Ticket[]> => {
 		return server
-			.get<{ tickets: Ticket[] }>('/ticket')
-			.then(({ data }) => { data })
+			.get<Ticket[]>('/ticket')
+			.then(({ data }) => {
+				return data;
+			})
 			.catch((error) => {
 				console.error(error);
 				return [];
 			});
 	},
 
-	addTicket: (data: { text: string }): Promise<void> => {
+
+	addTicket: (data: { user_id: number, text: string }): Promise<void> => {
 		return server.post('/ticket/create', data)
 			.then(() => { })
 			.catch((error) => {
