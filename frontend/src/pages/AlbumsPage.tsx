@@ -42,7 +42,7 @@ const AlbumsPage = () => {
 	}, [selectedGenre, selectedArtist])
 
 	return (
-		<>
+		<div className='overflow-auto col-span-8 row-span-12 px-4 py-4 grid grid-cols-8 grid-rows-12'>
 			<div className="col-span-8 row-span-1 px-4 py-2 flex w-full h-full items-center justify-between gap-x-4">
 				<Input
 					type="search"
@@ -198,7 +198,7 @@ const AlbumsPage = () => {
 			</div>
 			<div className="col-span-8 row-span-11 grid grid-cols-5 auto-rows-min gap-6 px-4 py-4 pt-0">
 				{albums.map((album: Albums) => (
-					<Card key={album.id + Date.now()} className="rounded-md border-none shadow-sm">
+					<Card key={album.id + Date.now()} className="rounded-md border-none shadow-sm flex flex-col">
 						<CardContent className="flex aspect-square items-end justify-start p-6 relative">
 							<Link to={`/album/${album.id}`} className="contents">
 								<img
@@ -208,7 +208,7 @@ const AlbumsPage = () => {
 								/>
 							</Link>
 						</CardContent>
-						<CardFooter className="border border-t-0 rounded-bl-md rounded-br-md p-0">
+						<CardFooter className="border border-t-0 rounded-bl-md rounded-br-md p-0 min-h-32">
 							<Link
 								to={`/album/${album.id}`}
 								className="flex w-full h-full flex-col items-start px-4 py-2"
@@ -223,7 +223,7 @@ const AlbumsPage = () => {
 				))}
 			</div>
 
-		</>
+		</div>
 	)
 }
 

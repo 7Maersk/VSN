@@ -25,12 +25,10 @@ const formSchema = z.object({
 })
 
 const SettingsPage = () => {
-
 	const auth = useAuth()
 	const [user, setUser] = useState<User | null>(null)
 
 	const [t] = useTranslation('global')
-
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -39,24 +37,24 @@ const SettingsPage = () => {
 			bio: '',
 		},
 		mode: 'onChange',
-	});
+	})
 
 	useEffect(() => {
 		const fetchUserInfo = async () => {
 			try {
-				const userData = await api.getUserInfo(`${auth.user?.id}`);
-				setUser(userData);
+				const userData = await api.getUserInfo(`${auth.user?.id}`)
+				setUser(userData)
 				form.reset({
 					nickname: userData?.nickname || '',
 					bio: userData?.bio || '',
-				});
+				})
 			} catch (error) {
-				console.error('Ошибка поиска пользователя', error);
+				console.error('Ошибка поиска пользователя', error)
 			}
-		};
+		}
 
-		fetchUserInfo();
-	}, [auth.user?.id, form]);
+		fetchUserInfo()
+	}, [auth.user?.id, form])
 
 	if (!user) {
 		return <div>Авторизуйтесь для редактирования профиля</div>
@@ -65,23 +63,15 @@ const SettingsPage = () => {
 	const fileRef = form.register('picture')
 
 	async function onSubmit({ nickname, bio, picture }: z.infer<typeof formSchema>) {
-		try {
-			const formData = new FormData();
-			// formData.append('user_id', id);
-			formData.append('nickname', nickname);
-			formData.append('bio', bio);
-			if (picture && picture.length > 0) { //в случае если файл аватара не добавлен, добавляется изначальное название, он если он добавлен,
-				//нужно отправить его на сервер и сохранить там в папку public/avatars
-				formData.append('avatar', picture[0]);
-			} else {
-				formData.append('avatar', user?.avatar || '');
-			}
-			await api.updateUserInfo(formData);
-		} catch (error) {
-			console.error('Ошибка при отправке данных на сервер', error);
-		}
+		await api.updateUserInfo({
+			//@ts-ignore
+			user_id: auth.user?.id,
+			bio,
+			nickname,
+			//@ts-ignore
+			picture: picture[0],
+		})
 	}
-
 
 	return (
 		<div className="flex flex-col justify-center items-center w-full h-full col-span-8 row-span-12 px-4 py-2">
@@ -145,7 +135,7 @@ const SettingsPage = () => {
 					<Button
 						type="submit"
 						className="w-full"
-					// disabled={!form.formState.isDirty || !form.formState.isValid}
+						// disabled={!form.formState.isDirty || !form.formState.isValid}
 					>
 						{t('translation.save')}
 					</Button>

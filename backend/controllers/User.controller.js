@@ -154,28 +154,31 @@ module.exports = {
 	},
 
 	async updateUserInfo(req, res) {
-		const { user_id, nickname, bio, avatar } = req.body
+		const { user_id, nickname, bio } = req.body
+		const picture = req.file ? req.file.filename : 'blank.png'
 
 		try {
-			const existingUserInfo = await UserInfo.findOne({ where: { user_id: user_id } })
+			console.log(picture, user_id, nickname, bio)
+			// const existingUserInfo = await UserInfo.findOne({ where: { user_id: user_id } })
 
-			if (existingUserInfo) {
-				existingUserInfo.nickname = nickname
-				existingUserInfo.bio = bio
-				existingUserInfo.avatar = avatar
-				await existingUserInfo.save()
-				return res.status(200).json({ message: 'Информация о пользователе успешно обновлена' })
-			} else {
-				const newUserInfo = await UserInfo.create({
-					user_id,
-					nickname,
-					bio,
-					avatar,
-				})
-				return res
-					.status(201)
-					.json({ message: 'Информация о пользователе успешно создана', userInfo: newUserInfo })
-			}
+			// if (existingUserInfo) {
+			// 	existingUserInfo.nickname = nickname
+			// 	existingUserInfo.bio = bio
+			// 	existingUserInfo.avatar = avatar
+			// 	await existingUserInfo.save()
+			// 	return res.status(200).json({ message: 'Информация о пользователе успешно обновлена' })
+			// } else {
+			// 	const newUserInfo = await UserInfo.create({
+			// 		user_id,
+			// 		nickname,
+			// 		bio,
+			// 		avatar,
+			// 	})
+			// 	return res
+			// 		.status(201)
+			// 		.json({ message: 'Информация о пользователе успешно создана', userInfo: newUserInfo })
+			return res.json({ message: 'ok' })
+			// }
 		} catch (error) {
 			console.error('Ошибка при обновлении информации о пользователе:', error)
 			return res.status(500).json({ message: 'Ошибка при обновлении информации о пользователе' })

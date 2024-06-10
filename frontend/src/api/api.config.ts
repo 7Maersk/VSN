@@ -13,8 +13,8 @@ const server = axios.create({
 })
 
 interface CommentRequest {
-	type: 'record_id' | 'post_id';
-	id: number;
+	type: 'record_id' | 'post_id'
+	id: number
 }
 
 server.interceptors.request.use((config: InternalAxiosRequestConfig) => {
@@ -114,14 +114,14 @@ const api = {
 	addVinylRecord: (releaseId: number) => {
 		return server
 			.post('/records/add', { releaseId })
-			.then(response => {
-				console.log("!!!", response.data)
+			.then((response) => {
+				console.log('!!!', response.data)
 				response.data
 			})
-			.catch(error => {
-				console.error('Failed to add vinyl record:', error);
-				throw error;
-			});
+			.catch((error) => {
+				console.error('Failed to add vinyl record:', error)
+				throw error
+			})
 	},
 
 	getPost: (id: string): Promise<Post | null> => {
@@ -135,15 +135,17 @@ const api = {
 	},
 
 	addToFavorites: (userId: number, recordId: number): Promise<void> => {
-		return server.post('/collection/create', {
-			user_id: userId,
-			record_id: recordId,
-			is_fav: 1
-		}).then(({ data }) => data)
+		return server
+			.post('/collection/create', {
+				user_id: userId,
+				record_id: recordId,
+				is_fav: 1,
+			})
+			.then(({ data }) => data)
 			.catch((error) => {
-				console.error(error);
-				throw error;
-			});
+				console.error(error)
+				throw error
+			})
 	},
 
 	getRecordsByGenre: (genre: string): Promise<Albums[]> => {
@@ -170,43 +172,46 @@ const api = {
 		return server
 			.get<Ticket[]>('/ticket')
 			.then(({ data }) => {
-				return data;
+				return data
 			})
 			.catch((error) => {
-				console.error(error);
-				return [];
-			});
+				console.error(error)
+				return []
+			})
 	},
 
-
-	addTicket: (data: { user_id: number, text: string }): Promise<void> => {
-		return server.post('/ticket/create', data)
-			.then(() => { })
+	addTicket: (data: { user_id: number; text: string }): Promise<void> => {
+		return server
+			.post('/ticket/create', data)
+			.then(() => {})
 			.catch((error) => {
-				console.error(error);
-				throw error;
-			});
+				console.error(error)
+				throw error
+			})
 	},
 
 	deleteTicket: (id: number): Promise<void> => {
-		return server.delete(`/ticket/delete/${id}`)
-			.then(() => { })
+		return server
+			.delete(`/ticket/delete/${id}`)
+			.then(() => {})
 			.catch((error) => {
-				console.error(error);
-				throw error;
-			});
+				console.error(error)
+				throw error
+			})
 	},
 
 	addToCollection: (userId: number, recordId: number): Promise<void> => {
-		return server.post('/collection/create', {
-			user_id: userId,
-			record_id: recordId,
-			is_fav: null
-		}).then(({ data }) => data)
+		return server
+			.post('/collection/create', {
+				user_id: userId,
+				record_id: recordId,
+				is_fav: null,
+			})
+			.then(({ data }) => data)
 			.catch((error) => {
-				console.error(error);
-				throw error;
-			});
+				console.error(error)
+				throw error
+			})
 	},
 
 	getArtistRecord: (id: string): Promise<string> => {
@@ -250,20 +255,19 @@ const api = {
 	},
 
 	getComments: (request: CommentRequest): Promise<Comment[]> => {
-		const { type, id } = request;
-		const endpoint = type === 'record_id' ? `/comment/getby/?record_id=${id}` : `/comment/getby/?post_id=${id}`;
+		const { type, id } = request
+		const endpoint = type === 'record_id' ? `/comment/getby/?record_id=${id}` : `/comment/getby/?post_id=${id}`
 
 		return server
 			.get<Comment[]>(endpoint)
 			.then(({ data }) => {
-				return data;
+				return data
 			})
 			.catch((error) => {
-				console.error(error);
-				return [];
-			});
+				console.error(error)
+				return []
+			})
 	},
-
 
 	getRecordsArtistId: (id: string) => {
 		return server
@@ -287,42 +291,52 @@ const api = {
 
 	getUserInfo: async (id: string): Promise<User | null> => {
 		try {
-			const { data } = await server.get<User>(`/user/${id}`);
-			return data;
+			const { data } = await server.get<User>(`/user/${id}`)
+			return data
 		} catch (error) {
-			console.error('API error:', error);
-			return null;
+			console.error('API error:', error)
+			return null
 		}
 	},
 
-	updateUserInfo: (data: FormData): Promise<AxiosResponse<void>> => {
+	updateUserInfo: (data: {
+		user_id: string
+		nickname: string
+		bio: string
+		picture: File
+	}): Promise<AxiosResponse<void>> => {
 		return server
-			.post<void>('/user/updateinfo', data)
+			.post<void>('/user/updateinfo', data, {
+				headers: {
+					'Content-Type': 'multipart/form-data', // Set content type for FormData
+				},
+			})
 			.catch((error) => {
-				console.error('Ошибка при обновлении информации о пользователе', error);
-				throw error;
-			});
+				console.error('Ошибка при обновлении информации о пользователе', error)
+				throw error
+			})
 	},
 
 	createComment: (data: Omit<Comment, 'id'>): Promise<Comment> => {
-		return server.post<Comment>('/comment/create', data)
+		return server
+			.post<Comment>('/comment/create', data)
 			.then(({ data }) => data)
 			.catch((error) => {
-				console.error('Ошибка при создании комментария:', error);
-				throw error;
-			});
+				console.error('Ошибка при создании комментария:', error)
+				throw error
+			})
 	},
 
 	getRecommendedRecords: (userId: string): Promise<Albums[]> => {
 		return server
 			.post<{ recommendations: Albums[] }>('/records/rec', { userId })
 			.then(({ data }) => {
-				return data.recommendations;
+				return data.recommendations
 			})
 			.catch((error) => {
-				console.error('Error fetching recommended records:', error);
-				return [];
-			});
+				console.error('Error fetching recommended records:', error)
+				return []
+			})
 	},
 
 	getFavoriteCollection: (userId: number): Promise<Albums[]> => {
@@ -330,9 +344,9 @@ const api = {
 			.get<{ records: Albums[] }>(`/collection/favorite/${userId}`)
 			.then(({ data }) => data.records)
 			.catch((error) => {
-				console.error(error);
-				return [];
-			});
+				console.error(error)
+				return []
+			})
 	},
 
 	getUserCollection: (userId: string): Promise<Albums[]> => {
@@ -340,12 +354,10 @@ const api = {
 			.get<{ records: Albums[] }>(`/collection/${userId}`)
 			.then(({ data }) => data.records)
 			.catch((error) => {
-				console.error(error);
-				return [];
-			});
+				console.error(error)
+				return []
+			})
 	},
-
-
 }
 
 //TODO: Перенести в AuthService.ts
