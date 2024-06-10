@@ -2,76 +2,86 @@ const { Comment, UserInfo } = require('../models')
 const { sequelize } = require('../db.config')
 
 module.exports = {
-    async create(req, res) {
-        try {
-            const { datetime, text, user_id, post_id, record_id } = req.body;
+	async create(req, res) {
+		try {
+			const { datetime, text, user_id, post_id, record_id } = req.body
 
-            const postIdValue = post_id ? parseInt(post_id, 10) : null;
-            const recordIdValue = record_id ? parseInt(record_id, 10) : null;
+			const postIdValue = post_id ? parseInt(post_id, 10) : null
+			const recordIdValue = record_id ? parseInt(record_id, 10) : null
 
-            const newComment = await Comment.create({
-                datetime: datetime,
-                text: text,
-                user_id: user_id,
-                post_id: postIdValue,
-                record_id: recordIdValue
-            });
-            const username = await UserInfo.findOne({where: {user_id: user_id}})
-            return res.json({...newComment.dataValues, nickname:username.dataValues.nickname});
-        } catch (error) {
-            console.error('Ошибка:', error);
-            res.status(500);
-        }
-    },
+			const newComment = await Comment.create(
+				{
+					datetime: datetime,
+					text: text,
+					user_id: user_id,
+					post_id: postIdValue,
+					record_id: recordIdValue,
+				},
+				{
+					attributes: ['id', 'nickname', 'datetime', 'text', 'user_id', 'nickname', 'post_id', 'record_id'],
+				}
+			).then((result) => result.get({ plain: true }))
 
-    async getComments(req, res) {
-        try {
-            const { post_id, record_id } = req.query;
+			const username = await UserInfo.findOne({ where: { user_id: user_id } })
+            delete newComment.UserId
+            delete newComment.PostId
+            delete newComment.recordId
 
-            let comments;
-            let whereCondition;
+			return res.json({ ...newComment, nickname: username.nickname })
+		} catch (error) {
+			console.error('Ошибка:', error)
+			res.status(500)
+		}
+	},
 
-            if (post_id) {
-                whereCondition = { post_id: parseInt(post_id, 10) };
-            } else if (record_id) {
-                whereCondition = { record_id: parseInt(record_id, 10) };
-            } else {
-                return res.status(400).json({ error: 'Either post_id or record_id must be provided' });
-            }
+	async getComments(req, res) {
+		try {
+			const { post_id, record_id } = req.query
 
-            comments = await Comment.findAll({
-                where: whereCondition,
-                attributes: ['id', 'datetime', 'text', 'user_id', 'post_id', 'record_id'],
-            });
+			let comments
+			let whereCondition
 
-            const userIds = [...new Set(comments.map(comment => comment.user_id))];
+			if (post_id) {
+				whereCondition = { post_id: parseInt(post_id, 10) }
+			} else if (record_id) {
+				whereCondition = { record_id: parseInt(record_id, 10) }
+			} else {
+				return res.status(400).json({ error: 'Either post_id or record_id must be provided' })
+			}
 
-            const usersInfo = await UserInfo.findAll({
-                where: { user_id: userIds },
-                attributes: ['user_id', 'nickname', 'avatar'],
-            });
+			comments = await Comment.findAll({
+				where: whereCondition,
+				attributes: ['id', 'datetime', 'text', 'user_id', 'post_id', 'record_id'],
+			})
 
-            const usersInfoMap = new Map();
-            usersInfo.forEach(user => {
-                usersInfoMap.set(user.user_id, { nickname: user.nickname, avatar: user.avatar });
-            });
+			const userIds = [...new Set(comments.map((comment) => comment.user_id))]
 
-            const formattedComments = comments.map(comment => ({
-                id: comment.id,
-                datetime: comment.datetime,
-                text: comment.text,
-                user_id: comment.user_id,
-                nickname: usersInfoMap.get(comment.user_id)?.nickname || null,
-                avatar: usersInfoMap.get(comment.user_id)?.avatar || null,
-                post_id: comment.post_id,
-                record_id: comment.record_id
-            }));
+			const usersInfo = await UserInfo.findAll({
+				where: { user_id: userIds },
+				attributes: ['user_id', 'nickname', 'avatar'],
+			})
 
-            res.json(formattedComments);
-        } catch (error) {
-            console.error('Error retrieving comments:', error);
-            res.status(500).json({ error: 'Internal Server Error' });
-        }
-    }
-    // TODO: DELETE после авторизации
+			const usersInfoMap = new Map()
+			usersInfo.forEach((user) => {
+				usersInfoMap.set(user.user_id, { nickname: user.nickname, avatar: user.avatar })
+			})
+
+			const formattedComments = comments.map((comment) => ({
+				id: comment.id,
+				datetime: comment.datetime,
+				text: comment.text,
+				user_id: comment.user_id,
+				nickname: usersInfoMap.get(comment.user_id)?.nickname || null,
+				avatar: usersInfoMap.get(comment.user_id)?.avatar || null,
+				post_id: comment.post_id,
+				record_id: comment.record_id,
+			}))
+
+			res.json(formattedComments)
+		} catch (error) {
+			console.error('Error retrieving comments:', error)
+			res.status(500).json({ error: 'Internal Server Error' })
+		}
+	},
+	// TODO: DELETE после авторизации
 }

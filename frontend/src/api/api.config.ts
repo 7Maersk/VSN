@@ -304,8 +304,8 @@ const api = {
 			});
 	},
 
-	createComment: (data: Omit<Comment, 'id'>): Promise<{ comment: Comment }> => {
-		return server.post<{ comment: Comment }>('/comment/create', data)
+	createComment: (data: Omit<Comment, 'id'>): Promise<Comment> => {
+		return server.post<Comment>('/comment/create', data)
 			.then(({ data }) => data)
 			.catch((error) => {
 				console.error('Ошибка при создании комментария:', error);
@@ -325,7 +325,7 @@ const api = {
 			});
 	},
 
-	getFavoriteCollection: (userId: string): Promise<Albums[]> => {
+	getFavoriteCollection: (userId: number): Promise<Albums[]> => {
 		return server
 			.get<{ records: Albums[] }>(`/collection/favorite/${userId}`)
 			.then(({ data }) => data.records)

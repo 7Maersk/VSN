@@ -14,6 +14,17 @@ import { useTranslation } from 'react-i18next'
 import { Albums, Artist, Genre } from '@/types'
 import { api } from '@/api/api.config'
 
+const sortByAlphabet = [
+	{
+		value: 'ASC',
+		label: 'translation.asc',
+	},
+	{
+		value: 'DESC',
+		label: 'translation.desc',
+	},
+]
+
 const FavoritesPage = () => {
 	const [t] = useTranslation('global')
 
@@ -21,21 +32,67 @@ const FavoritesPage = () => {
 	const [open1, setOpen1] = useState(false)
 	const [open2, setOpen2] = useState(false)
 	const [open3, setOpen3] = useState(false)
+
+	const [alphabetSort, setAlphabetSort] = useState('')
+
 	const [selectedGenre, setGenre] = useState('')
 	const [selectedArtist, setArtist] = useState('')
 
 	const [albums, setAlbums] = useState<Albums[]>([])
 	const [genres, setGenres] = useState<Genre[]>([])
 	const [artists, setArtists] = useState<Artist[]>([])
-	const id = (JSON.parse(localStorage.getItem('auth') || '{}')?.state?.user?.id).toString();
-
+	const id = JSON.parse(localStorage.getItem('auth') || '{}')?.state?.user?.id.toString()
 
 	const [search, setSearch] = useState('')
 
 	const filterByArtist = (): Albums[] => {
-		return selectedArtist !== '' || search !== ''
-			? albums.filter((album) => album.artists.filter((artist) => artist.nickname === selectedArtist || artist.nickname.toLowerCase().includes(search.toLowerCase())).length > 0)
-			: albums
+		if (search.toLowerCase() !== '') {
+			return albums.filter(
+				(album) =>
+					album.artists.filter((artist) => artist.nickname.toLowerCase().includes(search.toLowerCase()))
+						.length > 0
+			)
+		}
+
+		if (selectedArtist !== '') {
+			return albums.filter(
+				(album) => album.artists.filter((artist) => artist.nickname === selectedArtist).length > 0
+			)
+		}
+
+		return albums
+	}
+
+	const handleSortByAlphabet = (albums: Albums[]): Albums[] => {
+		if (alphabetSort !== '') {
+			if (alphabetSort === 'ASC') {
+				// @ts-ignore
+				return albums.toSorted((a, b) => {
+					if (a.name < b.name) {
+						return -1
+					}
+					if (a.name > b.name) {
+						return 1
+					}
+					return 0
+				})
+			}
+
+			if (alphabetSort === 'DESC') {
+				// @ts-ignore
+				return albums.toSorted((a, b) => {
+					if (a.name > b.name) {
+						return -1
+					}
+					if (a.name < b.name) {
+						return 1
+					}
+					return 0
+				})
+			}
+		}
+
+		return albums
 	}
 
 	useEffect(() => {
@@ -67,14 +124,45 @@ const FavoritesPage = () => {
 							<Command>
 								<CommandList>
 									<CommandGroup>
-										<CommandItem className="flex items-center gap-1">
-											<ChevronUp className="h-5 w-5 shrink-0 opacity-90" />
-											{t('translation.asc')}
-										</CommandItem>
-										<CommandItem className="flex items-center gap-1">
+										{sortByAlphabet.map((s, i) => {
+											return (
+												<CommandItem
+													key={s.value}
+													className="flex items-center gap-1"
+													value={s.value}
+													onSelect={(currentValue) => {
+														setAlphabetSort(
+															currentValue === alphabetSort ? '' : currentValue
+														)
+														setOpen(false)
+													}}
+												>
+													{i === 0 ? (
+														<ChevronUp className="h-5 w-5 shrink-0 opacity-90" />
+													) : (
+														<ChevronDown className="h-5 w-5 shrink-0 opacity-90" />
+													)}
+													{t(s.label)}
+													<CheckIcon
+														className={cn(
+															'ml-auto h-4 w-4',
+															alphabetSort === s.value ? 'opacity-100' : 'opacity-0'
+														)}
+													/>
+												</CommandItem>
+											)
+										})}
+
+										{/* <CommandItem
+											className="flex items-center gap-1"
+											onSelect={() => {
+												sortByAlphabetDESC()
+												setOpen(false)
+											}}
+										>
 											<ChevronDown className="h-5 w-5 shrink-0 opacity-90" />
 											{t('translation.desc')}
-										</CommandItem>
+										</CommandItem> */}
 									</CommandGroup>
 								</CommandList>
 							</Command>
@@ -92,11 +180,19 @@ const FavoritesPage = () => {
 							<Command>
 								<CommandList>
 									<CommandGroup>
-										<CommandItem className="flex items-center gap-1">
+										<CommandItem
+											className="flex items-center gap-1"
+											value="ASC"
+											onSelect={() => {}}
+										>
 											<ChevronUp className="h-5 w-5 shrink-0 opacity-90" />
 											{t('translation.asc')}
 										</CommandItem>
-										<CommandItem className="flex items-center gap-1">
+										<CommandItem
+											className="flex items-center gap-1"
+											value="DESC"
+											onSelect={() => {}}
+										>
 											<ChevronDown className="h-5 w-5 shrink-0 opacity-90" />
 											{t('translation.desc')}
 										</CommandItem>
@@ -190,7 +286,7 @@ const FavoritesPage = () => {
 				</div>
 			</div>
 			<div className="col-span-8 row-span-11 grid grid-cols-5 auto-rows-min gap-6 px-4 py-4 pt-0">
-				{filterByArtist().map((album: Albums) => (
+				{handleSortByAlphabet(filterByArtist()).map((album: Albums) => (
 					<Card key={album.id + Date.now()} className="rounded-md border-none shadow-sm">
 						<CardContent className="flex aspect-square items-end justify-start p-6 relative">
 							<Link to={`/album/${album.id}`} className="contents">

@@ -5,5 +5,5 @@ export default interface Comment {
 	user_id: number
 	nickname: string
 	post_id: string
-	record_id: number
+	record_id: string
 }
