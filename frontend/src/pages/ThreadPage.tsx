@@ -6,6 +6,7 @@ import useAuth from '@/store/auth.store'
 import { useTranslation } from 'react-i18next'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
+import axios from 'axios'
 
 const socket = io('http://localhost:3001', {
 	withCredentials: true,
@@ -29,6 +30,7 @@ const ThreadPage = () => {
 	const { room } = useParams<{ room: string }>()
 	const [messages, setMessages] = useState<Message[]>([])
 	const [message, setMessage] = useState<string>('')
+	const [image, setImage] = useState<File | null>(null)
 	const user_id = auth.user?.id
 
 	const [t] = useTranslation('global')
@@ -52,10 +54,29 @@ const ThreadPage = () => {
 		}
 	}, [room])
 
-	const sendMessage = () => {
+	const sendMessage = async () => {
 		if (message.trim() && room) {
-			socket.emit('sendMessage', { room, message, user_id })
+			let imageUrl = null
+
+			if (image) {
+				const formData = new FormData()
+				formData.append('image', image)
+
+				try {
+					const response = await axios.post('http://localhost:3001/upload', formData, {
+						headers: {
+							'Content-Type': 'multipart/form-data',
+						},
+					})
+					imageUrl = response.data.filename
+				} catch (error) {
+					console.error('Ошибка загрузки изображения:', error)
+				}
+			}
+
+			socket.emit('sendMessage', { room, message, user_id, image: imageUrl })
 			setMessage('')
+			setImage(null)
 		}
 	}
 
@@ -83,6 +104,7 @@ const ThreadPage = () => {
 								</span>
 							</div>
 							<p className="text-sm font-normal py-2.5 text-gray-900 dark:text-white">{msg.text}</p>
+							{msg.img && <img src={`${api.staticURL}/images/${msg.img}`} alt="attached" />}
 						</div>
 					</div>
 				))}
@@ -93,6 +115,11 @@ const ThreadPage = () => {
 					value={message}
 					placeholder={t('translation.write')}
 					onChange={(e) => setMessage(e.target.value)}
+				/>
+				<Input
+					type="file"
+					accept="image/*"
+					onChange={(e) => setImage(e.target.files ? e.target.files[0] : null)}
 				/>
 				<Button onClick={sendMessage}>{t('translation.send')}</Button>
 			</div>

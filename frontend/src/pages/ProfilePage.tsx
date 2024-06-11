@@ -3,6 +3,7 @@ import { Card, CardContent, CardFooter } from '@/components/ui/card'
 import useAuth from '@/store/auth.store'
 import { Albums, Artist } from '@/types'
 import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 const ProfilePage = () => {
@@ -13,6 +14,8 @@ const ProfilePage = () => {
 		id: number
 		nickname: string
 	} | null>(null)
+
+	const [t] = useTranslation('global')
 
 	const [userCollection, setUserCollection] = useState([])
 
@@ -40,13 +43,13 @@ const ProfilePage = () => {
 								{userInfo.nickname}
 							</h2>
 							<p className="leading-7 [&:not(:first-child)]:mt-6">
-								<span className="text-lg font-semibold mr-2">Bio:</span>
+								<span className="text-lg font-semibold mr-2">{t('translation.bio')}</span>
 								{userInfo.bio}
 							</p>
 						</div>
 					</div>
 					<div className="flex flex-col gap-4 mt-4">
-						<h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">Ваша коллекция</h3>
+						<h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{t('translation.yourcollection')}</h3>
 
 						<div className="grid grid-cols-5 auto-rows-min gap-6 py-4 pt-0">
 							{userCollection.map((album: Albums) => (

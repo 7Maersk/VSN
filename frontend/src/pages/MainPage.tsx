@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom'
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
 
-import albumsData from './albums.json'
 import { useTranslation } from 'react-i18next'
 import { api } from '@/api/api.config'
 import { useEffect, useState } from 'react'

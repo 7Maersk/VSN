@@ -21,7 +21,6 @@ var corsOptions = {
 	optionSuccessStatus: 200,
 }
 
-
 const {
 	userRouter,
 	commentRouter,
@@ -44,6 +43,19 @@ app.use(express.static('public'))
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 
+const multer = require('multer')
+
+const storage = multer.diskStorage({
+	destination: function (req, file, cb) {
+		cb(null, './public/images')
+	},
+	filename: function (req, file, cb) {
+		cb(null, Date.now() + '-' + file.originalname)
+	},
+})
+
+const upload = multer({ storage: storage })
+
 db.sequelize
 	.sync()
 	.then(() => {
@@ -63,6 +75,14 @@ app.use('/api/songs', songRouter)
 app.use('/api/auth', authRouter)
 app.use('/api/rooms', roomRouter)
 app.use('/api/ticket', ticketRouter)
+
+// Эндпоинт для загрузки изображения
+app.post('/upload', upload.single('image'), (req, res) => {
+	if (!req.file) {
+		return res.status(400).send('No file uploaded.')
+	}
+	res.status(200).send({ filename: req.file.filename })
+})
 
 io.on('connection', (socket) => {
 	socket.on('joinRoom', async (roomName) => {
@@ -96,7 +116,7 @@ io.on('connection', (socket) => {
 		}
 	})
 
-	socket.on('sendMessage', async ({ room: roomName, message, user_id }) => {
+	socket.on('sendMessage', async ({ room: roomName, message, user_id, image }) => {
 		if (!message || !user_id) {
 			socket.emit('error', 'Message text and user_id cannot be empty')
 			return
@@ -107,6 +127,7 @@ io.on('connection', (socket) => {
 		if (room) {
 			const newMessage = await Message.create({
 				text: message,
+				img: image,
 				room_id: room.id,
 				user_id: user_id,
 				datetime: new Date(),

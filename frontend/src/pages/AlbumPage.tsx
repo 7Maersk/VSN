@@ -205,10 +205,10 @@ const AlbumPage = () => {
 						<TableCaption>A list of your recent invoices.</TableCaption>
 						<TableHeader>
 							<TableRow>
-								<TableHead className="w-[256px] text-left">название</TableHead>
-								<TableHead className="text-center">фичиринг</TableHead>
-								<TableHead className="text-center">длительность</TableHead>
-								<TableHead className="text-center">позицуия</TableHead>
+								<TableHead className="w-[256px] text-left">{t('translation.name')}</TableHead>
+								<TableHead className="text-center">{t('translation.feat')}</TableHead>
+								<TableHead className="text-center">{t('translation.duration')}</TableHead>
+								<TableHead className="text-center">{t('translation.position')}</TableHead>
 							</TableRow>
 						</TableHeader>
 						<TableBody>
@@ -217,18 +217,26 @@ const AlbumPage = () => {
 									<TableCell className="font-medium text-left">{song.title}</TableCell>
 									<TableCell className="text-center">
 										{song.extraartists.length > 0
-											? 'feat ' + song.extraartists.map((a) => a.artist.nickname).join(', ')
+											? 'feat. ' + song.extraartists.map((a) => a.artist.nickname).join(', ')
 											: ''}
 									</TableCell>
 									<TableCell className="text-center">
-										{Math.floor(song.duration / 60) < 10
-											? `0${Math.floor(song.duration / 60)}`
-											: Math.floor(song.duration / 60)}
-										:
-										{Math.floor(song.duration % 60) < 10
-											? `0${Math.floor(song.duration % 60)}`
-											: Math.floor(song.duration % 60)}
+										{song.duration === 0
+											? ''
+											: (
+												<>
+													{Math.floor(song.duration / 60) < 10
+														? `0${Math.floor(song.duration / 60)}`
+														: Math.floor(song.duration / 60)}
+													:
+													{Math.floor(song.duration % 60) < 10
+														? `0${Math.floor(song.duration % 60)}`
+														: Math.floor(song.duration % 60)}
+												</>
+											)
+										}
 									</TableCell>
+
 									<TableCell className="text-center">
 										{song.position}
 									</TableCell>
@@ -302,7 +310,7 @@ const AlbumPage = () => {
 							{comments.map((comment: any) => (
 								<div key={comment.id} className="border p-2 rounded-md mt-2">
 									<p>
-										{t('translation.author')}: {comment.nickname}
+										{t('translation.author')}: <Link to={`/user/${comment.user_id}`}>{comment.nickname}</Link>
 									</p>
 									<p>{comment.text}</p>
 								</div>

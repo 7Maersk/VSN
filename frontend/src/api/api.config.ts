@@ -308,7 +308,7 @@ const api = {
 		return server
 			.post<void>('/user/updateinfo', data, {
 				headers: {
-					'Content-Type': 'multipart/form-data', // Set content type for FormData
+					'Content-Type': 'multipart/form-data',
 				},
 			})
 			.catch((error) => {

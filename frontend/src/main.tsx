@@ -26,7 +26,8 @@ import {
 	ThreadPage,
 	ThreadsPage,
 	PostPage,
-	TicketsPage
+	TicketsPage,
+	UserPage
 } from './pages'
 
 i18next.init({
@@ -58,6 +59,7 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
 							<Route path="artists" element={<ArtistsPage />} />
 							<Route path="blog" element={<BlogPage />} />
 							<Route path="threads" element={<ThreadsPage />} />
+							<Route path="user/:id" element={<UserPage />} />
 							<Route
 								path="profile"
 								element={

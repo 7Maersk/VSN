@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 
 import { useTranslation } from 'react-i18next'
 import { api } from '@/api/api.config'
@@ -78,7 +78,7 @@ const PostPage = () => {
 					{comments.map((comment: any) => (
 						<div key={comment.id} className="border p-2 rounded-md mt-2">
 							<p>
-								{t('translation.author')}: {comment.nickname}
+								{t('translation.author')}: <Link to={`/user/${comment.user_id}`}>{comment.nickname}</Link>
 							</p>
 							<p>{comment.text}</p>
 						</div>

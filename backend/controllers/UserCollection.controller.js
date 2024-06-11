@@ -62,7 +62,7 @@ module.exports = {
             const formattedRecords = await Promise.all(favoriteRecords.map(async favRecord => {
                 const record = await Record.findOne({
                     where: { id: favRecord.record_id },
-                    attributes: ['id', 'name', 'cover']
+                    attributes: ['id', 'name', 'cover', 'release_date']
                 });
     
                 const recordArtists = await RecordArtist.findAll({
@@ -81,7 +81,8 @@ module.exports = {
                     id: record.id,
                     name: record.name,
                     cover: record.cover,
-                    artists: artists.filter(artist => artist !== null)
+                    artists: artists.filter(artist => artist !== null),
+                    releasedate: record.release_date
                 };
             }));
     
@@ -106,7 +107,7 @@ module.exports = {
             const formattedRecords = await Promise.all(userCollection.map(async collectionRecord => {
                 const record = await Record.findOne({
                     where: { id: collectionRecord.record_id },
-                    attributes: ['id', 'name', 'cover']
+                    attributes: ['id', 'name', 'cover', 'release_date']
                 });
     
                 const recordArtists = await RecordArtist.findAll({
@@ -125,7 +126,8 @@ module.exports = {
                     id: record.id,
                     name: record.name,
                     cover: record.cover,
-                    artists: artists.filter(artist => artist !== null)
+                    artists: artists.filter(artist => artist !== null),
+                    releasedate: record.release_date
                 };
             }));
     

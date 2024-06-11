@@ -6,4 +6,5 @@ export default interface Albums {
 	cover: string
 	rating: number
 	artists: Artist[]
+	release_date: Date
 }

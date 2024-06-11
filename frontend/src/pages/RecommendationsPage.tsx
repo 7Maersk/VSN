@@ -191,7 +191,7 @@ const AlbumsPage = () => {
       </div>
       <div className="col-span-8 row-span-11 grid grid-cols-5 auto-rows-min gap-6 px-4 py-4 pt-0">
         {filterByArtist().map((album: Albums) => (
-          <Card key={album.id + Date.now()} className="rounded-md border-none shadow-sm">
+          <Card key={album.id + Date.now()} className="rounded-md border-none shadow-sm flex flex-col">
             <CardContent className="flex aspect-square items-end justify-start p-6 relative">
               <Link to={`/album/${album.id}`} className="contents">
                 <img
@@ -201,7 +201,7 @@ const AlbumsPage = () => {
                 />
               </Link>
             </CardContent>
-            <CardFooter className="border border-t-0 rounded-bl-md rounded-br-md p-0">
+            <CardFooter className="border border-t-0 rounded-bl-md rounded-br-md p-0 min-h-32">
               <Link
                 to={`/album/${album.id}`}
                 className="flex w-full h-full flex-col items-start px-4 py-2"
