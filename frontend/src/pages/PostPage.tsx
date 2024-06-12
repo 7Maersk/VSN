@@ -60,31 +60,50 @@ const PostPage = () => {
 	}
 
 	return (
-		<div className="col-span-8 row-span-12 px-4 py-4 overflow-auto">
-			<h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{t('translation.comments')}</h3>
-			<div className="mt-4">
-				<Input
-					type="text"
-					value={commentText}
-					onChange={(e) => setCommentText(e.target.value)}
-					placeholder={t('translation.add')}
-					className="w-full p-2 border rounded-md"
-				/>
-				<Button onClick={handleCommentSubmit} className="mt-4 px-4 py-2 rounded-md">
-					{t('translation.add')}
-				</Button>
-
-				<div className="mt-4">
-					{comments.map((comment: any) => (
-						<div key={comment.id} className="border p-2 rounded-md mt-2">
-							<p>
-								{t('translation.author')}: <Link to={`/user/${comment.user_id}`}>{comment.nickname}</Link>
+		<div className="col-span-8 row-span-12 px-4 py-4">
+			<div className="flex gap-4 w-full">
+						<img
+							className="aspect-square object-cover object-center rounded-md max-w-xs"
+							src={`${api.staticURL}/images/${post.img}`}
+							alt={`Album ${post.img}`}
+						/>
+						<div className="border rounded-md p-4 w-full">
+							<h2 className="scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight first:mt-0">
+								{post.name}
+							</h2>
+							<p className="leading-7 [&:not(:first-child)]:mt-6">
+								{post.text}
 							</p>
-							<p>{comment.text}</p>
 						</div>
-					))}
+					</div>
+				<>
+			<div className="col-span-8 row-span-12 px-4 py-4 overflow-auto">
+				<h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{t('translation.comments')}</h3>
+				<div className="mt-4">
+					<Input
+						type="text"
+						value={commentText}
+						onChange={(e) => setCommentText(e.target.value)}
+						placeholder={t('translation.add')}
+						className="w-full p-2 border rounded-md"
+					/>
+					<Button onClick={handleCommentSubmit} className="mt-4 px-4 py-2 rounded-md">
+						{t('translation.add')}
+					</Button>
+
+					<div className="mt-4">
+						{comments.map((comment: any) => (
+							<div key={comment.id} className="border p-2 rounded-md mt-2">
+								<p>
+									{t('translation.author')}: <Link to={`/user/${comment.user_id}`}>{comment.nickname}</Link>
+								</p>
+								<p>{comment.text}</p>
+							</div>
+						))}
+					</div>
 				</div>
 			</div>
+			</>
 		</div>
 	)
 }
