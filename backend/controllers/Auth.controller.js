@@ -1,4 +1,24 @@
 const jwt = require('jsonwebtoken')
+const sessions = require('../sessions')
+
+const checkAuth = (req, res, next) => {
+	const sessionId = req.headers.cookie?.split('=')[1]
+
+	const userSession = sessions[sessionId]
+
+	if (!userSession) return res.status(401).json({ message: 'Недействительная сессия'})
+	
+	next()
+}
+
+const checkPrivileges = (sessionId, privilege) => {
+	const userSession = sessions[sessionId]
+	if (!userSession) return 'Такой сессии нет'
+
+	if (userSession.role === privilege) return true
+
+	return false
+}
 
 function verifyToken(req, res, next) {
 	const accessToken = req.headers['authorization']
@@ -65,4 +85,4 @@ const refreshToken = (req, res) => {
 	}
 }
 
-module.exports = { verifyToken, refreshToken }
+module.exports = { verifyToken, refreshToken, checkAuth, checkPrivileges }

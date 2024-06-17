@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken')
 const bcrypt = require('bcryptjs')
+const { v4: uuid } = require('uuid')
+const sessions = require('../sessions.js')
 const { User, Role, UserInfo } = require('../models')
 
 const generateToken = (userId) => {
@@ -35,37 +37,37 @@ module.exports = {
 	// },
 
 	async register(req, res) {
-		const { login, password, roleName } = req.body;
+		const { login, password, roleName } = req.body
 		try {
-			const usern = await User.findOne({ where: { login: login } });
+			const usern = await User.findOne({ where: { login: login } })
 			if (usern) {
-				return res.status(400).json({ message: 'Пользователь с таким логином существует' });
+				return res.status(400).json({ message: 'Пользователь с таким логином существует' })
 			}
-			const role = await Role.findOne({ where: { name: roleName } });
+			const role = await Role.findOne({ where: { name: roleName } })
 			if (!role) {
-				return res.status(400).json({ message: 'Роль не найдена' });
+				return res.status(400).json({ message: 'Роль не найдена' })
 			}
-			const hashedPassword = await bcrypt.hash(password, 10);
+			const hashedPassword = await bcrypt.hash(password, 10)
 			const user = await User.create({
 				login,
 				password: hashedPassword,
 				role_id: role.id,
-			});
+			})
 
 			// Создание записи в таблице user_info
 			const userInfo = await UserInfo.create({
 				user_id: user.id,
 				nickname: login,
-				avatar: 'blank.png'
-			});
+				avatar: 'blank.png',
+			})
 
 			const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
 				expiresIn: 28800,
-			});
-			return res.status(201).json({ token });
+			})
+			return res.status(201).json({ token })
 		} catch (error) {
-			console.error('Ошибка при регистрации:', error);
-			return res.status(500).json({ message: 'Ошибка при регистрации пользователя' });
+			console.error('Ошибка при регистрации:', error)
+			return res.status(500).json({ message: 'Ошибка при регистрации пользователя' })
 		}
 	},
 
@@ -83,26 +85,43 @@ module.exports = {
 				return res.status(401).json({ message: 'Неправильный логин или пароль' })
 			}
 
-			const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-				expiresIn: '1m',
-			})
+			// const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+			// 	expiresIn: '1m',
+			// })
 
-			const refreshToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
-				expiresIn: '1d',
-			})
+			// const refreshToken = jwt.sign({ id: user.id }, process.env.JWT_SECRET, {
+			// 	expiresIn: '1d',
+			// })
 
 			const username = await UserInfo.findOne({ where: { user_id: user.id } })
+			const role = await Role.findOne({ where: { id: user.role_id }})
 
-			return res.cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'strict' }).json({
-				accessToken: token,
-				refreshToken: refreshToken,
+
+			const sessionId = uuid()
+			sessions[sessionId] = {
 				user: {
 					id: user.id,
 					login,
 					nickname: username.nickname,
-					avatar: username.avatar
+					avatar: username.avatar,
+					role: role.name
 				},
-			})
+			}
+
+			res.cookie("session", sessionId, { httpOnly: true })
+
+			return res.status(200).json({ message: 'Вы успешно авторизованы' })
+
+			// return res.cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'strict' }).json({
+			// 	accessToken: token,
+			// 	refreshToken: refreshToken,
+			// 	user: {
+			// 		id: user.id,
+			// 		login,
+			// 		nickname: username.nickname,
+			// 		avatar: username.avatar
+			// 	},
+			// })
 		} catch (error) {
 			console.error('Ошибка при аутентификации:', error)
 			res.status(500).json({ message: 'Ошибка при аутентификации пользователя' })
@@ -186,33 +205,34 @@ module.exports = {
 	// },
 
 	async updateUserInfo(req, res) {
-		const { user_id, nickname, bio } = req.body;
-		const picture = req.file ? req.file.filename : 'blank.png';
+		const { user_id, nickname, bio } = req.body
+		const picture = req.file ? req.file.filename : 'blank.png'
 
 		try {
-			const existingUserInfo = await UserInfo.findOne({ where: { user_id: user_id } });
+			const existingUserInfo = await UserInfo.findOne({ where: { user_id: user_id } })
 
 			if (existingUserInfo) {
-				existingUserInfo.nickname = nickname;
-				existingUserInfo.bio = bio;
-				existingUserInfo.avatar = picture;
-				await existingUserInfo.save();
-				return res.status(200).json({ message: 'Информация о пользователе успешно обновлена' });
+				existingUserInfo.nickname = nickname
+				existingUserInfo.bio = bio
+				existingUserInfo.avatar = picture
+				await existingUserInfo.save()
+				return res.status(200).json({ message: 'Информация о пользователе успешно обновлена' })
 			} else {
 				const newUserInfo = await UserInfo.create({
 					user_id,
 					nickname,
 					bio,
 					avatar: picture,
-				});
-				return res.status(201).json({ message: 'Информация о пользователе успешно обновлена', userInfo: newUserInfo });
+				})
+				return res
+					.status(201)
+					.json({ message: 'Информация о пользователе успешно обновлена', userInfo: newUserInfo })
 			}
 		} catch (error) {
-			console.error('Ошибка при обновлении информации о пользователе:', error);
-			return res.status(500).json({ message: 'Ошибка при обновлении информации о пользователе' });
+			console.error('Ошибка при обновлении информации о пользователе:', error)
+			return res.status(500).json({ message: 'Ошибка при обновлении информации о пользователе' })
 		}
 	},
-
 
 	async getUserInfo(req, res) {
 		const { user_id } = req.params

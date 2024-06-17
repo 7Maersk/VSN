@@ -33,7 +33,7 @@ const {
 	authRouter,
 	roomRouter,
 } = require('./routes')
-const { verifyToken } = require('./controllers/Auth.controller')
+const { verifyToken, checkAuth } = require('./controllers/Auth.controller')
 const { Message, Room, UserInfo } = require('./models')
 const { roomController } = require('./controllers')
 const ticketRouter = require('./routes/Ticket.router')

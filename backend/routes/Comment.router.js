@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const { commentController } = require('../controllers');
-const { verifyToken } = require("../controllers/Auth.controller");
+const { verifyToken, checkAuth } = require("../controllers/Auth.controller");
 
 const commentRouter = Router();
 
@@ -8,7 +8,7 @@ const commentRouter = Router();
 // commentController.create(req, res);
 // });
 
-commentRouter.post('/create', async (req, res) => {
+commentRouter.post('/create', checkAuth, async (req, res) => {
     commentController.create(req, res);
 });
 
