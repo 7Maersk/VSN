@@ -12,7 +12,16 @@ import { Star } from 'lucide-react'
 import { useToast } from '@/components/ui/use-toast'
 import { isAxiosError } from 'axios'
 import { Input } from '@/components/ui/input'
-import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from '@/components/ui/table'
+import {
+	Table,
+	TableBody,
+	TableCaption,
+	TableCell,
+	TableFooter,
+	TableHead,
+	TableHeader,
+	TableRow,
+} from '@/components/ui/table'
 
 const AlbumPage = () => {
 	const { id } = useParams<{ id: string }>() as { id: string }
@@ -30,20 +39,42 @@ const AlbumPage = () => {
 
 	const handleCommentSubmit = async () => {
 		if (commentText.trim()) {
-			try {
-				const newComment = await api.createComment({
-					datetime: new Date().toISOString(),
-					text: commentText,
-					user_id: user!.id || 1,
-					post_id: '',
-					record_id: id,
-					nickname: user?.nickname || '',
+			// try {
+			api.createComment({
+				datetime: new Date().toISOString(),
+				text: commentText,
+				user_id: user!.id || 1,
+				post_id: '',
+				record_id: id,
+				nickname: user?.nickname || '',
+			})
+				.then((comment) => {
+					setComments([...comments, comment])
+					setCommentText('')
 				})
-				setComments([...comments, newComment])
-				setCommentText('')
-			} catch (error) {
-				console.error('Ошибка при добавлении комментария:', error)
-			}
+				.catch((err) => {
+					let msg = undefined
+					if (isAxiosError(err) && err.response?.status === 401) {
+						msg = err.response?.data.message
+						toast({
+							duration: 2000,
+							variant: 'destructive',
+							title: 'О нет! Что-то пошло не так',
+							description: `Вы не авторизованы`,
+						})
+					} else {
+						toast({
+							duration: 2000,
+							variant: 'destructive',
+							title: 'О нет! Что-то пошло не так',
+							description: `Ошибка сервера`,
+						})
+					}
+				})
+
+			// } catch (error) {
+			// console.error('Ошибка при добавлении комментария:', error)
+			// }
 		}
 	}
 
@@ -221,25 +252,22 @@ const AlbumPage = () => {
 											: ''}
 									</TableCell>
 									<TableCell className="text-center">
-										{song.duration === 0
-											? ''
-											: (
-												<>
-													{Math.floor(song.duration / 60) < 10
-														? `0${Math.floor(song.duration / 60)}`
-														: Math.floor(song.duration / 60)}
-													:
-													{Math.floor(song.duration % 60) < 10
-														? `0${Math.floor(song.duration % 60)}`
-														: Math.floor(song.duration % 60)}
-												</>
-											)
-										}
+										{song.duration === 0 ? (
+											''
+										) : (
+											<>
+												{Math.floor(song.duration / 60) < 10
+													? `0${Math.floor(song.duration / 60)}`
+													: Math.floor(song.duration / 60)}
+												:
+												{Math.floor(song.duration % 60) < 10
+													? `0${Math.floor(song.duration % 60)}`
+													: Math.floor(song.duration % 60)}
+											</>
+										)}
 									</TableCell>
 
-									<TableCell className="text-center">
-										{song.position}
-									</TableCell>
+									<TableCell className="text-center">{song.position}</TableCell>
 								</TableRow>
 							))}
 						</TableBody>
@@ -310,7 +338,8 @@ const AlbumPage = () => {
 							{comments.map((comment: any) => (
 								<div key={comment.id} className="border p-2 rounded-md mt-2">
 									<p>
-										{t('translation.author')}: <Link to={`/user/${comment.user_id}`}>{comment.nickname}</Link>
+										{t('translation.author')}:{' '}
+										<Link to={`/user/${comment.user_id}`}>{comment.nickname}</Link>
 									</p>
 									<p>{comment.text}</p>
 								</div>
