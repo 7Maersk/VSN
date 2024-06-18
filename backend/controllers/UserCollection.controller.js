@@ -48,6 +48,23 @@ module.exports = {
         console.log(is_exist)
     },
 
+    async removeFromCollection(req, res) {
+        const { user_id, record_id} = req.body
+        console.log(';asfdkjweflsadkjklfjdskl', user_id, record_id)
+        try {
+            await UserCollection.destroy({
+                where: {
+                    user_id: user_id,
+                    record_id: record_id
+                }
+            })
+            return res.status(200).json({ message: 'Пластинка успешно удалена из коллекции'})
+        } catch (err) {
+            return res.status(502).json({ message: 'Ошибка при удалении пластинки'})
+        }
+       
+    },
+
     async getFavoriteRecords(req, res) {
         const userId = req.params.userId;
         

@@ -41,7 +41,13 @@ const useAuth = create<AuthState & AuthAction>()(
 						})
 				},
 
-				logOut: async () => { },
+				logOut: async () => {
+					AuthService.logout()
+						.then(() => set({ user: null, accessToken: undefined, refreshToken: undefined }))
+						.catch(() => {
+							set({ user: null, accessToken: undefined, refreshToken: undefined })
+						})
+				},
 			}),
 			{
 				name: 'auth',

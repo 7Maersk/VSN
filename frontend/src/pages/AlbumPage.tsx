@@ -32,6 +32,7 @@ const AlbumPage = () => {
 	const [comments, setComments] = useState<Comment[]>([])
 
 	const [favAlbums, setFavAlbums] = useState<number[]>([])
+	const [collectionAlbums, setCollectionAlbums] = useState<number[]>([])
 
 	const { toast } = useToast()
 
@@ -102,27 +103,27 @@ const AlbumPage = () => {
 	}
 
 	// Добавить в api метод для удаления
-	const handleRemoveFromFav = () => {
-		// await api
-		// 	.addToFavorites(user?.id || 0, Number(id))
-		// 	.then(() => {
-		// 		toast({
-		// 			duration: 2000,
-		// 			title: 'Всё отлично!',
-		// 			description: 'Пластинка удалена из избранного',
-		// 		})
-		//		 setFavAlbums(favAlbums.filter(f => f !== Number(id)))
-		// 	})
-		// 	.catch((err) => {
-		// 		let msg = undefined
-		// 		if (isAxiosError(err)) msg = err.response?.data.message
-		// 		toast({
-		// 			duration: 2000,
-		// 			variant: 'destructive',
-		// 			title: 'О нет! Что-то пошло не так',
-		// 			description: `${msg}`,
-		// 		})
-		// 	})
+	const handleRemoveFromFav = async () => {
+		await api
+			.removeFromFav(user?.id || 0, Number(id))
+			.then(() => {
+				toast({
+					duration: 2000,
+					title: 'Всё отлично!',
+					description: 'Пластинка удалена из избранного',
+				})
+				setFavAlbums(favAlbums.filter((f) => f !== Number(id)))
+			})
+			.catch((err) => {
+				let msg = undefined
+				if (isAxiosError(err)) msg = err.response?.data.message
+				toast({
+					duration: 2000,
+					variant: 'destructive',
+					title: 'О нет! Что-то пошло не так',
+					description: `${msg}`,
+				})
+			})
 	}
 
 	const handleAddToCollection = async () => {
@@ -133,6 +134,28 @@ const AlbumPage = () => {
 					duration: 2000,
 					title: 'Всё отлично!',
 					description: 'Пластинка добавлена в коллекцию',
+				})
+			})
+			.catch((err) => {
+				let msg = undefined
+				if (isAxiosError(err)) msg = err.response?.data.message
+				toast({
+					duration: 2000,
+					variant: 'destructive',
+					title: 'О нет! Что-то пошло не так',
+					description: `${msg}`,
+				})
+			})
+	}
+
+	const handleRemoveFromCollection = async () => {
+		await api
+			.removeFromCollection(user?.id || 0, Number(id))
+			.then(() => {
+				toast({
+					duration: 2000,
+					title: 'Всё отлично!',
+					description: 'Пластинка удалена из коллекции',
 				})
 			})
 			.catch((err) => {
@@ -171,6 +194,12 @@ const AlbumPage = () => {
 	useEffect(() => {
 		api.getFavoriteCollection(user?.id || 0).then((result) => {
 			setFavAlbums(result.map((r) => r.id))
+		})
+	}, [])
+
+	useEffect(() => {
+		api.getUserCollection(`${user?.id}` || '').then((result) => {
+			setCollectionAlbums(result.map((r) => r.id))
 		})
 	}, [])
 
@@ -226,7 +255,11 @@ const AlbumPage = () => {
 							<b>{t('translation.genre')}:</b> {album.genres.map((genre) => genre.name).join(', ')}
 						</p>
 
-						<Button onClick={handleAddToCollection}>{t('translation.addtocollection')}</Button>
+						{collectionAlbums.find((f) => f === Number(id)) ? (
+							<Button onClick={handleRemoveFromCollection}>{t('translation.removefromcollection')}</Button>
+						) : (
+							<Button onClick={handleAddToCollection}>{t('translation.addtocollection')}</Button>
+						)}
 					</div>
 				</div>
 
@@ -244,7 +277,7 @@ const AlbumPage = () => {
 						</TableHeader>
 						<TableBody>
 							{album.songs.map((song) => (
-								<TableRow key={song.id}>
+								<TableRow key={song.title}>
 									<TableCell className="font-medium text-left">{song.title}</TableCell>
 									<TableCell className="text-center">
 										{song.extraartists.length > 0

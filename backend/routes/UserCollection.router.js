@@ -17,4 +17,8 @@ userCollectionRouter.get('/:userId', async (req, res) => {
     await userCollectionController.getUserCollection(req, res);
 });
 
+userCollectionRouter.post('/removeFromCollection', async (req, res) => {
+    await userCollectionController.removeFromCollection(req, res)
+});
+
 module.exports = userCollectionRouter;

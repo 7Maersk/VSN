@@ -85,4 +85,4 @@ const refreshToken = (req, res) => {
 	}
 }
 
-module.exports = { verifyToken, refreshToken, checkAuth, checkPrivileges }
+module.exports = { checkAuth, checkPrivileges }

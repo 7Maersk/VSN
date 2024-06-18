@@ -1,5 +1,7 @@
-import { api } from '@/api/api.config'
+import { AuthService, api } from '@/api/api.config'
+import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardFooter } from '@/components/ui/card'
+import { toast } from '@/components/ui/use-toast'
 import useAuth from '@/store/auth.store'
 import { Albums, Artist } from '@/types'
 import { useEffect, useState } from 'react'
@@ -7,7 +9,7 @@ import { useTranslation } from 'react-i18next'
 import { Link } from 'react-router-dom'
 
 const ProfilePage = () => {
-	const { user } = useAuth()
+	const { user, logOut } = useAuth()
 	const [userInfo, setUserInfo] = useState<{
 		avatar: string
 		bio: string
@@ -18,6 +20,10 @@ const ProfilePage = () => {
 	const [t] = useTranslation('global')
 
 	const [userCollection, setUserCollection] = useState([])
+
+	const logouthandler = () => {
+		logOut()
+	}
 
 	useEffect(() => {
 		//@ts-ignore
@@ -46,10 +52,13 @@ const ProfilePage = () => {
 								<span className="text-lg font-semibold mr-2">{t('translation.bio')}</span>
 								{userInfo.bio}
 							</p>
+							<Button onClick={logouthandler}>Выйти</Button>
 						</div>
 					</div>
 					<div className="flex flex-col gap-4 mt-4">
-						<h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">{t('translation.yourcollection')}</h3>
+						<h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
+							{t('translation.yourcollection')}
+						</h3>
 
 						<div className="grid grid-cols-5 auto-rows-min gap-6 py-4 pt-0">
 							{userCollection.map((album: Albums) => (

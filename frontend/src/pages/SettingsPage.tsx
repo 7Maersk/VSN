@@ -10,6 +10,7 @@ import { User } from '@/types'
 import { useEffect, useState } from 'react'
 import useAuth from '@/store/auth.store'
 import { useTranslation } from 'react-i18next'
+import { toast } from '@/components/ui/use-toast'
 
 const formSchema = z.object({
 	nickname: z
@@ -22,6 +23,7 @@ const formSchema = z.object({
 	// 	.max(16, { message: 'Максимальная длина 16 символов' }),
 	picture: z.instanceof(FileList).optional(),
 	bio: z.string().max(512, { message: 'Максимальная длина 512 символов' }),
+	password: z.string()
 })
 
 const SettingsPage = () => {
@@ -35,6 +37,7 @@ const SettingsPage = () => {
 		defaultValues: {
 			nickname: '',
 			bio: '',
+			password: ''
 		},
 		mode: 'onChange',
 	})
@@ -62,7 +65,7 @@ const SettingsPage = () => {
 
 	const fileRef = form.register('picture')
 
-	async function onSubmit({ nickname, bio, picture }: z.infer<typeof formSchema>) {
+	async function onSubmit({ nickname, bio, picture, password }: z.infer<typeof formSchema>) {
 		await api.updateUserInfo({
 			//@ts-ignore
 			user_id: auth.user?.id,
@@ -70,6 +73,14 @@ const SettingsPage = () => {
 			nickname,
 			//@ts-ignore
 			picture: picture[0],
+			password
+		}).then(() => {
+			toast({
+				duration: 2000,
+				// variant: '',
+				title: 'Данные обновлены',
+				// description: `Вы не авторизованы`,
+			})
 		})
 	}
 
@@ -119,7 +130,7 @@ const SettingsPage = () => {
 							</FormItem>
 						)}
 					/>
-					{/* <FormField
+					<FormField
 						control={form.control}
 						name="password"
 						render={({ field }) => (
@@ -131,7 +142,7 @@ const SettingsPage = () => {
 								<FormMessage />
 							</FormItem>
 						)}
-					/> */}
+					/>
 					<Button
 						type="submit"
 						className="w-full"

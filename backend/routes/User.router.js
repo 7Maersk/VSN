@@ -20,6 +20,10 @@ userRouter.post('/register', async (req, res) => {
 	userController.register(req, res)
 })
 
+userRouter.post('/logout', async (req, res) => {
+	userController.logout(req, res)
+})
+
 userRouter.post('/login', async (req, res) => {
 	userController.login(req, res)
 })

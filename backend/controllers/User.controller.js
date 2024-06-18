@@ -94,8 +94,7 @@ module.exports = {
 			// })
 
 			const username = await UserInfo.findOne({ where: { user_id: user.id } })
-			const role = await Role.findOne({ where: { id: user.role_id }})
-
+			const role = await Role.findOne({ where: { id: user.role_id } })
 
 			const sessionId = uuid()
 			sessions[sessionId] = {
@@ -104,13 +103,23 @@ module.exports = {
 					login,
 					nickname: username.nickname,
 					avatar: username.avatar,
-					role: role.name
+					role: role.name,
 				},
 			}
 
-			res.cookie("session", sessionId, { httpOnly: true })
+			res.cookie('session', sessionId, { httpOnly: true })
 
-			return res.status(200).json({ message: 'Вы успешно авторизованы' })
+			return res.status(200).json({
+				message: 'Вы успешно авторизованы',
+				accessToken: '',
+				refreshToken: '',
+				user: {
+					id: user.id,
+					login,
+					nickname: username.nickname,
+					avatar: username.avatar,
+				},
+			})
 
 			// return res.cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'strict' }).json({
 			// 	accessToken: token,
@@ -126,6 +135,25 @@ module.exports = {
 			console.error('Ошибка при аутентификации:', error)
 			res.status(500).json({ message: 'Ошибка при аутентификации пользователя' })
 		}
+	},
+
+	async logout(req, res) {
+		try {
+			const sessionId = req.headers.cookie?.split('=')[1];
+		
+			delete sessions[sessionId]
+			res.clearCookie("session", {
+				path: '/',
+				httpOnly: true
+			})
+
+			return res.status(200).json({ message: 'Успешно разлогинились'})
+		
+		} catch (err) {
+			console.log(err)
+			return res.status(400).json({ message: 'Ошибка при разлогниниваниии'})
+		}
+	
 	},
 
 	async delete(req, res) {
@@ -205,13 +233,17 @@ module.exports = {
 	// },
 
 	async updateUserInfo(req, res) {
-		const { user_id, nickname, bio } = req.body
+		const { user_id, nickname, bio, password } = req.body
+		
 		const picture = req.file ? req.file.filename : 'blank.png'
-
+		const hashedNewPassword = await bcrypt.hash(password, 10)
+		console.log(hashedNewPassword)
 		try {
 			const existingUserInfo = await UserInfo.findOne({ where: { user_id: user_id } })
 
 			if (existingUserInfo) {
+				
+				existingUserInfo.password = hashedNewPassword
 				existingUserInfo.nickname = nickname
 				existingUserInfo.bio = bio
 				existingUserInfo.avatar = picture
@@ -223,6 +255,7 @@ module.exports = {
 					nickname,
 					bio,
 					avatar: picture,
+					password: hashedNewPassword
 				})
 				return res
 					.status(201)

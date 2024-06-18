@@ -17,15 +17,15 @@ interface CommentRequest {
 	id: number
 }
 
-server.interceptors.request.use((config: InternalAxiosRequestConfig) => {
-	const state = localStorage.getItem('state')
-	if (state) {
-		const tokens = JSON.parse(state)
-		config.headers['Authorization'] = `${tokens.accessToken}`
-	}
+// server.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+// 	const state = localStorage.getItem('state')
+// 	if (state) {
+// 		const tokens = JSON.parse(state)
+// 		config.headers['Authorization'] = `${tokens.accessToken}`
+// 	}
 
-	return config
-})
+// 	return config
+// })
 
 // let's think about it
 // server.interceptors.request.use((config) => {
@@ -33,39 +33,39 @@ server.interceptors.request.use((config: InternalAxiosRequestConfig) => {
 // 	return config
 // })
 
-server.interceptors.response.use(
-	// в случае валидного accessToken ничего не делаем:
-	(config) => {
-		return config
-	},
-	// в случае просроченного accessToken пытаемся его обновить:
-	async (error) => {
-		// предотвращаем зацикленный запрос, добавляя свойство _isRetry
-		const originalRequest = { ...error.config }
-		originalRequest._isRetry = true
-		if (
-			// проверим, что ошибка именно из-за невалидного accessToken
-			error.response.status === 401 &&
-			// проверим, что запрос не повторный
-			error.config &&
-			!error.config._isRetry
-		) {
-			try {
-				// запрос на обновление токенов
-				const resp = await server.get('/api/refresh')
-				// сохраняем новый accessToken в localStorage
-				localStorage.setItem('token', resp.data.accessToken)
-				// переотправляем запрос с обновленным accessToken
-				return server.request(originalRequest)
-			} catch (error) {
-				console.log('AUTH ERROR')
-			}
-		}
-		// на случай, если возникла другая ошибка (не связанная с авторизацией)
-		// пробросим эту ошибку
-		throw error
-	}
-)
+// server.interceptors.response.use(
+// 	// в случае валидного accessToken ничего не делаем:
+// 	(config) => {
+// 		return config
+// 	},
+// 	// в случае просроченного accessToken пытаемся его обновить:
+// 	async (error) => {
+// 		// предотвращаем зацикленный запрос, добавляя свойство _isRetry
+// 		const originalRequest = { ...error.config }
+// 		originalRequest._isRetry = true
+// 		if (
+// 			// проверим, что ошибка именно из-за невалидного accessToken
+// 			error.response.status === 401 &&
+// 			// проверим, что запрос не повторный
+// 			error.config &&
+// 			!error.config._isRetry
+// 		) {
+// 			try {
+// 				// запрос на обновление токенов
+// 				const resp = await server.get('/api/refresh')
+// 				// сохраняем новый accessToken в localStorage
+// 				localStorage.setItem('token', resp.data.accessToken)
+// 				// переотправляем запрос с обновленным accessToken
+// 				return server.request(originalRequest)
+// 			} catch (error) {
+// 				console.log('AUTH ERROR')
+// 			}
+// 		}
+// 		// на случай, если возникла другая ошибка (не связанная с авторизацией)
+// 		// пробросим эту ошибку
+// 		throw error
+// 	}
+// )
 
 const api = {
 	baseUrl: 'http://localhost:3001/api',
@@ -140,6 +140,20 @@ const api = {
 				user_id: userId,
 				record_id: recordId,
 				is_fav: 1,
+			})
+			.then(({ data }) => data)
+			.catch((error) => {
+				console.error(error)
+				throw error
+			})
+	},
+
+	removeFromFav: (userId: number, recordId: number): Promise<void> => {
+		return server
+			.post('/collection/create', {
+				user_id: userId,
+				record_id: recordId,
+				is_fav: 0,
 			})
 			.then(({ data }) => data)
 			.catch((error) => {
@@ -304,6 +318,7 @@ const api = {
 		nickname: string
 		bio: string
 		picture: File
+		password: string
 	}): Promise<AxiosResponse<void>> => {
 		return server
 			.post<void>('/user/updateinfo', data, {
@@ -358,6 +373,14 @@ const api = {
 				return []
 			})
 	},
+
+	removeFromCollection: (userId: any, recordId: any): Promise<void> => {
+		return server.post('/collection/removeFromCollection', {
+			user_id: userId,
+			record_id: recordId,
+			is_fav: null,
+		})
+	},
 }
 
 //TODO: Перенести в AuthService.ts
@@ -377,7 +400,7 @@ class AuthService {
 	}
 
 	static async logout(): Promise<void> {
-		return server.post('user/logout')
+		return server.post('user/logout').then(() => localStorage.removeItem('auth'))
 	}
 }
 
